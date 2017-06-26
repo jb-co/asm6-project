@@ -26,23 +26,8 @@ SCREEN_WIDTH		= $20
 ; variables
 ;----------------------------------------------------------------
 
-   
-
    include variables.asm
    
- 
- 
-
-   
-
-   ;NOTE: you can also split the variable declarations into individual pages, like this:
-
-   ;.enum $0100
-   ;.ende
-
-   ;.enum $0200
-   ;.ende
-
 ;----------------------------------------------------------------
 ; iNES header
 ;----------------------------------------------------------------
@@ -96,6 +81,8 @@ SCREEN_WIDTH		= $20
 
 ;----------------------------------------------------------------
 ; program bank 4
+;
+; Level data, level object data
 ;----------------------------------------------------------------
 
    .base $8000
@@ -125,7 +112,7 @@ SCREEN_WIDTH		= $20
    .org $c000
 
 ;----------------------------------------------------------------
-; fixed program bank (7)
+; fixed program bank (15)
 ;----------------------------------------------------------------
    .base $c000
 
@@ -136,6 +123,7 @@ include scroll.asm
 include slots.asm
 include spawn.asm
 include sprites.asm
+include gamestate.asm
 
 Reset:
 
