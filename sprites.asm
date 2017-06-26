@@ -10,7 +10,7 @@ UpdateSprites:
 	inx
 	inx
 	bne -
-
+	
 	LDY #$00 ;entity counter loop in the future
 	ldx #$00
 	
@@ -33,7 +33,7 @@ UpdateSprites:
 	
 	ldy firstActiveSlot
 	cpy #$ff
-	beq +
+	beq @done
 	
 @loop
 	sty entity_counter
@@ -46,12 +46,12 @@ UpdateSprites:
 	ldy entity_counter
 	lda nextActiveSlot, y
 	cmp #$ff
-	beq +
+	beq @done
 
 	tay
 	
 	jmp @loop
-+
+@done
 
 	rts
 	
@@ -77,12 +77,19 @@ DrawObject:
 	bne @xLoop		;if the sprite is flipped, add width and draw in reverse order
 	
 	lda entity_width, y
-	div8
-	add counter
+	lsr a
+	lsr a
+	lsr a
+	clc
+	adc counter
 	sta counter
 	dec counter
+	
+	
+	
 
 @xLoop
+		inc gurras
 		lda worldX_hi, y
 		cmp roomNumber
 		bne @dright
@@ -92,9 +99,12 @@ DrawObject:
 		sta temp
 		
 		lda entity_xHi, y
-		sub scrollX_hi
-		add testX
-		add temp
+		sec 
+		sbc scrollX_hi
+		clc 
+		adc testX
+		clc 
+		adc temp
 		lda #$00
 		adc #$00
 		bne @next
@@ -102,8 +112,10 @@ DrawObject:
 
 @dright	
 		lda entity_xHi, y
-		sub scrollX_hi
-		add testX
+		sec 
+		sbc scrollX_hi
+		clc
+		adc testX
 		lda #$00
 		adc #$00
 		bne @next
@@ -111,31 +123,37 @@ DrawObject:
 @go:
 		;sprite number
 		lda entity_sprite, y
-		add counter
+		clc
+		adc counter
 		sta SPRITE_RAM+1, x
 		
 		;sprite direction
 		lda entity_hDir, y
-		and #%01000000
+		and %01000000
 		sta SPRITE_RAM+2, x
 		
 		;sprite x
 		LDA entity_xHi, y	
-		sub scrollX_hi
-		add testX
+		sec 
+		sbc scrollX_hi
+		clc 
+		adc testX
 		STA SPRITE_RAM+3, x		
 		
 		;sprite y
 		LDA entity_yHi, y	
-		add testY
+		clc
+		adc testY
 		STA SPRITE_RAM, x		
 		
 		txa
-		add OAMdirection
+		clc 
+		adc OAMdirection
 		tax
 @next:		
 		lda #$08
-		add testX
+		clc 
+		adc testX
 		sta testX
 
 		lda entity_hDir, y
@@ -153,7 +171,8 @@ DrawObject:
 @endX	
 	
 	lda testY
-	add #$08
+	clc
+	adc #$08
 	sta testY
 	
 	cmp entity_height, y
@@ -162,6 +181,7 @@ DrawObject:
 @end 	
 	
 	stx sprite_counter
+	
 	
 
 

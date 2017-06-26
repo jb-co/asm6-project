@@ -1,15 +1,4 @@
 
-;8-bit addition, A + \1
-macro add x
-	clc
-	adc #x
-	endm
-	
-;8-bit subtraction, A - \1
-macro sub x
-	sec
-	sbc #x
-	endm
 
 ;;16-bit addition, 1 - addLo, 2 - addHi, 3 - sourceLo, 4 - sourceHi	
 macro add_16 w, x, y, z

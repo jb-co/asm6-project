@@ -11,14 +11,16 @@ ScrollLogic:
 	beq @endScrollLogic
 	
 	LDA entity_xHi
-	sub #$80
+	sec
+	sbc #$80
 	CMP scrollX_hi
 	bmi @endScrollLogic
 	
 @applyScrollX	
 	
 	lda entity_xLo
-	add entity_hAccLo
+	clc
+	adc entity_hAccLo
 	lda entity_hAccHi
 	adc scrollX_hi
 	sta scrollX_hi	
@@ -59,7 +61,8 @@ ScrollLogic:
 @sameRoom	
 
 	lda entity_xLo
-	add entity_hAccLo
+	clc
+	adc entity_hAccLo
 	lda entity_hAccHi
 	adc scrollX_hi
 	sta scrollX_hi

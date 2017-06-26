@@ -31,7 +31,8 @@ FullRoomSpawn:
 	jsr SpawnEnemyFromMap
 	
 	lda sourceLo
-	add #$05
+	clc
+	adc #$05
 	sta sourceLo
 	
 	jmp @loop
@@ -46,7 +47,8 @@ FullRoomSpawn:
 EnemySpawnRight:
 	
 	lda scrollX_hi
-	add #$ff
+	clc
+	adc #$ff
 	and #%11110000
 	sta spawn_x
 	lda roomNumber
@@ -74,7 +76,8 @@ EnemySpawnRight:
 	beq @spawn
 	
 	lda sourceLo
-	add #$05
+	clc
+	adc #$05
 	sta sourceLo
 	
 	
@@ -126,7 +129,8 @@ EnemySpawnLeft:
 	beq @spawn
 	
 	lda sourceLo
-	add #$05
+	clc
+	adc #$05
 	sta sourceLo
 	
 	
@@ -190,11 +194,13 @@ SpawnEnemyFromMap:
 	bne @goRight
 	
 	lda spawn_x	;scrolls on either side of screen depending on scroll direction
-	add testX	;x - width / 2
+	clc
+	adc testX	;x - width / 2
 	jmp @addWidth
 @goRight
 	lda spawn_x	;scrolls on either side of screen depending on scroll direction
-	sub testX	;x - width / 2
+	sec
+	sbc testX	;x - width / 2
 @addWidth
 	
 	

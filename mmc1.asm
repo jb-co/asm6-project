@@ -129,7 +129,7 @@ SCREEN_WIDTH		= $20
 ;----------------------------------------------------------------
    .base $c000
 
-include misc.asm
+;include misc.asm
 include columns.asm
 include init.asm
 include scroll.asm
@@ -192,6 +192,11 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	jsr InitSlots
 	jsr InitVariables
 	;draws two full nametables from beginning of map
+	;sets up nametables to draw from the beginning of map
+	LDA #$00
+	STA tempX_lo
+	STA tempX_hi
+	STA columnNumber
 	jsr InitializeNametables
 	
 	LDA #$20
@@ -215,8 +220,8 @@ forever:
 	
 	lda gameState
 	;jsr GameStateRoutine
-	
 	jsr UpdateSprites
+	
 	
 	jmp forever   
 

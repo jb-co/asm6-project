@@ -1,6 +1,7 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
 gurras: 			.dsb 1
+entity_sprite		.dsb 12
 entity_type			.dsb 12
 
 
@@ -123,7 +124,7 @@ entity_pointer 		.dsb 12
 
 entity_height		.dsb 12
 entity_width		.dsb 12
-entity_sprite		.dsb 12
+
 
 entity_timer		.dsb 12
 entity_animFrame 	.dsb 12
