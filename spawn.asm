@@ -45,6 +45,9 @@ FullRoomSpawn:
 
 
 EnemySpawnRight:
+
+	lda #$04
+	jsr PRGBankWrite
 	
 	lda scrollX_hi
 	clc
@@ -96,12 +99,18 @@ EnemySpawnRight:
 	;lda scrollX_hi
 	;sta spawn_x
 	
-	jmp SpawnEnemyFromMap
+	jsr SpawnEnemyFromMap
 
 @notASpawn
+
+	lda #$00
+	jsr PRGBankWrite
 	rts
 	
 EnemySpawnLeft:
+	
+	lda #$04
+	jsr PRGBankWrite
 	
 	ldy roomNumber
 	
@@ -150,9 +159,11 @@ EnemySpawnLeft:
 	lda roomNumber
 	sta spawn_room
 	
-	jmp SpawnEnemyFromMap
+	jsr SpawnEnemyFromMap
 
 @notASpawn
+	lda #$00
+	jsr PRGBankWrite
 	rts
 	
 

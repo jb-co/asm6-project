@@ -92,7 +92,9 @@ SCREEN_WIDTH		= $20
    .org $c000
 
 ;----------------------------------------------------------------
-; program bank 5
+; program bank 5	(maybe don't need a full bank for these)
+;
+; Collision Routines
 ;----------------------------------------------------------------
 
    .base $8000
@@ -103,11 +105,13 @@ SCREEN_WIDTH		= $20
 
 ;----------------------------------------------------------------
 ; program bank 6
+;
+; Object AI routines
 ;----------------------------------------------------------------
 
    .base $8000
 
-   ;NOTE: contents of program bank 6 go here
+   include bank6.asm
 
    .org $c000
 
@@ -124,7 +128,6 @@ include slots.asm
 include spawn.asm
 include sprites.asm
 include gamestate.asm
-include ai.asm
 include input.asm
 
 Reset:
@@ -213,7 +216,8 @@ forever:
 	JSR CheckInputs
 	
 	lda gameState
-	;jsr GameStateRoutine
+	jsr GameStateRoutine
+	
 	jsr UpdateSprites
 	
 	
@@ -380,6 +384,33 @@ NextFrame:
 -   lda sleeping
     bne -
     rts
+	
+DoRoutine:
+	asl a
+	tax
+	lda AI_Routines+1,x
+	pha
+	lda AI_Routines,x
+	pha
+	rts
+	   
+CollisionRoutine:
+	asl a
+	tax
+	lda Collision_Routines+1,x
+	pha
+	lda Collision_Routines,x
+	pha
+	rts
+	
+GameStateRoutine:
+	asl a
+	tax
+	lda GameState_Routines+1,x
+	pha
+	lda GameState_Routines,x
+	pha
+	rts
   
 Graphics: 
 	incbin "mario.chr"   ;includes 8KB graphics file from SMB1
@@ -425,8 +456,7 @@ GameState_Routines:
 AI_Routines:
 	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1
 
-;Collision_Routines:
-;	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1
+
 	
 
  

@@ -1,3 +1,89 @@
+Collision_Routines:
+	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1
+
+restoreY:
+
+	;LDY entity_counter
+	LDA #$00
+	STA entity_vAccHi, y
+	STA entity_vAccLo, y
+	LDA storedY_hi
+	STA entity_yHi, y
+	LDA storedY_lo
+	STA entity_yLo, y
+	rts
+	
+	
+restoreX:
+	;LDY entity_counter
+	LDa storedX_hi
+	STA entity_xHi, y
+	LDA storedX_lo
+	STA entity_xLo, y
+	LDA #$00
+	STA entity_hAccHi, y
+	STA entity_hAccLo, y
+	LDA storedWorldX_hi
+	STA worldX_hi, y
+	rts
+	
+;; Collision Routines, Tile value is loaded in A, this will probably not be in here in the future
+	
+;;PLAYER
+Collision_Player:
+	
+	lda collisionResult
+	and #%00110000
+	beq @horizontal
+
+@vertical
+	lda currentTile
+	cmp #$08  ;;check for down transition
+	BNE @notTransition
+	rts
+	;jmp VerticalTransition
+	
+@notTransition	
+	;;if moving down reset jumpCounter
+	lda collisionResult
+	cmp #%00100000
+	beq @hitUp
+	
+@hitDown
+	
+	lda isJumping
+	beq @skipS
+	;jsr PlayThud
+@skipS
+	STY isJumping
+@hitUp	
+	jmp restoreY
+
+@horizontal
+	jmp restoreX
+	
+	
+;; Really basic collision objects goes here
+Collision_Bullet:
+Collision_Blob:
+Collision_Stomper:
+Collision_Pickle:
+
+	lda collisionResult
+	and #%00110000
+	beq @horizontal
+
+@vertical
+	jmp restoreY
+@horizontal
+	
+	lda entity_hDir, y		;flip the horizontal dir bits
+	eor #%11000000
+	sta entity_hDir, y
+	jmp restoreX
+	
+	
+
 GetTileValue: 
 	
 	lda testX
