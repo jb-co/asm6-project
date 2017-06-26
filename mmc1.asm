@@ -97,7 +97,7 @@ SCREEN_WIDTH		= $20
 
    .base $8000
 
-   ;NOTE: contents of program bank 5 go here
+   include bank5.asm
 
    .org $c000
 
@@ -124,6 +124,8 @@ include slots.asm
 include spawn.asm
 include sprites.asm
 include gamestate.asm
+include ai.asm
+include input.asm
 
 Reset:
 
@@ -205,6 +207,10 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 forever:
 	
 	jsr NextFrame	;;wait for nmi
+	
+	;; [USER INPUT]
+	JSR ReadController
+	JSR CheckInputs
 	
 	lda gameState
 	;jsr GameStateRoutine
@@ -399,10 +405,6 @@ MetaTileSets:
 	dw sky, grass, sand, snow, vertTrigger
 	
 
-
-	
-
-
 ;hitboxes
 HitBox_Player:
 	.db $01, $00, $0F, $10
@@ -414,6 +416,17 @@ HitBox_Pickle:
 	.db $00, $00, $10, $10
 HitBox_Bullet:
 	.db $00, $00, $08, $08
+	
+;; [ ROUTINES ]
+
+GameState_Routines:
+	.word GameState_Playing-1, GameState_WaitFrames-1
+
+AI_Routines:
+	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1
+
+;Collision_Routines:
+;	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1
 	
 
  
