@@ -1,3 +1,20 @@
+;; [ OBJECTS ]		;;sprite_height, sprite_width, tile_number, attributebits (7-gravity, 6-bgrcollision, 5-...)
+
+Def_Player:
+	.byte $10, $10, $B0, $00
+Def_Blob:
+	.byte $08, $08, $10, $00
+Def_Stomper:
+	.byte $18, $10, $50, $00
+Def_Pickle:
+	.byte $10, $10, $34, $80
+Def_Bullet:
+	.byte $08, $08, $06, $00
+	
+
+Objects:
+	.word Def_Player, Def_Blob, Def_Stomper, Def_Pickle, Def_Bullet
+
 level1_Objects:	;roomNumber, x, y, type, enemyIndex
 	.db $00, $E0, $40, STOMPER, $03
 	.db $ef
@@ -17,6 +34,11 @@ level1_Objects:	;roomNumber, x, y, type, enemyIndex
 	.db $04, $60, $60, PICKLE, $0e
 	.db $04, $B0, $b0, PICKLE, $0f
 	.db $ff
+	
+;so i will move these to the actual map file at some point
+;$01 - right lock, $02 - left lock, $03 - both 
+Level1_ScrollLocks:
+	.db $02, $00, $01, $03, $03
 
 columnData:
 	db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02

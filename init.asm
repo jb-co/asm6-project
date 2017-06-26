@@ -154,7 +154,38 @@ screenNotFilled:
 
 	rts
 	
+InitSlots:
+	ldy #$04
+	ldx #$05
+	sty firstFreeSlot
+
+-	txa
+	sta nextFreeSlot, y
+	iny 
+	inx
+	cpy #$20
+	bne -
+
+	lda #$ff
+	sta nextFreeSlot, y
+	sta firstActiveSlot
+	ldy #$00
+	sta nextActiveSlot, y
+	ldy #$01
+	sta nextActiveSlot, y
+		
+
+	;init player bullets array
 	
+	ldy #$00
+	lda #$ff
+
+-	sta playerBullets, y
+	iny
+	cpy #$03
+	bne -
+		
+	rts
 	
 LoadObjects:
 
@@ -214,6 +245,25 @@ LoadObjects:
 	rts
 	
 InitVariables:
+	LDA #$00
+	STA worldX_hi
+	STA scrollX_hi
+	STA entity_xLo
+	STA entity_yLo
+	STA roomNumber
+	sta entity_airborne
+	sta jumpCounter
+	sta verticalScroll
+	sta entity_counter
+	sta frameCounter
+	sta entity_type
+	sta temp
+	sta entity_sprite
+	sta gameState
+	sta deltaX
+	sta spawned
+	sta walkCounter
+	
 	LDA #$40
 	STA gravity
 	

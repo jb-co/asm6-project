@@ -133,6 +133,9 @@ include misc.asm
 include columns.asm
 include init.asm
 include scroll.asm
+include slots.asm
+include spawn.asm
+include sprites.asm
 
 Reset:
 
@@ -185,6 +188,8 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	
 	jsr LoadCHRRAM
 	jsr LoadPalettes
+	
+	jsr InitSlots
 	jsr InitVariables
 	;draws two full nametables from beginning of map
 	jsr InitializeNametables
@@ -198,6 +203,11 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
 	STA $2001
 	
+	ldy #$00
+	sty roomNumber
+	
+	jsr FullRoomSpawn
+	
 	; [forever alone]	
 forever:
 	
@@ -206,7 +216,7 @@ forever:
 	lda gameState
 	;jsr GameStateRoutine
 	
-	;jsr UpdateSprites
+	jsr UpdateSprites
 	
 	jmp forever   
 
@@ -273,7 +283,14 @@ NMI:
 	
 	lda #$0     
     sta sleeping
-  
+	
+	;restore the registers
+	PLA                              
+	TAY 
+	PLA
+	TAX
+	PLA
+	
 	rti
   
 
@@ -388,10 +405,24 @@ vertTrigger
 MetaTileSets:
 	dw sky, grass, sand, snow, vertTrigger
 	
-;so i will move these to the actual map file at some point
-;$01 - right lock, $02 - left lock, $03 - both 
-Level1_ScrollLocks:
-	.db $02, $00, $01, $03, $03
+
+
+	
+
+
+;hitboxes
+HitBox_Player:
+	.db $01, $00, $0F, $10
+HitBox_Blob:
+	.db $00, $00, $07, $08
+HitBox_Stomper:
+	.db $01, $00, $0F, $18
+HitBox_Pickle:
+	.db $00, $00, $10, $10
+HitBox_Bullet:
+	.db $00, $00, $08, $08
+	
+
  
 
 IRQ:

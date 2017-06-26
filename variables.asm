@@ -1,7 +1,9 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
-
 gurras: 			.dsb 1
+entity_type			.dsb 12
+
+
 collided:		.dsb 1
 frameCounter:	.dsb 1	;global frame counter
 nametable:  		.dsb 1  	;which nametable to use, 0 or 1
@@ -21,7 +23,7 @@ tempY_lo:		.dsb 1
 
 walkCounter:		.dsb 1
 
-
+pGeneric: .dsb 2
 
 	
 ; [never use these in NMI, ok thx bye]
@@ -114,7 +116,7 @@ entity_hAccLo		.dsb 12
 entity_hAccHi		.dsb 12
 entity_hDir			.dsb 12
 
-entity_type			.dsb 12
+
 
 entity_counter 		.dsb 1
 entity_pointer 		.dsb 12
@@ -134,6 +136,22 @@ entity_center		.dsb 12
 
 waitCounter			.dsb 1
 gravity				.dsb 1
+
+OAMdirection		.dsb 1
+collidedWithIndex	.dsb 1
+
+B_down				.dsb 1
+A_down				.dsb 1
+
+;;spawn info
+spawn_type			.dsb 1
+spawn_room			.dsb 1
+spawn_x				.dsb 1
+spawn_y				.dsb 1
+spawned				.dsb 1	
+
+sprite_counter		.dsb 1
+
 .ende
 
 
