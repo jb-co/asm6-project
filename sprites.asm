@@ -89,7 +89,7 @@ DrawObject:
 	
 
 @xLoop
-		inc gurras
+		
 		lda worldX_hi, y
 		cmp roomNumber
 		bne @dright
@@ -129,7 +129,7 @@ DrawObject:
 		
 		;sprite direction
 		lda entity_hDir, y
-		and %01000000
+		and #%01000000
 		sta SPRITE_RAM+2, x
 		
 		;sprite x
