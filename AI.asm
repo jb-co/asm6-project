@@ -130,14 +130,14 @@ Player:
 	beq @noHorizontalMovement
 	
 	jsr horizontalMovement
-	jsr BgrCollisionHorizontal
+	;jsr BgrCollisionHorizontal
 	
 	
 @noHorizontalMovement	
 
 	
 	jsr verticalMovement
-	jsr BgrCollisionVertical
+	;jsr BgrCollisionVertical
 	
 	;jmp Animation_Player
 	
