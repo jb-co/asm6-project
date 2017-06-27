@@ -31,15 +31,12 @@ GameState_Playing:
 	sta entity_hAccLo, y
 	
 	
+
+	
 	lda entity_type, y
-	
-	lda #$06
-	jsr PRGBankWrite
-	
 	jsr DoRoutine
 	
-	lda #$00
-	jsr PRGBankWrite
+
 	
 	;check if entity is offscreen
 	ldy entity_counter

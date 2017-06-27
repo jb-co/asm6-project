@@ -1,5 +1,20 @@
 Collision_Routines:
 	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1
+	
+;hitboxes
+HitBox_Player:
+	.db $01, $00, $0F, $10
+HitBox_Blob:
+	.db $00, $00, $07, $08
+HitBox_Stomper:
+	.db $01, $00, $0F, $18
+HitBox_Pickle:
+	.db $00, $00, $10, $10
+HitBox_Bullet:
+	.db $00, $00, $08, $08
+	
+HitBoxes:
+	.dw HitBox_Player, HitBox_Blob
 
 restoreY:
 
@@ -84,51 +99,10 @@ Collision_Pickle:
 	
 	
 
-GetTileValue: 
-	
-	lda testX
-	and #%11110000
-	sta temp
-	
-	LDA testY	;y / 16
-	LSR A
-	LSR A
-	LSR A 
-	LSR A
-	
-	clc
-	adc temp
-	STA pColumnData_lo ;save lo map address
-	
-	lda entity_xHi, x
-	clc
-	adc offsetX
-	lda worldX_hi, x
-	adc #$00
-	sta temp
-	
-	lda #$04
-	sta sourceBank
-	jsr PRGBankWrite
-	
-	;get offset from map;
-	LDA #>(columnData)
-	clc
-	adc temp
-	STA pColumnData_hi
 
-	LDY #<(columnData)
-	LDA (pColumnData_lo), y
-	
-	sta currentTile
-	
-	lda #$05
-	sta sourceBank
-	jsr PRGBankWrite
-	rts
 	
 BgrCollisionVertical:
-	
+
 	LDX #$00	
 	stx counter
 
@@ -176,7 +150,7 @@ BgrCollisionVertical:
 	;;call routines
 	ldy entity_counter
 	lda entity_type, x
-	;jsr CollisionRoutine	;FIX THIS DUDE
+	jsr CollisionRoutine	;FIX THIS DUDE
 	jmp @end
 	rts
 	

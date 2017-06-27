@@ -99,7 +99,7 @@ SCREEN_WIDTH		= $20
 
    .base $8000
 
-   include bank5.asm
+   ;include bank5.asm
 
    .org $c000
 
@@ -129,6 +129,8 @@ include spawn.asm
 include sprites.asm
 include gamestate.asm
 include input.asm
+include ai.asm
+include collision.asm
 
 Reset:
 
@@ -211,10 +213,7 @@ forever:
 	
 	jsr NextFrame	;;wait for nmi
 	
-	;; [USER INPUT]
-	JSR ReadController
-	JSR CheckInputs
-	
+
 	lda gameState
 	jsr GameStateRoutine
 	
@@ -378,6 +377,49 @@ PRGBankWrite:       ; make sure this is in a fixed bank so it doesnt get swapped
 	STA $E000         ; bank switch happens immediately here
 	RTS
 	
+GetTileValue: 
+	
+	lda testX
+	and #%11110000
+	sta temp
+	
+	LDA testY	;y / 16
+	LSR A
+	LSR A
+	LSR A 
+	LSR A
+	
+	clc
+	adc temp
+	STA pColumnData_lo ;save lo map address
+	
+	lda entity_xHi, x
+	clc
+	adc offsetX
+	lda worldX_hi, x
+	adc #$00
+	sta temp
+	
+	lda #$04
+	sta sourceBank
+	jsr PRGBankWrite
+	
+	;get offset from map;
+	LDA #>(columnData)
+	clc
+	adc temp
+	STA pColumnData_hi
+
+	LDY #<(columnData)
+	LDA (pColumnData_lo), y
+	
+	sta currentTile
+	
+	lda #$00
+	sta sourceBank
+	jsr PRGBankWrite
+	rts
+	
 
 NextFrame:
 	inc sleeping
@@ -436,17 +478,8 @@ MetaTileSets:
 	dw sky, grass, sand, snow, vertTrigger
 	
 
-;hitboxes
-HitBox_Player:
-	.db $01, $00, $0F, $10
-HitBox_Blob:
-	.db $00, $00, $07, $08
-HitBox_Stomper:
-	.db $01, $00, $0F, $18
-HitBox_Pickle:
-	.db $00, $00, $10, $10
-HitBox_Bullet:
-	.db $00, $00, $08, $08
+AI_Routines:
+	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1
 	
 ;; [ ROUTINES ]
 

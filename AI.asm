@@ -69,14 +69,13 @@ applyGravity:
 	
 	;sub_16 gravity, #$00, entity_vAccLo, y, entity_vAccHi, y
 	lda entity_vAccLo, y
-	clc
-	adc gravity
+	sec
+	sbc gravity
 	sta entity_vAccLo, y
 	lda entity_vAccHi, y
-	adc #$00
+	sbc #$00
 	sta entity_vAccHi, y
 	
-@skipGravity	
 	;;set a max vertical acc to -7
 	LDA entity_vAccHi, y
 	CMP #$F9
@@ -116,12 +115,18 @@ moveObject:
 	rts
 	
 Player:
-	lda #<(HitBox_Player)
-	sta pHitBox
-	lda #>(HitBox_Player)
-	sta pHitBox+1
 
+
+	;; [USER INPUT]
+	JSR ReadController
+	JSR CheckInputs
 	
+
+
+	lda HitBoxes, y
+	sta pHitBox
+	lda HitBoxes+1, y
+	sta pHitBox+1
 	
 	jsr applyGravity
 	
@@ -137,7 +142,9 @@ Player:
 
 	
 	jsr verticalMovement
-	;jsr BgrCollisionVertical
+	jsr BgrCollisionVertical
+
+
 	
 	;jmp Animation_Player
 	
@@ -155,6 +162,9 @@ AI_Blob:
 	jsr ReturnFreeSlot
 	rts
 @alive
+
+
+	
 	lda #<(HitBox_Blob)
 	sta pHitBox
 	lda #>(HitBox_Blob)
@@ -172,11 +182,13 @@ AI_Blob:
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 	
-	lda Def_Blob+2
+
+	
+	;lda Def_Blob+2
 	;jsr Animation_Generic
 	
-	ldx entity_counter
-	jmp PlayerBulletCollision
+	;ldx entity_counter
+	;jmp PlayerBulletCollision
 		
 	rts
 	
@@ -191,6 +203,8 @@ AI_Stomper:
 	jmp ReturnFreeSlot
 @alive
 
+
+	
 	lda #<(HitBox_Stomper)
 	sta pHitBox
 	lda #>(HitBox_Stomper)
@@ -210,10 +224,11 @@ AI_Stomper:
 	jsr applyGravity
 	
 	jsr verticalMovement
-	jsr BgrCollisionVertical
+	;jsr BgrCollisionVertical
 
 	ldx entity_counter
-	jsr PlayerBulletCollision
+	;jsr PlayerBulletCollision
+
 	
 	rts
 
@@ -226,6 +241,9 @@ AI_Pickle:
 	
 	jmp ReturnFreeSlot
 @alive
+
+
+	
 	lda #<(HitBox_Pickle)
 	sta pHitBox
 	lda #>(HitBox_Pickle)
@@ -237,12 +255,12 @@ AI_Pickle:
 	
 	jsr horizontalMovement
 	
-	lda Def_Pickle+2
+	;lda Def_Pickle+2
 	;jsr Animation_Generic
 	
-	ldx entity_counter
-	jmp PlayerBulletCollision
-	
+	;ldx entity_counter
+	;jmp PlayerBulletCollision
+
 	
 AI_Bullet:
 

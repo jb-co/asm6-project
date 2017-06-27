@@ -289,8 +289,6 @@ InitVariables:
 	lda #$B0
 	sta entity_sprite
 	
-	lda #RIGHT
-	sta entity_hDir
 	
 	;init sound
 	lda #$0F
