@@ -22,6 +22,13 @@ METABUFFER_RAM = $6080
 
 SCREEN_WIDTH		= $20
 
+;sprite bases
+PLAYER_SPRITE = $B0
+BLOB_SPRITE = $10
+STOMPER_SPRITE = $50
+PICKLE_SPRITE = $34
+BULLET_SPRITE = $06
+
 ;----------------------------------------------------------------
 ; variables
 ;----------------------------------------------------------------
@@ -106,7 +113,7 @@ SCREEN_WIDTH		= $20
 ;----------------------------------------------------------------
 ; program bank 6
 ;
-; Object AI routines
+; Object animation (and probably something else later?)
 ;----------------------------------------------------------------
 
    .base $8000
@@ -488,7 +495,16 @@ GameState_Routines:
 	.word GameState_Playing-1, GameState_WaitFrames-1
 
 
-
+Def_Player:
+	.byte $10, $10, $B0, $00
+Def_Blob:
+	.byte $08, $08, $10, $00
+Def_Stomper:
+	.byte $18, $10, $50, $00
+Def_Pickle:
+	.byte $10, $10, $34, $80
+Def_Bullet:
+	.byte $08, $08, $06, $00
 
 	
 

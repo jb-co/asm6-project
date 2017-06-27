@@ -155,8 +155,9 @@ Player:
 	jsr BgrCollisionVertical
 
 
-	
-	;jmp Animation_Player
+	lda #$06
+	jsr PRGBankWrite
+	jmp Animation_Player
 	
 	rts
 
@@ -186,10 +187,11 @@ AI_Blob:
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 	
-
+	lda #$06
+	jsr PRGBankWrite
 	
-	;lda Def_Blob+2
-	;jsr Animation_Generic
+	lda #BLOB_SPRITE
+	jsr Animation_Generic
 	
 	;ldx entity_counter
 	;jmp PlayerBulletCollision
@@ -245,8 +247,11 @@ AI_Pickle:
 	
 	jsr horizontalMovement
 	
-	;lda Def_Pickle+2
-	;jsr Animation_Generic
+	lda #$06
+	jsr PRGBankWrite
+	
+	lda #PICKLE_SPRITE
+	jsr Animation_Generic
 	
 	;ldx entity_counter
 	;jmp PlayerBulletCollision

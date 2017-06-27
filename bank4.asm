@@ -1,15 +1,7 @@
 ;; [ OBJECTS ]		;;sprite_height, sprite_width, tile_number, attributebits (7-gravity, 6-bgrcollision, 5-...)
 
-Def_Player:
-	.byte $10, $10, $B0, $00
-Def_Blob:
-	.byte $08, $08, $10, $00
-Def_Stomper:
-	.byte $18, $10, $50, $00
-Def_Pickle:
-	.byte $10, $10, $34, $80
-Def_Bullet:
-	.byte $08, $08, $06, $00
+
+
 	
 
 Objects:

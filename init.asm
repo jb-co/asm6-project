@@ -164,7 +164,7 @@ InitSlots:
 	sta nextFreeSlot, y
 	iny 
 	inx
-	cpy #$10
+	cpy #20
 	bne -
 
 	lda #$ff
