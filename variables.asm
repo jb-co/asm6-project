@@ -1,9 +1,14 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
 ;object slots
+playerBullets:			.dsb 3
 
+firstFreeSlot:		.dsb 1
+firstActiveSlot:		.dsb 1
 
-gurras: 			.dsb 1
+nextActiveSlot:		.dsb 12
+nextFreeSlot:		.dsb 12
+
 entity_sprite		.dsb 12
 entity_type			.dsb 12
 
@@ -47,16 +52,12 @@ gameState:		.dsb 1
 ;pointers
 pEnemyDataPointers: 	.dsb 16 ;;enemy spawn pointer for each room
 
-firstFreeSlot:		.dsb 1
-firstActiveSlot:		.dsb 1
 
-nextActiveSlot:		.dsb 20
-nextFreeSlot:		.dsb 20
 
 firstFreePlayerBullet:	.dsb 1
 nextFreePlayerBullet:	.dsb 4
 
-playerBullets:			.dsb 4
+
 
 jumpCounter:			.dsb 1 
 

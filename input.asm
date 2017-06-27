@@ -107,6 +107,7 @@ CheckInputs:
 	
 	inc B_down
 	jsr SpawnPlayerBullet
+	ldy entity_counter
 	jmp @checkR
 	
 @notB

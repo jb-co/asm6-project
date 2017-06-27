@@ -137,6 +137,8 @@ Player:
 	;; [USER INPUT]
 	JSR ReadController
 	JSR CheckInputs
+	
+	ldy entity_counter
 
 	jsr applyGravity
 	

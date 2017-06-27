@@ -90,7 +90,6 @@ GameState_Playing:
 	sta entity_counter
 	jmp @entityPhysicsLoop
 	
-	rts
 
 ;;waits for waitFrames frames with nmi running
 GameState_WaitFrames:

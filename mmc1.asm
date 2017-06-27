@@ -188,8 +188,8 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	lda #$00
 	jsr PRGBankWrite
 	
-	jsr InitSlots
 	jsr InitVariables
+	jsr InitSlots
 
 	
 	jsr LoadCHRRAM

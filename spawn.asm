@@ -281,7 +281,6 @@ SpawnEnemy:
 	lda spawn_type
 	sta entity_type, x
 	
-	asl a
 	tay
 	lda Objects, y
 	sta pMetaTile
@@ -318,16 +317,16 @@ SpawnEnemy:
 SpawnPlayerBullet:
 
 	ldy #$00
--
-	lda playerBullets, y
+
+-	lda playerBullets, y
 	cmp #$ff
-	beq +foundFree
+	beq @foundFree
 	iny
 	cpy #$03
 	bne -
 	rts
 	
-+foundFree
+@foundFree
 
 	jsr GetFreeSlot
 	
@@ -346,22 +345,21 @@ SpawnPlayerBullet:
 	lda #$05
 	sta entity_sprite, x
 	
-	lda entity_xHi
+	lda entity_xHi+0
 	sta entity_xHi, x
 	
-	lda entity_yHi
+	lda entity_yHi+0
 	sta entity_yHi, x
 	
-	lda worldX_hi
+	lda worldX_hi+0
 	sta worldX_hi, x
 	
 	lda #$00
 	sta entity_vAccHi, x
 	sta entity_vAccLo, x
 	
-	lda entity_hDir
+	lda entity_hDir+0
 	sta entity_hDir,x
-	
 
 	rts
 	
