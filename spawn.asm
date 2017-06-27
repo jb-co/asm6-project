@@ -180,7 +180,6 @@ SpawnEnemyFromMap:
 	sta entity_type, x
 	
 	;;SET OBJ SIZE
-	asl a
 	tay
 	lda Objects, y
 	sta pMetaTile

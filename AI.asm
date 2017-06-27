@@ -206,7 +206,7 @@ AI_Stomper:
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 
-	ldx entity_counter
+	ldy entity_counter
 	;jsr PlayerBulletCollision
 
 	
@@ -233,6 +233,8 @@ AI_Pickle:
 	
 	;ldx entity_counter
 	;jmp PlayerBulletCollision
+	
+	rts
 
 	
 AI_Bullet:

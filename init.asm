@@ -155,15 +155,16 @@ screenNotFilled:
 	rts
 	
 InitSlots:
-	ldy #$04
-	ldx #$05
+	ldy #$01
+	ldx #$02
 	sty firstFreeSlot
+
 
 -	txa
 	sta nextFreeSlot, y
 	iny 
 	inx
-	cpy #$20
+	cpy #$10
 	bne -
 
 	lda #$ff

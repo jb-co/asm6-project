@@ -11,10 +11,10 @@ RIGHT = $80
 LEFT = $40
 
 PLAYER = $00
-BLOB = $01
-STOMPER = $02
-PICKLE = $03
-BULLET = $04
+BLOB = $02
+STOMPER = $04
+PICKLE = $06
+BULLET = $08
 
 SPRITE_RAM = $200
 SPAWN_RAM = $6000
@@ -181,11 +181,14 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	lda #$00
 	jsr PRGBankWrite
 	
+	jsr InitSlots
+	jsr InitVariables
+
+	
 	jsr LoadCHRRAM
 	jsr LoadPalettes
 	
-	jsr InitSlots
-	jsr InitVariables
+	
 	;draws two full nametables from beginning of map
 	;sets up nametables to draw from the beginning of map
 	LDA #$00
@@ -428,7 +431,6 @@ NextFrame:
     rts
 	
 DoRoutine:
-	asl a
 	tax
 	lda AI_Routines+1,x
 	pha
@@ -437,7 +439,6 @@ DoRoutine:
 	rts
 	   
 CollisionRoutine:
-	asl a
 	tax
 	lda Collision_Routines+1,x
 	pha

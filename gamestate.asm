@@ -30,18 +30,14 @@ GameState_Playing:
 	sta entity_hAccHi, y
 	sta entity_hAccLo, y
 	
-	
+	ldx entity_type, y
 
-	
-	lda entity_type, y
-	asl a
-	tax
 	lda HitBoxes, x
 	sta pHitBox
 	lda HitBoxes+1, x
 	sta pHitBox+1
 	
-	lda entity_type, y
+	txa
 	jsr DoRoutine
 	
 
@@ -80,7 +76,7 @@ GameState_Playing:
 	;sprite player collision (might move this to the objects later, if i found that some objects don't need it)
 	tya
 	beq @playerSkipsThis
-	jsr PlayerObjectCollision
+	;jsr PlayerObjectCollision
 @playerSkipsThis
 	
 	ldy entity_counter
