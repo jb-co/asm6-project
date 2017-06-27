@@ -1,5 +1,22 @@
 ; AI ROUTINES FOR DAYS!
 
+playerJump:
+	
+	LDA jumpCounter
+	CMP #$10
+	BCS +
+	
+	inc jumpCounter
+	LDA #$04
+	STA entity_vAccHi
+	LDA #$a5
+	STA entity_vAccLo
+	
++	
+	inc isJumping
+	
+	rts
+
 verticalMovement: 
 	ldy entity_counter
 	LDA entity_yLo, y

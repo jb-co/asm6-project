@@ -1,5 +1,8 @@
 ScrollLogic:
 
+	lda #$04
+	jsr PRGBankWrite
+	
 	LDA entity_hAccHi
 	bmi @notRight
 	
