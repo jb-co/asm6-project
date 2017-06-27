@@ -34,6 +34,14 @@ GameState_Playing:
 
 	
 	lda entity_type, y
+	asl a
+	tax
+	lda HitBoxes, x
+	sta pHitBox
+	lda HitBoxes+1, x
+	sta pHitBox+1
+	
+	lda entity_type, y
 	jsr DoRoutine
 	
 

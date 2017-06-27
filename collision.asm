@@ -14,7 +14,7 @@ HitBox_Bullet:
 	.db $00, $00, $08, $08
 	
 HitBoxes:
-	.dw HitBox_Player, HitBox_Blob
+	.dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet
 
 restoreY:
 

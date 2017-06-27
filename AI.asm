@@ -120,14 +120,7 @@ Player:
 	;; [USER INPUT]
 	JSR ReadController
 	JSR CheckInputs
-	
 
-
-	lda HitBoxes, y
-	sta pHitBox
-	lda HitBoxes+1, y
-	sta pHitBox+1
-	
 	jsr applyGravity
 	
 	lda entity_hAccHi
@@ -164,12 +157,6 @@ AI_Blob:
 @alive
 
 
-	
-	lda #<(HitBox_Blob)
-	sta pHitBox
-	lda #>(HitBox_Blob)
-	sta pHitBox+1
-	
 	lda #$01
 	sta temp
 	jsr moveObject
@@ -203,13 +190,6 @@ AI_Stomper:
 	jmp ReturnFreeSlot
 @alive
 
-
-	
-	lda #<(HitBox_Stomper)
-	sta pHitBox
-	lda #>(HitBox_Stomper)
-	sta pHitBox+1
-	
 	lda frameCounter
 	and #%00111111
 	cmp #$20
@@ -224,7 +204,7 @@ AI_Stomper:
 	jsr applyGravity
 	
 	jsr verticalMovement
-	;jsr BgrCollisionVertical
+	jsr BgrCollisionVertical
 
 	ldx entity_counter
 	;jsr PlayerBulletCollision
@@ -241,13 +221,6 @@ AI_Pickle:
 	
 	jmp ReturnFreeSlot
 @alive
-
-
-	
-	lda #<(HitBox_Pickle)
-	sta pHitBox
-	lda #>(HitBox_Pickle)
-	sta pHitBox+1
 
 	lda #$02
 	sta temp
@@ -277,10 +250,6 @@ AI_Bullet:
 	jmp ReturnFreeSlot
 @alive
 
-	lda #<(HitBox_Bullet)
-	sta pHitBox
-	lda #>(HitBox_Bullet)
-	sta pHitBox+1
 	lda #$04
 	sta temp
 	jsr moveObject
