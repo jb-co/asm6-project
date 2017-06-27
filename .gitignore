@@ -1,8 +1,6 @@
 *.exe
 game.nes.deb
 *.bat
-mmc1.lst
+*.lst
 *.cdl
 *.nes
-*.nes
-mmc1.nes

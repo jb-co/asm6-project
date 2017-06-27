@@ -128,7 +128,7 @@ Player:
 	beq @noHorizontalMovement
 	
 	jsr horizontalMovement
-	;jsr BgrCollisionHorizontal
+	jsr BgrCollisionHorizontal
 	
 	
 @noHorizontalMovement	

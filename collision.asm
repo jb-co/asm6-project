@@ -150,7 +150,7 @@ BgrCollisionVertical:
 	;;call routines
 	ldy entity_counter
 	lda entity_type, x
-	jsr CollisionRoutine	;FIX THIS DUDE
+	jsr CollisionRoutine	
 	jmp @end
 	rts
 	
@@ -221,7 +221,7 @@ BgrCollisionHorizontal:
 	
 	ldy entity_counter
 	lda entity_type, x
-	;jsr CollisionRoutine	;FIX THIS DUDE
+	jsr CollisionRoutine	
 	jmp @end
 	
 	
