@@ -106,7 +106,7 @@ BULLET_SPRITE = $06
 
    .base $8000
 
-   ;include bank5.asm
+   include bank5.asm
 
    .org $c000
 
