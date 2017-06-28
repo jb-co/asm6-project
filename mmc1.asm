@@ -300,6 +300,17 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	ldy #$00
 	sty roomNumber
 	
+	ldx #$04
+	lda MetaTileSets, x
+	sta pMetaTile 
+	lda MetaTileSets+1, x
+	sta pMetaTile+1
+	
+	ldy #$02
+	lda (pMetaTile),y
+	sta gurras
+	
+	
 	jsr FullRoomSpawn
 	
 	; [forever alone]	
@@ -563,32 +574,32 @@ GenerateColumnBuffer:
 	sty counter
 	sty temp
 	
-	sta gurras
-	
-	
-	ldx #$00
+
 -
 	ldy temp
 	LDA (sourceLow), y
 	
-	tay
+	tax
 	
 	;FIRST TILE 
 	;;find 8x8 tile within meta tile
-	lda MetaTileSets, y
+	lda MetaTileSets, x
 	sta pMetaTile
-	lda MetaTileSets+1, y
+	lda MetaTileSets+1, x
 	sta pMetaTile+1
 	
-	lda (pMetaTile), x
+	ldy #$00
+	lda (pMetaTile), y
 	
 	ldy counter
 	STA (pMetaBuffer_lo), y
 	
-	iny 
+	inc counter
 	;SECOND TILE
-
-	lda (pMetaTile), x
+	ldy #$00
+	lda (pMetaTile), y
+	
+	ldy counter 
 	STA (pMetaBuffer_lo), y
 	
 	iny
