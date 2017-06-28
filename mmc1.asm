@@ -644,12 +644,12 @@ GetTileValue:
 	jsr PRGBankWrite
 	
 	;get offset from map;
-	LDA #>(columnData)
+	LDA #>(METABUFFER_RAM)
 	clc
 	adc temp
 	STA pColumnData_hi
 
-	LDY #<(columnData)
+	LDY #<(METABUFFER_RAM)
 	LDA (pColumnData_lo), y
 	
 	sta currentTile
