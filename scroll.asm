@@ -84,3 +84,43 @@ ScrollLogic:
 	AND #$01
 	STA nametable    
 	rts
+	
+VerticalTransition:
+	;jsr InitializeNametables
+	
+	;jsr ClearActiveSlots
+	
+	;disable ppu
+	lda #$00
+	sta $2001
+	
+	;inc roomNumber
+	inc worldX_hi
+	LDA #$00
+
+	STA tempX_lo
+	STA columnNumber
+	
+	lda worldX_hi
+	STA tempX_hi
+		
+	jsr InitializeNametables
+	
+	inc roomNumber
+	lda #$08
+	sta entity_yHi
+		
+	LDA roomNumber
+	AND #$01
+	STA nametable   
+	
+	jsr FullRoomSpawn
+	
+	
+	lda #$01
+	sta gameState
+	
+	lda #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
+	STA $2000
+
+	rts

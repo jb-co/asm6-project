@@ -55,8 +55,7 @@ Collision_Player:
 	lda currentTile
 	cmp #$08  ;;check for down transition
 	BNE @notTransition
-	rts
-	;jmp VerticalTransition
+	jmp VerticalTransition
 	
 @notTransition	
 	;;if moving down reset jumpCounter
