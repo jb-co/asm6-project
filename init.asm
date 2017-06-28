@@ -291,7 +291,7 @@ InitVariables:
 	sta entity_sprite
 	
 	
-	;init sound
+	;init sound .
 	lda #$0F
 	sta $4015 
 	
@@ -303,6 +303,7 @@ InitializeNametables:
 	STA nametable
 	
 	InitializeNametablesLoop:
+	jsr GenerateColumnBuffer
 	JSR DrawNewColumn     ; draw bg column
 	LDA tempX_lo            ; go to next column
 	CLC
@@ -320,6 +321,7 @@ InitializeNametables:
 	STA tempX_lo
 	
 	InitializeNametables2Loop:
+	jsr GenerateColumnBuffer
 	JSR DrawNewColumn     ; draw first column of second nametable
 
 	LDA tempX_lo            ; go to next column
