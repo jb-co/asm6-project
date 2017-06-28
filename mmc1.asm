@@ -560,16 +560,20 @@ GenerateColumnBuffer:
 	
 	ldx #$00
 	ldy #$00
+	sty counter
+	sty temp
 	
-
 	sta gurras
 	
 	
 	ldx #$00
 -
+	ldy temp
 	LDA (sourceLow), y
-	sty counter
+	
 	tay
+	
+	;FIRST TILE 
 	;;find 8x8 tile within meta tile
 	lda MetaTileSets, y
 	sta pMetaTile
@@ -579,9 +583,20 @@ GenerateColumnBuffer:
 	lda (pMetaTile), x
 	
 	ldy counter
-	;;;;;
 	STA (pMetaBuffer_lo), y
-	INY
+	
+	iny 
+	;SECOND TILE
+
+	lda (pMetaTile), x
+	STA (pMetaBuffer_lo), y
+	
+	iny
+	
+	sty counter 
+	inc temp
+	
+	
 	cpy #$20
 	BNE -
 
