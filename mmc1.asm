@@ -29,6 +29,8 @@ STOMPER_SPRITE = $50
 PICKLE_SPRITE = $34
 BULLET_SPRITE = $06
 
+NEXT_COLUMN = $7fa0
+
 ;----------------------------------------------------------------
 ; variables
 ;----------------------------------------------------------------
@@ -305,6 +307,17 @@ forever:
 	
 	jsr NextFrame	;;wait for nmi
 	
+	LDA entity_hAccHi
+	ORA entity_hAccLo
+	beq +	
+	jsr ScrollLogic
+	
+	LDA scrollX_hi
+	AND #%0000110 
+	bne +
+	jsr NewColumnCheck	
+	jsr GenerateColumnBuffer
++
 
 	lda gameState
 	jsr GameStateRoutine
@@ -338,7 +351,7 @@ NMI:
 	beq @ppuSection
 	
 	
-	jsr ScrollLogic
+	jsr DrawNewColumn
 	
 ;NewAttribCheck:
  ; LDA scroll
@@ -347,7 +360,9 @@ NMI:
  ; jsr DrawNewAttributes
 ;NewAttribCheckDone:
 
-	jsr NewColumnCheck
+	
+	
+	;;draw column
 
 @ppuSection 
 
@@ -468,6 +483,88 @@ PRGBankWrite:       ; make sure this is in a fixed bank so it doesnt get swapped
 	LSR A
 	STA $E000         ; bank switch happens immediately here
 	RTS
+	
+	
+GenerateColumnBuffer:
+
+  lda #>(NEXT_COLUMN)
+  sta pMetaBuffer_hi
+  lda #<(NEXT_COLUMN)
+  sta pMetaBuffer_lo
+  
+  	;scroll is pixels, we need to divide by 8 to get tile number!
+
+	LDA tempX_lo       ; calculate new column address using scroll register
+	
+	LSR A
+	LSR A
+	LSR A            ; shift right 3 times = divide by 8
+
+	STA columnLow    ; $00 to $1F, screen is 32 tiles wide
+	
+	LDA tempX_hi ;current nametable
+	AND #$01
+	ASL A             ; shift up, A = $00 or $02
+	ASL A             ; $00 or $04
+	CLC
+	ADC #$20          ; add high byte of nametable base address ($2000)
+	STA columnHigh    ; now address = $20 or $24 for nametable 0 or 1
+	
+  
+  ;;calculate tile pos
+  
+  ;each scrollX_hi means 32 tiles
+	lda tempX_hi
+	asl A
+	asl A 
+	asl A
+	asl A
+	asl A
+	sta columnNumber
+  
+	lda tempX_lo
+	lsr A
+	lsr A
+	lsr A
+
+	clc
+	adc columnNumber
+	sta columnNumber
+  
+	LDA columnNumber  ; column number * 32 = column data offset
+	ASL A
+	ASL A
+	ASL A
+	ASL A
+	ASL A             
+	STA sourceLow
+	LDA columnNumber
+	LSR A
+	LSR A
+	LSR A
+	STA sourceHigh
+
+	LDA sourceLow       ; column data start + offset = address to load column data from
+	CLC 
+	ADC #<(METABUFFER_RAM)
+	STA sourceLow
+	LDA sourceHigh
+	ADC #>(METABUFFER_RAM)
+	STA sourceHigh
+	
+	ldx #$00
+	ldy #$00
+-
+	LDA (sourceLow), y
+	STA (pMetaBuffer_lo), y
+	INY
+	cpy #$20
+	BNE -
+
+	RTS
+
+
+rts
 	
 GetTileValue: 
 	

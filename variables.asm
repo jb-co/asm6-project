@@ -1,5 +1,6 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
+gurras .dsb 1
 ;object slots
 playerBullets:			.dsb 3
 
@@ -132,7 +133,7 @@ entity_width		.dsb 12
 entity_timer		.dsb 12
 entity_animFrame 	.dsb 12
 
-entity_attributes	.dsb 12
+entity_flags		.dsb 12
 entity_airborne		.dsb 12
 entity_index		.dsb 12	
 

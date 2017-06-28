@@ -275,8 +275,8 @@ InitVariables:
 
 	sta deltaX
 	
-	lda #$00
-	sta entity_attributes
+	lda #%11000000
+	sta entity_flags
 	
 	lda #$10
 	sta entity_width

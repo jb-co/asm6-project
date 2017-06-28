@@ -239,7 +239,7 @@ SpawnEnemyFromMap:
 	;;GET ATTRIBUTES BITS
 	ldy #$03
 	lda (pMetaTile), y
-	sta entity_attributes, x
+	sta entity_flags, x
 	
 	;;RESET stuff
 	lda #$00
@@ -357,6 +357,7 @@ SpawnPlayerBullet:
 	lda #$00
 	sta entity_vAccHi, x
 	sta entity_vAccLo, x
+	sta entity_flags, x
 	
 	lda entity_hDir+0
 	sta entity_hDir,x
