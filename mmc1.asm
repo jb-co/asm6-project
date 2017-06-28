@@ -54,7 +54,8 @@ NEXT_COLUMN = $7fa0
 
    .base $8000
 
-  
+	Graphics: 
+	incbin "mario.chr"   ;includes 8KB graphics file from SMB1
 
    .org $c000
 
@@ -639,10 +640,6 @@ GetTileValue:
 	adc #$00
 	sta temp
 	
-	lda #$04
-	sta sourceBank
-	jsr PRGBankWrite
-	
 	;get offset from map;
 	LDA #>(METABUFFER_RAM)
 	clc
@@ -653,10 +650,7 @@ GetTileValue:
 	LDA (pColumnData_lo), y
 	
 	sta currentTile
-	
-	lda #$00
-	sta sourceBank
-	jsr PRGBankWrite
+
 	rts
 	
 
@@ -691,8 +685,7 @@ GameStateRoutine:
 	pha
 	rts
   
-Graphics: 
-	incbin "mario.chr"   ;includes 8KB graphics file from SMB1
+
 
 palette:
 	db $0f,$28,$10,$00,$0f,$01,$21,$31,$0f,$21,$10,$00,$0f,$09,$19,$29
