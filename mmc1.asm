@@ -500,6 +500,7 @@ GenerateColumnBuffer:
 	LSR A
 	LSR A            ; shift right 3 times = divide by 8
 
+
 	STA columnLow    ; $00 to $1F, screen is 32 tiles wide
 	
 	LDA tempX_hi ;current nametable
@@ -513,19 +514,22 @@ GenerateColumnBuffer:
   
   ;;calculate tile pos
   
-  ;each scrollX_hi means 32 tiles
+  ;each tempX_hi means 16 columns
 	lda tempX_hi
-	asl A
 	asl A 
 	asl A
 	asl A
-	asl A
+	asl a 
+	
 	sta columnNumber
   
+    ;each tempX_lo is 1 pixel, 16 pixels means one column 
 	lda tempX_lo
 	lsr A
 	lsr A
 	lsr A
+	lsr a 
+	
 
 	clc
 	adc columnNumber
@@ -536,12 +540,14 @@ GenerateColumnBuffer:
 	ASL A
 	ASL A
 	ASL A
-	ASL A             
+            
 	STA sourceLow
 	LDA columnNumber
 	LSR A
 	LSR A
 	LSR A
+	lsr a
+
 	STA sourceHigh
 
 	LDA sourceLow       ; column data start + offset = address to load column data from
@@ -554,8 +560,26 @@ GenerateColumnBuffer:
 	
 	ldx #$00
 	ldy #$00
+	
+
+	sta gurras
+	
+	
+	ldx #$00
 -
 	LDA (sourceLow), y
+	sty counter
+	tay
+	;;find 8x8 tile within meta tile
+	lda MetaTileSets, y
+	sta pMetaTile
+	lda MetaTileSets+1, y
+	sta pMetaTile+1
+	
+	lda (pMetaTile), x
+	
+	ldy counter
+	;;;;;
 	STA (pMetaBuffer_lo), y
 	INY
 	cpy #$20

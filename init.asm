@@ -1,157 +1,42 @@
 ReadMetaTiles:
 	
-
-	LDA #$00
-	STA counter
-	STA colCount
-	STA rowCount
-	TAY
-	TAX
+	ldy #$00
 	
 	LDA #<(METABUFFER_RAM)
 	STA pMetaBuffer_lo
 	LDA #>(METABUFFER_RAM)
 	STA pMetaBuffer_hi
 	
-	LDY #$00
-	LDA MetaTileSets, y
-	STA pMetaTileSet
-	
-	
-	LDY #$02
-	LDA MetaTileSets, y
-	STA pMetaTile
-	LDA MetaTileSets+1, y
-	STA pMetaTile+1
-	
-	ldy #$01
-	lda (pMetaTile), y
-
 	LDA #<(columnData)
 	STA pColumnData_lo
 	LDA #>(columnData)
 	STA pColumnData_hi
-	ldx #$00
 	
-ABloop:
+@loop:
+	lda (pColumnData_lo), y
+	cmp #$ff
+	beq @end
+	sta (pMetaBuffer_lo), y
 	
-	LDA #$00
-	CLC
-	ADC rowCount ;;add current tile x
-	TAY
-	
-	LDA (pColumnData_lo), y
-	
-	CMP #$FF
-	BNE notEndOfFile
-	rts
-notEndOfFile:
-	
-	TAY
-	
-	LDA MetaTileSets, y
-	STA pMetaTile
-	LDA MetaTileSets+1, y
-	STA pMetaTile+1
-	
-	;;FIRST TILE
-	LDY #$00
-	lda (pMetaTile), y
-	
-	LDY counter
-	
-	STA (pMetaBuffer_lo), y
-	
-	;;;SECOND TILE
-	LDY #$02
-	LDA (pMetaTile), y
-	
-	inc counter
-	LDY counter
-	
-	STA (pMetaBuffer_lo), y
-	
-	
-	;;THIRD TILE
-	LDY #$01
-	LDA (pMetaTile), y
-	STA cdTiles, x
-	inx
-	
-	LDY #$03
-	LDA (pMetaTile), y
-	STA cdTiles, x
-	inx
-	
-	
-	inc counter
-	
-	inc rowCount
-	
-
-	LDA rowCount
-	CMP #$10
-	BNE ABloop
-	
-	
-	;;ADD 32 to the pointer
-	LDA pMetaBuffer_lo
-	CLC
-	ADC #$20
-	STA pMetaBuffer_lo
-	LDA pMetaBuffer_hi
-	ADC #$00
-	STA pMetaBuffer_hi
-	
-	LDY #$00
-	LDX #$00
-	STX rowCount
-	
--CDloop: ;CDloop
-	LDA cdTiles, x
-	STA  (pMetaBuffer_lo), y
-	iny
-	inx
-	LDA cdTiles, x
-	STA  (pMetaBuffer_lo), y
-	inx
-	iny
-	CPX #$20
-	BNE -CDloop
-	
-	;;ADD 32 to the pointer
-	LDA pMetaBuffer_lo
-	CLC
-	ADC #$20
-	STA pMetaBuffer_lo
-	LDA pMetaBuffer_hi
-	ADC #$00
-	STA pMetaBuffer_hi
-	
-	LDA #$00
-	STA counter;
-	
-	inc colCount ; This means we completed a column of cd tiles = full metatile row
-		
 	lda pColumnData_lo
-	clc
-	adc #$10
+	clc 
+	adc #$01
 	sta pColumnData_lo
 	lda pColumnData_hi
 	adc #$00
 	sta pColumnData_hi
 	
-	lda colCount
-	CMP #$10
-	BNE screenNotFilled
-	lda #$00
-	sta colCount
-screenNotFilled:
-	ldx #$00
-	ldy #$00
-
-	JMP ABloop
-
+	
+	lda pMetaBuffer_lo
+	clc 
+	adc #$01
+	sta pMetaBuffer_lo
+	lda pMetaBuffer_hi
+	adc #$00
+	sta pMetaBuffer_hi
+	
+	jmp @loop
+@end
 	rts
 	
 InitSlots:
