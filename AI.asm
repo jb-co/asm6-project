@@ -199,7 +199,7 @@ AI_Blob:
 	lda #$05
 	jsr PRGBankWrite
 	ldx entity_counter
-	jmp PlayerBulletCollision
+	;jmp PlayerBulletCollision
 		
 	rts
 	
@@ -291,9 +291,77 @@ AI_Bullet:
 
 	rts
 	
+AI_Cannon:
+	;check if dead/off screen
+	lda entity_yHi, y
+	cmp #$f0
+	bne @alive
+	
+	jmp ReturnFreeSlot
+@alive
+
+	lda frameCounter
+	and #%001111111
+	cmp #$20
+	
+	bne +
+	
+	lda #$04
+	jsr PRGBankWrite
+	
+	lda entity_xHi, y
+	sta spawn_x
+	lda entity_yHi, y
+	sta spawn_y
+	lda #ARC_BULLET
+	sta spawn_type
+	lda worldX_hi, y
+	sta spawn_room
+	lda #$06
+	sta spawn_vAccHi
+	
+	lda entity_xHi
 	
 
 	
+	lda #LEFT
+	sta spawn_dir 
+	jsr SpawnEnemy	
+	
+	lda #RIGHT
+	sta spawn_dir
+	jsr SpawnEnemy
++
+	rts
+	
+AI_GenericArcBullet:
+	;check if dead/off screen
+	lda entity_yHi, y
+	cmp #$f0
+	bne @alive
+	
+	jmp ReturnFreeSlot
+@alive
+	lda #$01
+	sta temp
+	jsr moveObject
+	jsr applyGravity
+	
+	;lda #$01
+	;lda entity_hAccHi, y
+	
+	jsr horizontalMovement
+	jsr verticalMovement
+	jsr BgrCollisionVertical
+	
+	rts
+	
+	
+
+MovementAll:
+	
+	
+	rts
 	
 
 	

@@ -1,5 +1,5 @@
 Collision_Routines:
-	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1
+	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1, Collision_Bullet-1, Collision_Arc_Bullet-1
 	
 ;hitboxes
 HitBox_Player:
@@ -12,9 +12,13 @@ HitBox_Pickle:
 	.db $00, $00, $10, $10
 HitBox_Bullet:
 	.db $00, $00, $08, $08
+HitBox_Cannon:
+	.db $02, $00, $06, $08
+HitBox_ArcBullet
+	.db $03, $03, $06, $06
 	
 HitBoxes:
-	.dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet
+	.dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet, HitBox_Cannon, HitBox_ArcBullet
 
 restoreY:
 
@@ -97,7 +101,12 @@ Collision_Pickle:
 	jmp restoreX
 	
 	
-
+Collision_Arc_Bullet:
+	lda entity_type, x
+	sta gurras
+	lda #$f0
+	sta entity_yHi, y
+	rts
 
 	
 BgrCollisionVertical:
@@ -139,7 +148,6 @@ BgrCollisionVertical:
 	adc entity_xHi, x
 	STA testX
 
-	
 	JSR GetTileValue
 	lda currentTile
 	
@@ -149,6 +157,7 @@ BgrCollisionVertical:
 	;;call routines
 	ldy entity_counter
 	lda entity_type, x
+	
 	jsr CollisionRoutine	
 	jmp @end
 	rts

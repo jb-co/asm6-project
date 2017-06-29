@@ -262,7 +262,7 @@ SpawnEnemyFromMap:
 	
 ;dynamically spawn enemy
 SpawnEnemy:
-
+	
 	jsr GetFreeSlot ;get object slot x
 	
 	lda spawn_room
@@ -277,6 +277,13 @@ SpawnEnemy:
 	lda #$00
 	sta entity_xLo, x
 	sta entity_yLo, x
+	
+	lda #$ee
+	sta entity_index, x
+	
+	lda spawn_dir
+	sta entity_hDir, x
+	
 	
 	lda spawn_type
 	sta entity_type, x
@@ -294,23 +301,22 @@ SpawnEnemy:
 	ldy #$01	;width
 	lda (pMetaTile), y
 	sta entity_width, x
+		
+		;sprite
+	ldy #$02
+	lda (pMetaTile), y
+	sta entity_sprite, x
 	
 	;;RESET stuff
 	lda #$00
-	sta entity_vAccHi, x
 	sta entity_vAccLo, x
 	
-	;;SET OBJ DIRECTION
-	lda entity_hDir	;; opposite of player facing direction
-	cmp #LEFT
-	bne @left
-	lda #RIGHT
-	jmp @end
-@left
-	lda #LEFT
-@end	
 	
-	sta entity_hDir, x
+	lda spawn_vAccHi
+	sta entity_vAccHi, x
+	
+	
+	
 	
 	rts
 	
@@ -344,6 +350,9 @@ SpawnPlayerBullet:
 	
 	lda #$05
 	sta entity_sprite, x
+	
+	lda spawn_dir
+	sta entity_hDir, x
 	
 	lda entity_xHi+0
 	sta entity_xHi, x

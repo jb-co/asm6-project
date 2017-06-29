@@ -153,6 +153,8 @@ spawn_type			.dsb 1
 spawn_room			.dsb 1
 spawn_x				.dsb 1
 spawn_y				.dsb 1
+spawn_vAccHi		.dsb 1
+spawn_dir
 spawned				.dsb 1	
 
 sprite_counter		.dsb 1

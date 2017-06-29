@@ -5,14 +5,14 @@
 	
 
 Objects:
-	.word Def_Player, Def_Blob, Def_Stomper, Def_Pickle, Def_Bullet
+	.word Def_Player, Def_Blob, Def_Stomper, Def_Pickle, Def_Bullet, Def_Cannon, Def_GenericArcBullet
 
 level1_Objects:	;roomNumber, x, y, type, enemyIndex
-	.db $00, $E0, $40, STOMPER, $03
+	.db $00, $E0, $A7, CANNON, $03
 	.db $ef
 	.db $01, $40, $40, PICKLE, $04
 	.db $01, $A0, $10, STOMPER, $06
-	.db $01, $E0, $B0, STOMPER, $07
+	.db $01, $F0, $B7, CANNON, $07
 	.db $01, $20, $20, BLOB, $02
 	.db $ef
 	.db $02, $40, $10, STOMPER, $08
@@ -21,10 +21,11 @@ level1_Objects:	;roomNumber, x, y, type, enemyIndex
 	.db $ef
 	.db $03, $20, $10, STOMPER, $0b
 	.db $03, $C0, $50, BLOB, $0c
+	.db $03, $60, $B7, CANNON, $0d
 	.db $ef
-	.db $04, $20, $10, PICKLE, $0d
-	.db $04, $60, $60, PICKLE, $0e
-	.db $04, $B0, $b0, PICKLE, $0f
+	.db $04, $A0, $37, CANNON, $0e
+	.db $04, $60, $77, CANNON, $0f
+	.db $04, $B0, $c7, CANNON, $10
 	.db $ff
 	
 ;so i will move these to the actual map file at some point

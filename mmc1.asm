@@ -15,6 +15,8 @@ BLOB = $02
 STOMPER = $04
 PICKLE = $06
 BULLET = $08
+CANNON = $0A
+ARC_BULLET = $0C
 
 SPRITE_RAM = $200
 SPAWN_RAM = $6000
@@ -28,6 +30,7 @@ BLOB_SPRITE = $10
 STOMPER_SPRITE = $50
 PICKLE_SPRITE = $34
 BULLET_SPRITE = $06
+CANNON_SPRITE = $80
 
 NEXT_COLUMN = $7fa0
 
@@ -309,7 +312,7 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	
 	ldy #$02
 	lda (pMetaTile),y
-	sta gurras
+
 	
 	
 	jsr FullRoomSpawn
@@ -709,14 +712,14 @@ MetaTileSets:
 	
 
 AI_Routines:
-	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1
+	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1
 	
 ;; [ ROUTINES ]
 
 GameState_Routines:
 	.word GameState_Playing-1, GameState_WaitFrames-1
 
-
+;width, height, sprite, flags            << is this really necessary?
 Def_Player:
 	.byte $10, $10, $B0, $00
 Def_Blob:
@@ -727,6 +730,10 @@ Def_Pickle:
 	.byte $10, $10, $34, $80
 Def_Bullet:
 	.byte $08, $08, $06, $00
+Def_Cannon: 
+	.byte $08, $08, $80, $00
+Def_GenericArcBullet:
+	.byte $08, $08, $81, $00
 
 	
 
