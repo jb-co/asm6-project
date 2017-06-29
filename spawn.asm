@@ -1,3 +1,30 @@
+;Gets object byte in Actives table. Correct bit is stored in temp.
+;use AND to read bit and EOR to flip
+GetActiveBit:
+
+	ldy #$04
+	lda (sourceLo), y ;index
+	sta testX
+	
+	and #%00000111	;get remainder to get bit in byte
+	tax 
+	lda BitPos, x
+	sta temp
+	
+	lda testX
+	lsr a  ;div 8 to get byte in Actives table
+	lsr a 
+	lsr a
+	tax
+	lda actives, x
+	
+	rts
+	
+
+
+
+
+
 FullRoomSpawn:
 
 	lda #$04
@@ -87,12 +114,21 @@ EnemySpawnRight:
 	jmp @checkLoop
 	
 @spawn
-	ldy #$04
-	lda (sourceLo), y ;entity_index
-	tax
-	jsr FindSlotIndex
-	beq @notASpawn
+	;ldy #$04
+	;lda (sourceLo), y ;entity_index
+	;tax
+	;jsr FindSlotIndex
+	jsr GetActiveBit
+	sta testX
+	and temp 
 	
+	bne @notASpawn
+	
+	lda testX
+	ora temp
+	
+	sta actives, x
+	sta gurras
 	lda #RIGHT
 	sta temp
 	

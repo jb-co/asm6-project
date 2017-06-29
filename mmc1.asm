@@ -317,6 +317,10 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	
 	jsr FullRoomSpawn
 	
+
+	
+	
+	
 	; [forever alone]	
 forever:
 	
@@ -736,7 +740,9 @@ Def_GenericArcBullet:
 	.byte $08, $08, $81, $00
 
 	
-
+BitPos:
+	db $01, $02, $04, $08, $10, $20, $40, $80
+	
  
 
 IRQ:

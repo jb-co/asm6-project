@@ -103,7 +103,7 @@ Collision_Pickle:
 	
 Collision_Arc_Bullet:
 	lda entity_type, x
-	sta gurras
+	;sta gurras
 	lda #$f0
 	sta entity_yHi, y
 	rts

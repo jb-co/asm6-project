@@ -1,6 +1,8 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
 gurras .dsb 1
+
+actives .dsb 4
 ;object slots
 playerBullets:			.dsb 3
 
