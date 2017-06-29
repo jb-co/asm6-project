@@ -18,6 +18,12 @@ ReadControllerLoop:
 	
 CheckInputs:
 
+	lda isJumping
+	beq @notInAir
+	lda #$08
+	sta walkCounter
+@notInAir
+
 ;start 
 	lda buttons
 	and #$10
