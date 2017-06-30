@@ -49,7 +49,7 @@ InitSlots:
 	sta nextFreeSlot, y
 	iny 
 	inx
-	cpy #10
+	cpy #18
 	bne -
 
 	lda #$ff
@@ -137,7 +137,6 @@ InitVariables:
 	STA entity_xLo
 	STA entity_yLo
 	STA roomNumber
-	sta entity_airborne
 	sta jumpCounter
 	sta verticalScroll
 	sta entity_counter

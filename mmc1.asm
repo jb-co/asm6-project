@@ -318,7 +318,8 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	jsr FullRoomSpawn
 	
 
-	
+	lda #$66
+	sta lastOne
 	
 	
 	; [forever alone]	

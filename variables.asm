@@ -9,12 +9,8 @@ playerBullets:			.dsb 3
 firstFreeSlot:		.dsb 1
 firstActiveSlot:		.dsb 1
 
-nextActiveSlot:		.dsb 12
-nextFreeSlot:		.dsb 12
-
-entity_sprite		.dsb 12
-entity_type			.dsb 12
-
+nextActiveSlot:		.dsb 20
+nextFreeSlot:		.dsb 20
 
 collided:		.dsb 1
 frameCounter:	.dsb 1	;global frame counter
@@ -80,7 +76,7 @@ gamePaused:	.dsb 1 ;10
 
 isJumping:			.dsb 1; 13
 
-worldX_hi:	.dsb 12	
+
 
 scrollX_hi:	.dsb 1	
 
@@ -107,39 +103,42 @@ cdTiles: .dsb 4
 
 sleeping .dsb 1
 
- current_bank: .dsb 1
-   source_lo:	.dsb 1
-   source_hi: .dsb 1
-   
+current_bank: .dsb 1
+source_lo:	.dsb 1
+source_hi: .dsb 1
+
+;just for keeping track of memory pos
+lastOne	.dsb 1
+
+.enum $300    
 ;;ENTITIES!!!!
-entity_xLo			.dsb 12	
-entity_xHi			.dsb 12	
-entity_yLo			.dsb 12
-entity_yHi			.dsb 12
-entity_vAccLo		.dsb 12
-entity_vAccHi		.dsb 12
+worldX_hi:			.dsb 20
+entity_xLo			.dsb 20	
+entity_xHi			.dsb 20	
+entity_yLo			.dsb 20
+entity_yHi			.dsb 20
+entity_vAccLo		.dsb 20
+entity_vAccHi		.dsb 20
 	
-entity_hAccLo		.dsb 12
-entity_hAccHi		.dsb 12
-entity_hDir			.dsb 12
+entity_hAccLo		.dsb 20
+entity_hAccHi		.dsb 20
+entity_hDir			.dsb 20
 
-
+entity_sprite		.dsb 20
+entity_type			.dsb 20
 
 entity_counter 		.dsb 1
-entity_pointer 		.dsb 12
 
-entity_height		.dsb 12
-entity_width		.dsb 12
+entity_height		.dsb 20
+entity_width		.dsb 20
 
 
-entity_timer		.dsb 12
-entity_animFrame 	.dsb 12
+entity_timer		.dsb 20
+entity_animFrame 	.dsb 20
 
-entity_flags		.dsb 12
-entity_airborne		.dsb 12
-entity_index		.dsb 12	
+entity_flags		.dsb 20
+entity_index		.dsb 20	
 
-entity_center		.dsb 12
 
 waitCounter			.dsb 1
 gravity				.dsb 1
