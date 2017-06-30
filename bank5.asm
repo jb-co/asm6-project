@@ -85,7 +85,7 @@ PlayerBulletCollision:
 	sta entity_yHi, x
 	
 	ldy entity_counter ;remove object (decrease hp in the future)
-	jsr ReturnFreeSlot
+	sta entity_yHi, y
 	
 	jmp PlayHit
 

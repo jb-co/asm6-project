@@ -19,11 +19,6 @@ GetActiveBit:
 	
 	rts
 	
-
-
-
-
-
 FullRoomSpawn:
 
 	lda #$04
@@ -35,8 +30,6 @@ FullRoomSpawn:
 	sta sourceHi
 	lda pEnemyDataPointers, y
 	sta sourceLo
-	
-	;sta gurras
 	
 	lda #LEFT
 	sta temp
@@ -54,6 +47,13 @@ FullRoomSpawn:
 	
 	lda roomNumber
 	sta spawn_room
+	
+	ldy #$04
+	lda (sourceLo), y ;index
+	jsr GetActiveBit
+	ora temp
+	sta actives, x
+	
 	jsr SpawnEnemyFromMap
 	
 	lda sourceLo
