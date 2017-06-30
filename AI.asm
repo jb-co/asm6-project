@@ -172,6 +172,11 @@ AI_Blob:
 	cmp #$f0
 	bne @alive
 	
+	lda entity_index, y
+	jsr GetActiveBit
+	eor temp
+	sta actives, x
+	
 	jsr ReturnFreeSlot
 	rts
 @alive
@@ -211,6 +216,11 @@ AI_Stomper:
 	cmp #$f0
 	bne @alive
 	
+	lda entity_index, y
+	jsr GetActiveBit
+	eor temp
+	sta actives, x
+	
 	jmp ReturnFreeSlot
 @alive
 
@@ -245,6 +255,11 @@ AI_Pickle:
 	lda entity_yHi, y
 	cmp #$f0
 	bne @alive
+	
+	lda entity_index, y
+	jsr GetActiveBit
+	eor temp
+	sta actives, x
 	
 	jmp ReturnFreeSlot
 @alive
@@ -296,6 +311,11 @@ AI_Cannon:
 	lda entity_yHi, y
 	cmp #$f0
 	bne @alive
+	
+	lda entity_index, y
+	jsr GetActiveBit
+	eor temp
+	sta actives, x
 	
 	jmp ReturnFreeSlot
 @alive

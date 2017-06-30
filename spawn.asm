@@ -1,9 +1,8 @@
-;Gets object byte in Actives table. Correct bit is stored in temp.
+;Gets object byte in Actives table. A = index. 
+;Correct bit is stored in temp.
 ;use AND to read bit and EOR to flip
 GetActiveBit:
 
-	ldy #$04
-	lda (sourceLo), y ;index
 	sta testX
 	
 	and #%00000111	;get remainder to get bit in byte
@@ -114,10 +113,8 @@ EnemySpawnRight:
 	jmp @checkLoop
 	
 @spawn
-	;ldy #$04
-	;lda (sourceLo), y ;entity_index
-	;tax
-	;jsr FindSlotIndex
+	ldy #$04
+	lda (sourceLo), y ;index
 	jsr GetActiveBit
 	sta testX
 	and temp 
@@ -128,7 +125,7 @@ EnemySpawnRight:
 	ora temp
 	
 	sta actives, x
-	sta gurras
+	
 	lda #RIGHT
 	sta temp
 	
@@ -183,11 +180,17 @@ EnemySpawnLeft:
 	
 @spawn
 	ldy #$04
-	lda (sourceLo), y ;entity_index
-	tax
-	jsr FindSlotIndex
-	beq @notASpawn
+	lda (sourceLo), y ;index
+	jsr GetActiveBit
+	sta testX
+	and temp 
 	
+	bne @notASpawn
+	
+	lda testX
+	ora temp
+	
+	sta actives, x
 	
 	lda #LEFT 
 	sta temp
