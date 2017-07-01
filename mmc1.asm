@@ -298,7 +298,7 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
 	STA $2000
 
-	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
+	LDA #%00111110   ; enable sprites, enable background, no clipping on left side
 	STA $2001
 	
 	ldy #$00
@@ -327,6 +327,11 @@ forever:
 	
 	jsr NextFrame	;;wait for nmi
 	
+	lda gameState
+	jsr GameStateRoutine
+	
+	jsr UpdateSprites
+	
 	LDA entity_hAccHi
 	ORA entity_hAccLo
 	beq +	
@@ -338,12 +343,6 @@ forever:
 	jsr NewColumnCheck	
 	jsr GenerateColumnBuffer
 +
-
-	lda gameState
-	jsr GameStateRoutine
-	
-	jsr UpdateSprites
-	
 	
 	jmp forever   
 
@@ -359,7 +358,7 @@ NMI:
 	lda gamePaused
 	beq +
 	
-	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
+	LDA #%00111110   ; enable sprites, enable background, no clipping on left side
 	STA $2001
 	
 	lda #$00
@@ -696,16 +695,16 @@ GameStateRoutine:
 
 
 palette:
-	db $0f,$28,$10,$00,$0f,$01,$21,$31,$0f,$21,$10,$00,$0f,$09,$19,$29
-	db $0f,$28,$10,$00,$0f,$01,$21,$31,$0f,$21,$10,$00,$0f,$09,$19,$29
+	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$10,$00,$20
+	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$10,$00,$20
 	
   ;; [ META TILES ]
 sky:
-	db $00, $00, $00, $00
+	db $24, $24, $24, $24
 grass:
 	db $25, $25, $25, $25
 sand:
-	db $24, $24, $24, $24
+	db $26, $26, $26, $26
 snow:
 	db $B3, $B3, $B3, $B3
 vertTrigger

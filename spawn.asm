@@ -387,7 +387,7 @@ SpawnPlayerBullet:
 	sta entity_width, x
 	sta entity_height, x
 	
-	lda #$05
+	lda #$81
 	sta entity_sprite, x
 	
 	lda spawn_dir
