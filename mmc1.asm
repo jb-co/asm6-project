@@ -292,6 +292,22 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	STA columnNumber
 	jsr InitializeNametables
 	
+;;attributeSHIT
+LoadAttribute:
+  LDA $2002             ; read PPU status to reset the high/low latch
+  LDA #$23
+  STA $2006             ; write the high byte of $23C0 address
+  LDA #$C0
+  STA $2006             ; write the low byte of $23C0 address
+  LDX #$00              ; start out at 0
+LoadAttributeLoop:
+  LDA attribute, x      ; load data from address (attribute + the value in x)
+  STA $2007             ; write to PPU
+  INX                   ; X = X + 1
+  CPX #$40              ; Compare X to hex $08, decimal 8 - copying 8 bytes
+  BNE LoadAttributeLoop
+;;;
+	
 	LDA #$20
 	STA columnNumber
 	
@@ -343,6 +359,8 @@ forever:
 	jsr NewColumnCheck	
 	jsr GenerateColumnBuffer
 +
+
+	
 	
 	jmp forever   
 
@@ -378,12 +396,56 @@ NMI:
  ; BNE NewAttribCheckDone    ; if low 5 bits = 0, time to write new attribute bytes
  ; jsr DrawNewAttributes
 ;NewAttribCheckDone:
+	
+	lda scrollX_hi
+	and #%00011110
+	bne @ppuSection
+	LDA nametable
+	EOR #$01          ; invert low bit, A = $00 or $01
+	ASL A             ; shift up, A = $00 or $02
+	ASL A             ; $00 or $04
+	CLC
+	ADC #$23          ; add high byte of attribute base address ($23C0)
+	STA att_hi   ; now address = $23 or $27 for nametable 0 or 1
+
+	LDA scrollX_hi
+	LSR A
+	LSR A
+	LSR A
+	LSR A
+	LSR A
+	CLC
+	ADC #$C0
+	STA att_lo    ; attribute base + scroll / 32
+
+	LDY #$00
+	LDA $2002             ; read PPU status to reset the high/low latch
+@DrawNewAttributesLoop
+	LDA att_hi
+	STA $2006             ; write the high byte of column address
+	LDA att_lo
+	STA $2006             ; write the low byte of column address
+	
+	LDA #$ff   ; THIS WILL BE GRABBED FROM THE RAM BUFFER
+	
+	STA $2007
+
+	INY
+	CPY #$08              ; copy 8 attribute bytes
+	BEQ @DrawNewAttributesLoopDone 
+
+	LDA att_lo         ; next attribute byte is at address + 8
+	CLC
+	ADC #$08
+	STA att_lo
+	JMP @DrawNewAttributesLoop
+@DrawNewAttributesLoopDone:
 
 	
 	
 	;;draw column
 
-@ppuSection 
+@ppuSection: 
 
 	LDA #$00
 	STA $2003       
@@ -695,20 +757,22 @@ GameStateRoutine:
 
 
 palette:
-	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$10,$00,$20
-	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$10,$00,$20
+	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$16,$28,$38
+	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$16,$28,$38
+
+
 	
   ;; [ META TILES ]
 sky:
-	db $24, $24, $24, $24
+	db $24, $24, $24, $24, #%11111111
 grass:
-	db $25, $25, $25, $25
+	db $25, $25, $25, $25, #%11111111
 sand:
-	db $26, $26, $26, $26
+	db $26, $26, $26, $26, #%11111111
 snow:
-	db $B3, $B3, $B3, $B3
+	db $B3, $B3, $B3, $B3, #%11111111
 vertTrigger
-	db $33, $33, $33, $33
+	db $33, $33, $33, $33, #%11111111
 
  
 MetaTileSets:
@@ -743,7 +807,16 @@ Def_GenericArcBullet:
 BitPos:
 	db $01, $02, $04, $08, $10, $20, $40, $80
 	
- 
+
+attribute:
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
+  .db %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111, %11111111
 
 IRQ:
 

@@ -12,6 +12,9 @@ firstActiveSlot:		.dsb 1
 nextActiveSlot:		.dsb 20
 nextFreeSlot:		.dsb 20
 
+att_hi:	.dsb 1
+att_lo: .dsb 1
+
 collided:		.dsb 1
 frameCounter:	.dsb 1	;global frame counter
 nametable:  		.dsb 1  	;which nametable to use, 0 or 1
