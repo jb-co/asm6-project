@@ -620,6 +620,7 @@ GenerateColumnBuffer:
 	ldy #$00
 	sty counter
 	sty temp
+	sty testX ;used to know which side of the metatile to draw tiles from
 	
 
 -
@@ -635,7 +636,13 @@ GenerateColumnBuffer:
 	lda MetaTileSets+1, x
 	sta pMetaTile+1
 	
-	ldy #$00
+	lda tempX_lo	;;make sure tiles within meta tile interchange horizontally every other frame
+    and #$08
+	beq +start0
+	lda #$01
++start0
+	sta testX
+	tay
 	lda (pMetaTile), y
 	
 	ldy counter
@@ -643,7 +650,10 @@ GenerateColumnBuffer:
 	
 	inc counter
 	;SECOND TILE
-	ldy #$00
+	lda #$02 
+	ora testX	;some magic to make this offset either 2 or 3 to fetch correct tile
+	tay
+	
 	lda (pMetaTile), y
 	
 	ldy counter 
