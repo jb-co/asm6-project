@@ -736,14 +736,7 @@ GenerateAttributeBuffer:
 	sta tempMask
 	
 	;third tile ;
-	lda sourceLow
-	clc 
-	adc #$10
-	sta sourceLow
-	lda sourceHigh
-	adc #$00
-	sta sourceHigh
-	ldy #$00
+	ldy #$10
 	lda (sourceLow), y
 	tax
 
@@ -762,7 +755,7 @@ GenerateAttributeBuffer:
 	
 	;FOURTH TILE :o :o :o
 	
-	ldy #$01
+	ldy #$11
 	lda (sourceLow), y
 	tax
 	
@@ -788,7 +781,7 @@ GenerateAttributeBuffer:
 	
 	lda sourceLow
 	clc
-	adc #$10
+	adc #$02
 	sta sourceLow
 	lda sourceHigh
 	adc #$00
@@ -796,7 +789,7 @@ GenerateAttributeBuffer:
 	
 	inc counter 
 	lda counter 
-	cmp #$02
+	cmp #$08
 	beq +
 	jmp @start
 +
