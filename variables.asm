@@ -32,6 +32,14 @@ tempX_lo:		.dsb 1
 tempY_hi:		.dsb 1
 tempY_lo:		.dsb 1
 
+nmiTemp			.dsb 1
+
+
+attMask			.dsb 1
+tempMask		.dsb 1
+
+nmiCounter		.dsb 1
+
 walkCounter:		.dsb 1
 
 pGeneric: .dsb 2
@@ -71,6 +79,9 @@ collisionResult: .dsb 1
 
 pMetaBuffer_lo: .dsb 1 ;8
 pMetaBuffer_hi: .dsb 1 ;9
+
+pAttrBuffer_lo: .dsb 1
+pAttrBuffer_hi: .dsb 1
 
 pHitBox: .dsb 2 ;;for collision
 

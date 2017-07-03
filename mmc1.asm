@@ -34,6 +34,8 @@ CANNON_SPRITE = $80
 
 NEXT_COLUMN = $7fa0
 
+NEXT_ATTRIBUTES = $7fc0
+
 ;----------------------------------------------------------------
 ; variables
 ;----------------------------------------------------------------
@@ -292,21 +294,6 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	STA columnNumber
 	jsr InitializeNametables
 	
-;;attributeSHIT
-LoadAttribute:
-  LDA $2002             ; read PPU status to reset the high/low latch
-  LDA #$23
-  STA $2006             ; write the high byte of $23C0 address
-  LDA #$C0
-  STA $2006             ; write the low byte of $23C0 address
-  LDX #$00              ; start out at 0
-LoadAttributeLoop:
-  LDA attribute, x      ; load data from address (attribute + the value in x)
-  STA $2007             ; write to PPU
-  INX                   ; X = X + 1
-  CPX #$40              ; Compare X to hex $08, decimal 8 - copying 8 bytes
-  BNE LoadAttributeLoop
-;;;
 	
 	LDA #$20
 	STA columnNumber
@@ -359,7 +346,15 @@ forever:
 	jsr NewColumnCheck	
 	jsr GenerateColumnBuffer
 +
+	
 
+	;;attribute buffer generator
+	lda scrollX_hi
+	and #%00011110
+	bne +
+	
+	jsr GenerateAttributeBuffer
++
 	
 	
 	jmp forever   
@@ -399,26 +394,11 @@ NMI:
 	
 	lda scrollX_hi
 	and #%00011110
-	bne @ppuSection
-	LDA nametable
-	EOR #$01          ; invert low bit, A = $00 or $01
-	ASL A             ; shift up, A = $00 or $02
-	ASL A             ; $00 or $04
-	CLC
-	ADC #$23          ; add high byte of attribute base address ($23C0)
-	STA att_hi   ; now address = $23 or $27 for nametable 0 or 1
-
-	LDA scrollX_hi
-	LSR A
-	LSR A
-	LSR A
-	LSR A
-	LSR A
-	CLC
-	ADC #$C0
-	STA att_lo    ; attribute base + scroll / 32
+	bne @DrawNewAttributesLoopDone
 
 	LDY #$00
+	ldx #$00
+	;sty nmiCounter
 	LDA $2002             ; read PPU status to reset the high/low latch
 @DrawNewAttributesLoop
 	LDA att_hi
@@ -426,12 +406,13 @@ NMI:
 	LDA att_lo
 	STA $2006             ; write the low byte of column address
 	
-	LDA #$ff   ; THIS WILL BE GRABBED FROM THE RAM BUFFER
-	
+	LDA (pAttrBuffer_lo), y   ; THIS WILL BE GRABBED FROM THE RAM BUFFER
 	STA $2007
+	
+	;inc nmiCounter
 
-	INY
-	CPY #$08              ; copy 8 attribute bytes
+	iny
+	cpy #$08              ; copy 8 attribute bytes
 	BEQ @DrawNewAttributesLoopDone 
 
 	LDA att_lo         ; next attribute byte is at address + 8
@@ -568,11 +549,12 @@ PRGBankWrite:       ; make sure this is in a fixed bank so it doesnt get swapped
 	
 GenerateColumnBuffer:
 
-  lda #>(NEXT_COLUMN)
-  sta pMetaBuffer_hi
-  lda #<(NEXT_COLUMN)
-  sta pMetaBuffer_lo
+	lda #>(NEXT_COLUMN)
+	sta pMetaBuffer_hi
+	lda #<(NEXT_COLUMN)
+	sta pMetaBuffer_lo
   
+ 
   	;scroll is pixels, we need to divide by 8 to get tile number!
 
 	LDA tempX_lo       ; calculate new column address using scroll register
@@ -638,6 +620,7 @@ GenerateColumnBuffer:
 	LDA sourceHigh
 	ADC #>(METABUFFER_RAM)
 	STA sourceHigh
+
 	
 	ldx #$00
 	ldy #$00
@@ -685,6 +668,50 @@ GenerateColumnBuffer:
 
 
 rts
+
+;reuses sourceLoW and sourceHigh from GenerateColumnBuffer
+GenerateAttributeBuffer:
+
+	lda #>(NEXT_ATTRIBUTES)
+	sta pAttrBuffer_hi
+	lda #<(NEXT_ATTRIBUTES)
+	sta pAttrBuffer_lo
+	
+	;;
+	
+	LDA tempX_hi
+	AND #$01
+	ASL A             ; shift up, A = $00 or $02
+	ASL A             ; $00 or $04
+	CLC
+	ADC #$23          ; add high byte of attribute base address ($23C0)
+	STA att_hi   ; now address = $23 or $27 for nametable 0 or 1
+
+	LDA tempX_lo
+	LSR A
+	LSR A
+	LSR A
+	LSR A
+	LSR A
+	CLC
+	ADC #$C0
+	STA att_lo    ; attribute base + scroll / 32
+	;;
+	
+	
+	
+	
+	
+	ldy #$00
+-
+	lda #$ff
+	sta (pAttrBuffer_lo), y
+	iny
+	cpy #$08
+	bne -
+
+  
+	rts
 	
 GetTileValue: 
 	
@@ -764,13 +791,13 @@ palette:
 	
   ;; [ META TILES ]
 sky:
-	db $24, $24, $24, $24, #%11111111
+	db $24, $24, $24, $24, #%01010101
 grass:
 	db $25, $25, $25, $25, #%11111111
 sand:
-	db $26, $26, $26, $26, #%11111111
+	db $26, $26, $26, $26, #%10101010
 snow:
-	db $B3, $B3, $B3, $B3, #%11111111
+	db $B3, $B3, $B3, $B3, #%01010101
 vertTrigger
 	db $33, $33, $33, $33, #%11111111
 
