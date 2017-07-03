@@ -759,6 +759,26 @@ GenerateAttributeBuffer:
 	ora attMask
 	sta tempMask
 	
+	;FOURTH TILE :o :o :o
+	ldy #$11
+	lda (sourceLow), y
+	tax
+	
+	;FIRST TILE 
+	;;find 8x8 tile within meta tile
+	lda MetaTileSets, x
+	sta pMetaTile
+	lda MetaTileSets+1, x
+	sta pMetaTile+1
+	
+	ldy #$04
+	lda (pMetaTile), y
+	and #%11000000
+	sta attMask
+	lda tempMask
+	ora attMask
+	sta tempMask
+	
 	ldy counter
 	lda tempMask
 	sta (pAttrBuffer_lo), y
