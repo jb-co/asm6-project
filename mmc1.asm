@@ -701,14 +701,51 @@ GenerateAttributeBuffer:
 	
 	
 	
+	sta gurras
 	
 	ldy #$00
--
-	lda #$ff
+	sty tempMask
+	lda (sourceLow), y
+	tax
+	
+	;FIRST TILE 
+	;;find 8x8 tile within meta tile
+	lda MetaTileSets, x
+	sta pMetaTile
+	lda MetaTileSets+1, x
+	sta pMetaTile+1
+	
+	ldy #$00
+	sty counter
+	ldy #$04
+	lda (pMetaTile), y
+	and #%00000011
+	sta attMask
+	sta tempMask
+	
+	
+
+	;second tile ;
+	ldy #$01
+	lda (sourceLow), y
+	tax 
+	lda MetaTileSets, x
+	sta pMetaTile
+	lda MetaTileSets+1, x
+	sta pMetaTile+1
+	
+	ldy #$04
+	lda (pMetaTile), y
+	and #%00110000
+	sta attMask
+	lda tempMask
+	ora attMask
+	sta tempMask
+	
+	ldy counter
+	lda tempMask
 	sta (pAttrBuffer_lo), y
-	iny
-	cpy #$08
-	bne -
+	
 
   
 	rts
