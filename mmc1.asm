@@ -337,7 +337,7 @@ forever:
 	
 	LDA entity_hAccHi
 	ORA entity_hAccLo
-	beq +	
+	beq ++	
 	jsr ScrollLogic
 	
 	LDA scrollX_hi
@@ -351,10 +351,10 @@ forever:
 	;;attribute buffer generator
 	lda scrollX_hi
 	and #%00011110
-	bne +
+	bne ++
 	
 	jsr GenerateAttributeBuffer
-+
+++
 	
 	
 	jmp forever   
@@ -384,13 +384,7 @@ NMI:
 	
 	
 	jsr DrawNewColumn
-	
-;NewAttribCheck:
- ; LDA scroll
- ; AND #%00011111            ; check for multiple of 32
- ; BNE NewAttribCheckDone    ; if low 5 bits = 0, time to write new attribute bytes
- ; jsr DrawNewAttributes
-;NewAttribCheckDone:
+
 	
 	lda scrollX_hi
 	and #%00011110
@@ -701,7 +695,12 @@ GenerateAttributeBuffer:
 	
 	
 	ldy #$00
+	sty nmiCounter 
+	sty counter
 	sty tempMask
+
+@start
+	ldy #$00
 	lda (sourceLow), y
 	tax
 	
@@ -711,18 +710,15 @@ GenerateAttributeBuffer:
 	sta pMetaTile
 	lda MetaTileSets+1, x
 	sta pMetaTile+1
-	
-	ldy #$00
-	sty counter
+
 	ldy #$04
 	lda (pMetaTile), y
 	and #%00000011
 	sta attMask
 	sta tempMask
 	
-	
-
 	;second tile ;
+
 	ldy #$01
 	lda (sourceLow), y
 	tax 
@@ -740,12 +736,17 @@ GenerateAttributeBuffer:
 	sta tempMask
 	
 	;third tile ;
-	ldy #$10
+	lda sourceLow
+	clc 
+	adc #$10
+	sta sourceLow
+	lda sourceHigh
+	adc #$00
+	sta sourceHigh
+	ldy #$00
 	lda (sourceLow), y
 	tax
-	
-	;FIRST TILE 
-	;;find 8x8 tile within meta tile
+
 	lda MetaTileSets, x
 	sta pMetaTile
 	lda MetaTileSets+1, x
@@ -760,12 +761,11 @@ GenerateAttributeBuffer:
 	sta tempMask
 	
 	;FOURTH TILE :o :o :o
-	ldy #$11
+	
+	ldy #$01
 	lda (sourceLow), y
 	tax
 	
-	;FIRST TILE 
-	;;find 8x8 tile within meta tile
 	lda MetaTileSets, x
 	sta pMetaTile
 	lda MetaTileSets+1, x
@@ -782,6 +782,24 @@ GenerateAttributeBuffer:
 	ldy counter
 	lda tempMask
 	sta (pAttrBuffer_lo), y
+	
+	lda #$00
+	sta tempMask
+	
+	lda sourceLow
+	clc
+	adc #$10
+	sta sourceLow
+	lda sourceHigh
+	adc #$00
+	sta sourceHigh
+	
+	inc counter 
+	lda counter 
+	cmp #$02
+	beq +
+	jmp @start
++
   
 	rts
 	
