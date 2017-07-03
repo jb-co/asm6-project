@@ -700,9 +700,6 @@ GenerateAttributeBuffer:
 	
 	
 	
-	
-	sta gurras
-	
 	ldy #$00
 	sty tempMask
 	lda (sourceLow), y
@@ -742,11 +739,29 @@ GenerateAttributeBuffer:
 	ora attMask
 	sta tempMask
 	
+	;third tile ;
+	ldy #$10
+	lda (sourceLow), y
+	tax
+	
+	;FIRST TILE 
+	;;find 8x8 tile within meta tile
+	lda MetaTileSets, x
+	sta pMetaTile
+	lda MetaTileSets+1, x
+	sta pMetaTile+1
+	
+	ldy #$04
+	lda (pMetaTile), y
+	and #%00001100
+	sta attMask
+	lda tempMask
+	ora attMask
+	sta tempMask
+	
 	ldy counter
 	lda tempMask
 	sta (pAttrBuffer_lo), y
-	
-
   
 	rts
 	
@@ -820,9 +835,10 @@ GameStateRoutine:
   
 
 
-palette:
-	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$16,$28,$38
-	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$06,$16,$26,$0f,$16,$28,$38
+palette:	
+	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$09,$19,$29,$0f,$16,$28,$38
+	db $0f,$00,$10,$30,$0f,$01,$21,$31,$0f,$09,$19,$29,$0f,$16,$28,$38
+
 
 
 	
@@ -834,7 +850,7 @@ grass:
 sand:
 	db $26, $26, $26, $26, #%10101010
 snow:
-	db $B3, $B3, $B3, $B3, #%01010101
+	db $B3, $B3, $B3, $B3, #%00000000
 vertTrigger
 	db $33, $33, $33, $33, #%11111111
 
