@@ -150,6 +150,7 @@ InitVariables:
 	sta walkCounter
 	sta attributesReady
 	sta columnReady
+	sta collided
 	
 	LDA #$40
 	STA gravity
@@ -161,7 +162,7 @@ InitVariables:
 
 	sta deltaX
 	
-	lda #%11000000
+	lda #%00000000
 	sta entity_flags
 	
 	lda #$10

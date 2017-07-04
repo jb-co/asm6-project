@@ -854,8 +854,16 @@ GameStateRoutine:
 	rts
   
 palette:	
-	.db $0f,$00,$10,$30,$0f,$20,$11,$21,$0f,$17,$19,$2a,$0f,$05,$16,$38
-	.db $0f,$00,$10,$30,$0f,$20,$11,$21,$0f,$17,$19,$2a,$0f,$05,$16,$38
+	.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
+
+	.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
+
+
+
+
+	
+
+
 	
   ;; [ META TILES ]
 sky:
@@ -884,19 +892,22 @@ AI_Routines:
 GameState_Routines:
 	.word GameState_Playing-1, GameState_WaitFrames-1
 
-;width, height, sprite, flags            << is this really necessary?
+;width, height, sprite
+;;flags (07 - 06- 05- 04- 03- 02-gotHit? (01-palette bit 00-palette bit)
+;;not sure what else to use it for as of now
+
 Def_Player:
 	.byte $10, $10, $B0, $00
 Def_Blob:
-	.byte $08, $08, $10, $00
+	.byte $08, $08, $10, $03
 Def_Stomper:
-	.byte $18, $10, $50, $00
+	.byte $18, $10, $50, $03
 Def_Pickle:
-	.byte $10, $10, $34, $80
+	.byte $10, $10, $34, $03
 Def_Bullet:
 	.byte $08, $08, $06, $00
 Def_Cannon: 
-	.byte $08, $08, $80, $00
+	.byte $08, $08, $80, $03
 Def_GenericArcBullet:
 	.byte $08, $08, $81, $00
 

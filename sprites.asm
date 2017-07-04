@@ -130,6 +130,7 @@ DrawObject:
 		;sprite direction
 		lda entity_hDir, y
 		and #%01000000
+		ora entity_flags, y
 		sta SPRITE_RAM+2, x
 		
 		;sprite x
