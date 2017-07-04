@@ -34,6 +34,9 @@ tempY_lo:		.dsb 1
 
 nmiTemp			.dsb 1
 
+attributesReady:	.dsb 1
+columnReady:		.dsb 1
+
 
 attMask			.dsb 1
 tempMask		.dsb 1

@@ -345,6 +345,7 @@ forever:
 	bne +
 	jsr NewColumnCheck	
 	jsr GenerateColumnBuffer
+	inc columnReady
 +
 	
 
@@ -354,6 +355,7 @@ forever:
 	bne ++
 	
 	jsr GenerateAttributeBuffer
+	inc attributesReady
 ++
 	
 	
@@ -378,47 +380,24 @@ NMI:
 	sta gamePaused
 +
 	
-	LDA entity_hAccHi
-	ORA entity_hAccLo
+	;Draw columns
+	LDA columnReady
 	beq @ppuSection
 	
-	
 	jsr DrawNewColumn
-
 	
-	lda scrollX_hi
-	and #%00011110
-	bne @DrawNewAttributesLoopDone
+	lda #$00
+	sta columnReady
 
-	LDY #$00
-	ldx #$00
-	;sty nmiCounter
-	LDA $2002             ; read PPU status to reset the high/low latch
-@DrawNewAttributesLoop
-	LDA att_hi
-	STA $2006             ; write the high byte of column address
-	LDA att_lo
-	STA $2006             ; write the low byte of column address
-	
-	LDA (pAttrBuffer_lo), y   ; THIS WILL BE GRABBED FROM THE RAM BUFFER
-	STA $2007
-	
-	;inc nmiCounter
+	;Update attributes
+	lda attributesReady
+	beq @ppuSection
 
-	iny
-	cpy #$08              ; copy 8 attribute bytes
-	BEQ @DrawNewAttributesLoopDone 
-
-	LDA att_lo         ; next attribute byte is at address + 8
-	CLC
-	ADC #$08
-	STA att_lo
-	JMP @DrawNewAttributesLoop
-@DrawNewAttributesLoopDone:
-
+	jsr UpdateAttributes
 	
-	
-	;;draw column
+	lda #$00
+	sta attributesReady
+
 
 @ppuSection: 
 
@@ -874,22 +853,9 @@ GameStateRoutine:
 	pha
 	rts
   
-
-
 palette:	
 	.db $0f,$00,$10,$30,$0f,$20,$11,$21,$0f,$17,$19,$2a,$0f,$05,$16,$38
-
-
 	.db $0f,$00,$10,$30,$0f,$20,$11,$21,$0f,$17,$19,$2a,$0f,$05,$16,$38
-
-
-
-
-
-
-
-
-
 	
   ;; [ META TILES ]
 sky:

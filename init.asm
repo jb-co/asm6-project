@@ -148,6 +148,8 @@ InitVariables:
 	sta deltaX
 	sta spawned
 	sta walkCounter
+	sta attributesReady
+	sta columnReady
 	
 	LDA #$40
 	STA gravity
@@ -187,8 +189,19 @@ InitializeNametables:
 	STA nametable
 	
 	InitializeNametablesLoop:
-	jsr GenerateColumnBuffer
+	
+	jsr GenerateColumnBuffer	;generates column in RAM
+	
 	JSR DrawNewColumn     ; draw bg column
+	
+	lda tempX_lo
+	and #%00011110
+	bne @skipAttributes
+	jsr GenerateAttributeBuffer
+	jsr UpdateAttributes
+	
+@skipAttributes:
+	
 	LDA tempX_lo            ; go to next column
 	CLC
 	ADC #$08
@@ -204,10 +217,17 @@ InitializeNametables:
 	LDA #$00
 	STA tempX_lo
 	
-	InitializeNametables2Loop:
+InitializeNametables2Loop:
 	jsr GenerateColumnBuffer
 	JSR DrawNewColumn     ; draw first column of second nametable
-
+	
+	lda tempX_lo
+	and #%00011110
+	bne @skipAttributes
+	jsr GenerateAttributeBuffer
+	jsr UpdateAttributes
+	
+@skipAttributes:
 	LDA tempX_lo            ; go to next column
 	CLC
 	ADC #$08

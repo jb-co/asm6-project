@@ -60,3 +60,30 @@ skipRightReDraw: ;;LEFT REDRAW
 
 
 	rts
+	
+	
+UpdateAttributes:
+	LDY #$00
+	ldx #$00
+
+	LDA $2002             ; read PPU status to reset the high/low latch
+@DrawNewAttributesLoop
+	LDA att_hi
+	STA $2006             ; write the high byte of column address
+	LDA att_lo
+	STA $2006             ; write the low byte of column address
+	
+	LDA (pAttrBuffer_lo), y   ; THIS WILL BE GRABBED FROM THE RAM BUFFER
+	STA $2007
+	
+	iny
+	cpy #$08              ; copy 8 attribute bytes
+	BEQ @DrawNewAttributesLoopDone 
+
+	LDA att_lo         ; next attribute byte is at address + 8
+	CLC
+	ADC #$08
+	STA att_lo
+	JMP @DrawNewAttributesLoop
+@DrawNewAttributesLoopDone:
+	rts
