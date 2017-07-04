@@ -3,8 +3,9 @@ ScrollLogic:
 	lda #$04
 	jsr PRGBankWrite
 	
-	LDA entity_hAccHi
-	bmi @notRight
+	LDA entity_hDir
+	cmp #RIGHT
+	bne @notRight
 	
 	ldy roomNumber
 	lda Level1_ScrollLocks, y

@@ -25,9 +25,9 @@ DrawColumn:
 	
 NewColumnCheck:
 	
-	ldx entity_hAccHi
-	CPX #$01
-	bmi skipRightReDraw
+	lda entity_hDir
+	CMP #RIGHT
+	bne skipRightReDraw
 	
 	LDA scrollX_hi
 	STA tempX_lo

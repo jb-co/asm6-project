@@ -126,7 +126,8 @@ CheckInputs:
 
 	BEQ NotRight
 	
-	
+	lda #RIGHT
+	sta entity_hDir
 	
 	lda walkCounter
 	cmp #$07
@@ -167,6 +168,9 @@ NotRight:
 	AND	#$02
 	
 	BEQ NotLeft
+	
+	lda #LEFT
+	sta entity_hDir
 	
 	lda walkCounter
 	cmp #$07

@@ -337,7 +337,7 @@ forever:
 	
 	LDA entity_hAccHi
 	ORA entity_hAccLo
-	beq ++	
+	beq ++
 	jsr ScrollLogic
 	
 	LDA scrollX_hi
