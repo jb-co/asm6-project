@@ -124,6 +124,8 @@ current_bank: .dsb 1
 source_lo:	.dsb 1
 source_hi: .dsb 1
 
+scrollDir:	.dsb 1
+
 ;just for keeping track of memory pos
 lastOne	.dsb 1
 

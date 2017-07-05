@@ -61,6 +61,8 @@ horizontalMovement:
 	
 	lda entity_hAccHi, y
 	bmi @negative
+	lda entity_hAccLo, y
+	bmi @negative
 
 @positive
 	lda worldX_hi, y
@@ -133,11 +135,40 @@ moveObject:
 	
 Player:
 
-
+	lda collided
+	beq @hitDone
+	inc collided
+	cmp #$08
+	bne @stillHit
+	lda #$00
+	sta collided
+@stillHit:
+	lda entity_hDir
+	cmp #RIGHT
+	beq @left
+	
+	lda #RIGHT
+	sta scrollDir
+	lda #$00
+	sta entity_hAccLo
+	lda #$01
+	sta entity_hAccHi
+	jmp @skipInputs
+@left:
+	lda #LEFT
+	sta scrollDir
+	lda #$00
+	sta entity_hAccLo
+	lda #$ff
+	sta entity_hAccHi
+	jmp @skipInputs
+	
+@hitDone
 	;; [USER INPUT]
 	JSR ReadController
 	JSR CheckInputs
-	
+
+@skipInputs:	
 	ldy entity_counter
 
 	jsr applyGravity
@@ -200,11 +231,16 @@ AI_Blob:
 	lda #BLOB_SPRITE
 	jsr Animation_Generic
 	
+	lda collided
+	bne @skipPlayerCollision
+	jsr PlayerObjectCollision
+@skipPlayerCollision:
+	
 	
 	lda #$05
 	jsr PRGBankWrite
 	ldx entity_counter
-	;jmp PlayerBulletCollision
+	jmp PlayerBulletCollision
 		
 	rts
 	
@@ -239,6 +275,11 @@ AI_Stomper:
 	
 	jsr verticalMovement
 	jsr BgrCollisionVertical
+	
+	lda collided
+	bne @skipPlayerCollision
+	jsr PlayerObjectCollision
+@skipPlayerCollision:
 
 	lda #$05
 	jsr PRGBankWrite
@@ -275,6 +316,11 @@ AI_Pickle:
 	
 	lda #PICKLE_SPRITE
 	jsr Animation_Generic
+	
+	lda collided
+	bne @skipPlayerCollision
+	jsr PlayerObjectCollision
+@skipPlayerCollision:
 	
 	lda #$05
 	jsr PRGBankWrite
@@ -341,9 +387,7 @@ AI_Cannon:
 	sta spawn_vAccHi
 	
 	lda entity_xHi
-	
 
-	
 	lda #LEFT
 	sta spawn_dir 
 	jsr SpawnEnemy	
@@ -352,6 +396,10 @@ AI_Cannon:
 	sta spawn_dir
 	jsr SpawnEnemy
 +
+	lda collided
+	bne @skipPlayerCollision
+	jsr PlayerObjectCollision
+@skipPlayerCollision:
 	rts
 	
 AI_GenericArcBullet:
@@ -374,14 +422,14 @@ AI_GenericArcBullet:
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 	
-	rts
-	
-	
-
-MovementAll:
-	
+	lda collided
+	bne @skipPlayerCollision
+	jsr PlayerObjectCollision
+@skipPlayerCollision:
 	
 	rts
+	
+	
 	
 
 	

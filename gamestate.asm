@@ -70,15 +70,8 @@ GameState_Playing:
 	lda #$f0
 	sta entity_yHi, y
 
-	jmp @playerSkipsThis
 @alive
 		
-	;sprite player collision (might move this to the objects later, if i found that some objects don't need it)
-	tya
-	beq @playerSkipsThis
-	;jsr PlayerObjectCollision
-@playerSkipsThis
-	
 	ldy entity_counter
 	lda nextActiveSlot, y
 	cmp #$ff
@@ -117,7 +110,7 @@ GameState_WaitFrames:
 ;hitbox overlap test
 ;the object type is in temp
 PlayerObjectCollision:
-	tax ;transfer object index to x
+	ldx entity_counter ;transfer object index to x
 	
 @beginSpriteCollisionCheck
 	
@@ -183,7 +176,7 @@ PlayerObjectCollision:
 	
 	
 	
-	;jmp PlayHit
+	jmp PlayHit
 	
 	
 @endSpriteCollisionCheck

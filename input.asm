@@ -128,6 +128,7 @@ CheckInputs:
 	
 	lda #RIGHT
 	sta entity_hDir
+	sta scrollDir
 	
 	lda walkCounter
 	cmp #$07
@@ -158,7 +159,7 @@ CheckInputs:
 	inc entity_animFrame
 	
 	lda #RIGHT
-	sta entity_hDir, y
+	sta entity_hDir
 	RTS
 	
 	
@@ -171,6 +172,7 @@ NotRight:
 	
 	lda #LEFT
 	sta entity_hDir
+	sta scrollDir
 	
 	lda walkCounter
 	cmp #$07
@@ -178,28 +180,29 @@ NotRight:
 	
 	inc walkCounter
 	
-	lda entity_hAccLo
+	lda #$00
+	sec
 	sbc #$20
 	sta entity_hAccLo
-	lda entity_hAccHi
-	sbc #$00
+	lda #$00
 	sta entity_hAccHi
 	
 	jmp @doneWalking
 	
 @fullSpeed
 	
-	lda entity_hAccLo
+	lda #$00
+	sec
 	sbc #$40
 	sta entity_hAccLo
-	lda entity_hAccHi
+	lda #$00
 	sbc #$01
 	sta entity_hAccHi
 
 @doneWalking
 	inc entity_animFrame
 	lda #LEFT
-	sta entity_hDir, y
+	sta entity_hDir
 	rts
 NotLeft:
 

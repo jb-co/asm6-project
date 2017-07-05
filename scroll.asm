@@ -3,7 +3,7 @@ ScrollLogic:
 	lda #$04
 	jsr PRGBankWrite
 	
-	LDA entity_hDir
+	LDA scrollDir
 	cmp #RIGHT
 	bne @notRight
 	
