@@ -79,7 +79,6 @@ PlayerBulletCollision:
 	
 	;got hit
 	stx collidedWithIndex
-	inc collided
 	
 	lda #$f0
 	sta entity_yHi, x

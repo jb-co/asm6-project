@@ -159,8 +159,7 @@ Player:
 	sta scrollDir
 	lda #$00
 	sta entity_hAccLo
-	lda #$ff
-	sta entity_hAccHi
+	dec entity_hAccHi
 	jmp @skipInputs
 	
 @hitDone

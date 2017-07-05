@@ -179,12 +179,12 @@ NotRight:
 	bcs @fullSpeed
 	
 	inc walkCounter
-	
 	lda #$00
 	sec
 	sbc #$20
 	sta entity_hAccLo
 	lda #$00
+	sbc #$00
 	sta entity_hAccHi
 	
 	jmp @doneWalking

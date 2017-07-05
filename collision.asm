@@ -184,6 +184,7 @@ BgrCollisionHorizontal:
 	bmi @movingLeft
 	
 	
+	
 @movingRight
 	ldy #$02
 	lda (pHitBox), y
