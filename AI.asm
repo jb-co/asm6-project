@@ -61,8 +61,7 @@ horizontalMovement:
 	
 	lda entity_hAccHi, y
 	bmi @negative
-	lda entity_hAccLo, y
-	bmi @negative
+	
 
 @positive
 	lda worldX_hi, y
@@ -82,7 +81,7 @@ horizontalMovement:
 
 	;;horizontal collision
 	rts
-	
+
 	
 applyGravity:
 	
@@ -149,17 +148,23 @@ Player:
 	
 	lda #RIGHT
 	sta scrollDir
-	lda #$00
+	lda #$80
 	sta entity_hAccLo
-	lda #$01
+	lda #$00
 	sta entity_hAccHi
 	jmp @skipInputs
 @left:
 	lda #LEFT
 	sta scrollDir
 	lda #$00
+	sec
+	sbc #$80
 	sta entity_hAccLo
-	dec entity_hAccHi
+	lda #$00
+	sbc #$00
+	sta entity_hAccHi
+	
+	
 	jmp @skipInputs
 	
 @hitDone
