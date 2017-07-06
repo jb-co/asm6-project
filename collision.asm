@@ -86,7 +86,7 @@ Collision_Bullet:
 Collision_Blob:
 Collision_Stomper:
 Collision_Pickle:
-
+	
 	lda collisionResult
 	and #%00110000
 	beq @horizontal

@@ -287,14 +287,7 @@ SpawnEnemyFromMap:
 	
 	;;SET OBJ DIRECTION
 	lda entity_hDir	;; opposite of player facing direction
-	cmp #LEFT
-	bne @left
-	lda #RIGHT
-	jmp @end
-@left
-	lda #LEFT
-@end	
-	
+	eor #%11000000
 	sta entity_hDir, x
 	
 	rts

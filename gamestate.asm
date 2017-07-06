@@ -8,8 +8,13 @@ GameState_Playing:
 	bne @spawnCheckDone
 	;spawn check
 	LDA entity_hAccHi
+	ora entity_hAccLo
 	beq @spawnCheckDone
-	Bmi @notRight
+	
+	lda entity_hDir
+	cmp #RIGHT
+	bne @notRight
+	
 	jsr EnemySpawnRight
 	jmp @spawnCheckDone
 @notRight

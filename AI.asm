@@ -198,7 +198,7 @@ AI_Blob:
 	rts
 @alive
 
-
+	ldy entity_counter
 	lda #$01
 	sta entity_hAccHi, y
 	
