@@ -128,38 +128,27 @@ CheckInputs:
 	
 	lda #RIGHT
 	sta entity_hDir
-	sta scrollDir
 	
 	lda walkCounter
 	cmp #$07
 	bcs @fullSpeed
 	
 	inc walkCounter
-	lda entity_hAccLo
-	clc
-	adc #$20
+	lda #$20
 	sta entity_hAccLo	
-	lda entity_hAccHi
-	clc
-	adc #$00	
+	lda #$00	
 	sta entity_hAccHi
 	
 	jmp @doneWalking
 @fullSpeed
-	lda entity_hAccLo
-	clc
-	adc #$40
+	lda #$40
 	sta entity_hAccLo
-	lda entity_hAccHi
-	clc
-	adc #$01	
+	lda #$01	
 	sta entity_hAccHi		
 	
 @doneWalking	
 	inc entity_animFrame
 	
-	lda #RIGHT
-	sta entity_hDir
 	RTS
 	
 	
@@ -172,31 +161,24 @@ NotRight:
 	
 	lda #LEFT
 	sta entity_hDir
-	sta scrollDir
 	
 	lda walkCounter
 	cmp #$07
 	bcs @fullSpeed
 	
 	inc walkCounter
-	lda #$00
-	sec
-	sbc #$20
+	lda #$20
 	sta entity_hAccLo
 	lda #$00
-	sbc #$00
 	sta entity_hAccHi
 	
 	jmp @doneWalking
 	
 @fullSpeed
 	
-	lda #$00
-	sec
-	sbc #$40
+	lda #$40
 	sta entity_hAccLo
-	lda #$00
-	sbc #$01
+	lda #$01
 	sta entity_hAccHi
 
 @doneWalking

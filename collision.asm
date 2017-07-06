@@ -180,10 +180,9 @@ BgrCollisionHorizontal:
 
 ;;check direction
 	ldx entity_counter
-	LDA entity_hAccHi, x
-	bmi @movingLeft
-	
-	
+	LDA entity_hDir, x
+	cmp #LEFT
+	beq @movingLeft
 	
 @movingRight
 	ldy #$02

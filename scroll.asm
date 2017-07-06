@@ -3,7 +3,7 @@ ScrollLogic:
 	lda #$04
 	jsr PRGBankWrite
 	
-	LDA scrollDir
+	LDA entity_hDir
 	cmp #RIGHT
 	bne @notRight
 	
@@ -65,17 +65,14 @@ ScrollLogic:
 @sameRoom	
 
 	lda entity_xLo
-	clc
-	adc entity_hAccLo
-	lda entity_hAccHi
-	adc scrollX_hi
+	sec
+	sbc entity_hAccLo
+	lda scrollX_hi
+	sbc entity_hAccHi
 	sta scrollX_hi
-	
-	lda #$00
+	lda roomNumber
 	sbc #$00
-	beq @endScrollLogic
-	dec roomNumber ;carry is retarded when subtracting
-
+	sta roomNumber
 
 @endScrollLogic	
 

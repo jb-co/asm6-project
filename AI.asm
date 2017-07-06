@@ -36,6 +36,48 @@ verticalMovement:
 	
 	rts
 	
+movePlayer: 
+	LDA entity_xLo, y
+	STA storedX_lo
+	LDA entity_xHi, y
+	STA storedX_hi
+	LDA worldX_hi, y
+	STA storedWorldX_hi
+
+	
+	lda entity_hDir, y
+	cmp #LEFT
+	beq @left
+	
+@right:
+	lda entity_xLo, y
+	clc
+	adc entity_hAccLo, y
+	sta entity_xLo, y
+	lda entity_xHi, y
+	adc entity_hAccHi, y
+	sta entity_xHi, y
+	lda worldX_hi, y
+	adc #$00
+	sta worldX_hi, y
+	
+	rts
+	
+@left:
+	lda entity_xLo, y
+	sec
+	sbc entity_hAccLo, y
+	sta entity_xLo, y
+	lda entity_xHi, y
+	sbc entity_hAccHi, y
+	sta entity_xHi, y
+	lda worldX_hi, y
+	sbc #$00
+	sta worldX_hi, y 
+	
+
+	rts
+	
 horizontalMovement: 
 ;;save x for easy restore
 	
@@ -59,16 +101,17 @@ horizontalMovement:
 	sta entity_xHi, y
 	
 	
-	lda entity_hAccHi, y
-	bmi @negative
+	lda entity_hDir, y
+	cmp #LEFT
+	beq @negative
 	
 
-@positive
+@positive:
 	lda worldX_hi, y
 	adc #$00
 	sta worldX_hi, y
 	jmp @endWorld
-@negative				; \(>.<);
+@negative:				; \(>.<);
 	lda #$00
 	adc #$00
 	eor #$01
@@ -137,33 +180,40 @@ Player:
 	lda collided
 	beq @hitDone
 	inc collided
-	cmp #$08
+	
+	cmp #$01
+	bne @notFirstFrame
+	
+	lda entity_hDir
+	cmp #RIGHT
+	bne @switchLeft
+	
+	lda #LEFT
+	sta entity_hDir
+	jmp @notFirstFrame
+@switchLeft:	
+	lda #RIGHT
+	sta entity_hDir
+	
+@notFirstFrame:
+	cmp #$10
 	bne @stillHit
 	lda #$00
 	sta collided
-@stillHit:
+	
 	lda entity_hDir
 	cmp #RIGHT
-	beq @left
+	bne @switchLeft
 	
-	lda #RIGHT
-	sta scrollDir
-	lda #$80
-	sta entity_hAccLo
-	lda #$00
-	sta entity_hAccHi
-	jmp @skipInputs
-@left:
 	lda #LEFT
-	sta scrollDir
-	lda #$00
-	sec
-	sbc #$80
+	sta entity_hDir
+	jmp @hitDone
+@stillHit:
+	
+	lda #$40
 	sta entity_hAccLo
 	lda #$00
-	sbc #$00
 	sta entity_hAccHi
-	
 	
 	jmp @skipInputs
 	
@@ -181,7 +231,7 @@ Player:
 	ora entity_hAccLo
 	beq @noHorizontalMovement
 	
-	jsr horizontalMovement
+	jsr movePlayer
 	jsr BgrCollisionHorizontal
 	
 	

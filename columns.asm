@@ -25,7 +25,7 @@ DrawColumn:
 	
 NewColumnCheck:
 	
-	lda scrollDir
+	lda entity_hDir
 	CMP #RIGHT
 	bne skipRightReDraw
 	

@@ -151,6 +151,7 @@ InitVariables:
 	sta attributesReady
 	sta columnReady
 	sta collided
+	sta iframes
 	
 	LDA #$40
 	STA gravity
