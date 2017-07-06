@@ -3,6 +3,14 @@
 
 Animation_Player:
 	
+	lda collided
+	beq +
+	lda Def_Player+2
+	clc
+	adc #$06
+	jmp doneAnim
+	
++
 	lda entity_hAccHi
 	bne +
 	lda Def_Player+2
