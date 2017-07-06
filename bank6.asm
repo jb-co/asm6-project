@@ -5,6 +5,17 @@ Animation_Player:
 	
 	lda collided
 	beq +
+	
+	lda frameCounter
+	and #$08
+	bne +noFlicker
+	lda #$f0
+	sta entity_sprite
+	rts
++noFlicker
+	lda collided
+	cmp #$10
+	bcs +
 	lda Def_Player+2
 	clc
 	adc #$06

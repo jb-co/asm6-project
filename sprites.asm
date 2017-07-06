@@ -1,7 +1,7 @@
 UpdateSprites:
 
 	;clear OAM
-	ldx #$10
+	ldx #$00
 -
 	lda #$F0
 	sta SPRITE_RAM, x
@@ -19,7 +19,12 @@ UpdateSprites:
 	sta OAMdirection
 	
 	;draw player first
+	lda entity_sprite	;check if in iframes
+	cmp #$f0
+	beq +skipPlayer
+
 	jsr DrawObject
++skipPlayer
 	
 	lda frameCounter ;base drawing order on frameCounter
 	and #$01
@@ -62,7 +67,6 @@ DrawObject:
 	sta testY
 	ldx sprite_counter
 	
-
 @yLoop
 
 	lda #$00

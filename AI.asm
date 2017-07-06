@@ -36,7 +36,7 @@ verticalMovement:
 	
 	rts
 	
-movePlayer: 
+horizontalMovement: 
 	LDA entity_xLo, y
 	STA storedX_lo
 	LDA entity_xHi, y
@@ -78,52 +78,7 @@ movePlayer:
 
 	rts
 	
-horizontalMovement: 
-;;save x for easy restore
-	
-	LDA entity_xLo, y
-	STA storedX_lo
-	LDA entity_xHi, y
-	STA storedX_hi
-	LDA worldX_hi, y
-	STA storedWorldX_hi
 
-	
-	;apply horizontal acc
-	
-	;add_16 entity_hAccLo, y, entity_hAccHi, y, entity_xLo, y, entity_xHi, y
-	lda entity_xLo, y
-	clc
-	adc entity_hAccLo, y
-	sta entity_xLo, y
-	lda entity_xHi, y
-	adc entity_hAccHi, y
-	sta entity_xHi, y
-	
-	
-	lda entity_hDir, y
-	cmp #LEFT
-	beq @negative
-	
-
-@positive:
-	lda worldX_hi, y
-	adc #$00
-	sta worldX_hi, y
-	jmp @endWorld
-@negative:				; \(>.<);
-	lda #$00
-	adc #$00
-	eor #$01
-	beq @endWorld
-	lda worldX_hi, y
-	sec
-	sbc #$01
-	sta worldX_hi, y
-@endWorld
-
-	;;horizontal collision
-	rts
 
 	
 applyGravity:
@@ -149,31 +104,6 @@ applyGravity:
 @end
 	rts
 	
-moveObject:
-
-	lda entity_hDir, y
-		cmp #RIGHT
-		beq @right
-@left
-		cmp #LEFT
-		bne @end
-		lda entity_hAccHi, y
-		sec
-		sbc temp
-		sta entity_hAccHi, y
-		lda #$00
-		sta entity_hAccLo, y
-		jmp @end
-@right
-		lda entity_hAccHi, y
-		clc
-		adc temp
-		sta entity_hAccHi, y
-		lda #$00
-		sta entity_hAccLo, y
-	
-@end
-	rts
 	
 Player:
 
@@ -185,30 +115,31 @@ Player:
 	bne @notFirstFrame
 	
 	lda entity_hDir
-	cmp #RIGHT
-	bne @switchLeft
-	
-	lda #LEFT
-	sta entity_hDir
-	jmp @notFirstFrame
-@switchLeft:	
-	lda #RIGHT
+	eor #%11000000
 	sta entity_hDir
 	
 @notFirstFrame:
-	cmp #$10
-	bne @stillHit
+	lda collided
+	cmp #$60	;iframes done
+	bne @stillIframes
 	lda #$00
 	sta collided
-	
-	lda entity_hDir
-	cmp #RIGHT
-	bne @switchLeft
-	
-	lda #LEFT
-	sta entity_hDir
 	jmp @hitDone
-@stillHit:
+
+@stillIframes:
+	lda collided
+	cmp #$10
+	bne @stillStunned
+	lda entity_hDir
+	eor #%11000000
+	sta entity_hDir
+	
+	jmp @hitDone
+	
+@stillStunned:
+	lda collided
+	cmp #$10
+	bcs @hitDone
 	
 	lda #$40
 	sta entity_hAccLo
@@ -216,6 +147,7 @@ Player:
 	sta entity_hAccHi
 	
 	jmp @skipInputs
+
 	
 @hitDone
 	;; [USER INPUT]
@@ -231,7 +163,7 @@ Player:
 	ora entity_hAccLo
 	beq @noHorizontalMovement
 	
-	jsr movePlayer
+	jsr horizontalMovement
 	jsr BgrCollisionHorizontal
 	
 	
@@ -268,8 +200,7 @@ AI_Blob:
 
 
 	lda #$01
-	sta temp
-	jsr moveObject
+	sta entity_hAccHi, y
 	
 	jsr applyGravity
 	
@@ -359,10 +290,8 @@ AI_Pickle:
 	jmp ReturnFreeSlot
 @alive
 
-	lda #$02
-	sta temp
-	jsr moveObject
-	
+	lda #$01
+	sta entity_hAccHi, y
 	jsr horizontalMovement
 	
 	lda #$06
@@ -400,8 +329,7 @@ AI_Bullet:
 @alive
 
 	lda #$04
-	sta temp
-	jsr moveObject
+	sta entity_hAccHi, y
 	jsr horizontalMovement
 
 	rts
@@ -464,13 +392,11 @@ AI_GenericArcBullet:
 	
 	jmp ReturnFreeSlot
 @alive
-	lda #$01
-	sta temp
-	jsr moveObject
+	
 	jsr applyGravity
 	
-	;lda #$01
-	;lda entity_hAccHi, y
+	lda #$01
+	sta entity_hAccHi, y
 	
 	jsr horizontalMovement
 	jsr verticalMovement
