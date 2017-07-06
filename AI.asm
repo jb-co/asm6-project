@@ -128,7 +128,7 @@ Player:
 
 @stillIframes:
 	lda collided
-	cmp #$10
+	cmp #STUN_TIME
 	bne @stillStunned
 	lda entity_hDir
 	eor #%11000000
@@ -138,7 +138,7 @@ Player:
 	
 @stillStunned:
 	lda collided
-	cmp #$10
+	cmp #STUN_TIME
 	bcs @hitDone
 	
 	lda #$40

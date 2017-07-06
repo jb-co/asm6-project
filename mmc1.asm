@@ -10,6 +10,8 @@ UP = $20
 RIGHT = $80
 LEFT = $40
 
+STUN_TIME = $18
+
 PLAYER = $00
 BLOB = $02
 STOMPER = $04

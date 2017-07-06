@@ -14,7 +14,7 @@ Animation_Player:
 	rts
 +noFlicker
 	lda collided
-	cmp #$10
+	cmp #STUN_TIME
 	bcs +
 	lda Def_Player+2
 	clc

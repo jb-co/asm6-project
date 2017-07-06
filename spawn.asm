@@ -386,10 +386,11 @@ SpawnPlayerBullet:
 	lda spawn_dir
 	sta entity_hDir, x
 	
-	lda entity_xHi+0
-	sta entity_xHi, x
+	
 	
 	lda entity_yHi+0
+	clc 
+	adc #$07
 	sta entity_yHi, x
 	
 	lda worldX_hi+0
@@ -402,6 +403,18 @@ SpawnPlayerBullet:
 	
 	lda entity_hDir+0
 	sta entity_hDir,x
+	cmp #RIGHT
+	bne +
+	lda entity_xHi+0
+	clc 
+	adc #$0D
+	sta entity_xHi, x
+	rts
++
+	lda entity_xHi+0
+	sec 
+	sbc #$05
+	sta entity_xHi, x
 
 	rts
 	

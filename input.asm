@@ -38,26 +38,6 @@ CheckInputs:
 	and #$20
 	beq @notSelect
 	
-	lda spawned
-	bne @notSelect
-	
-	lda #$01
-	sta spawned 
-	
-	lda entity_xHi
-	clc
-	adc #$20
-	sta spawn_x
-	lda #$40
-	sta spawn_y
-	
-	lda #BLOB
-	sta spawn_type
-	
-	lda worldX_hi
-	sta spawn_room
-	
-	jsr SpawnEnemy
 
 @notSelect
 
