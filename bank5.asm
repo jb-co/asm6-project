@@ -1,4 +1,64 @@
 
+; AI ROUTINES FOR DAYS!
+
+updateHP:
+	
+	;;clean up health bar sprites
+	ldx #$00
+-
+	lda #$F0
+	sta SPRITE_RAM, x
+	inx
+	inx
+	inx
+	inx
+	cpx #$0c
+	bne -
+	
+	;get the correct health bar sprites
+	ldy entity_hp
+	lda HealthTable, y
+	sta pHealth
+	lda HealthTable+1, y
+	sta pHealth+1
+	
+	ldx #$16	;xPos
+	stx temp 
+	
+	ldx #$00
+	ldy #$00 
+	
+-
+	lda (pHealth), y
+	cmp #$f0
+	beq @end
+	sta SPRITE_RAM+1, x
+	
+	lda #$14
+	sta SPRITE_RAM, x
+	
+	lda temp
+	sta SPRITE_RAM+3, x
+	
+	lda #$00
+	sta SPRITE_RAM+2, x
+	
+	iny
+	
+	lda temp 
+	clc
+	adc #$09
+	sta temp 
+	
+	inx
+	inx
+	inx 
+	inx
+	cpx #$0c
+	bne -
+
+@end
+	rts
 
 PlayerBulletCollision:	
 	lda worldX_hi, x

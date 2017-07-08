@@ -326,6 +326,8 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	lda #$66
 	sta lastOne
 	
+	lda #$05
+	jsr PRGBankWrite
 	jsr updateHP
 	
 	
@@ -338,7 +340,6 @@ forever:
 	jsr GameStateRoutine
 	
 	jsr UpdateSprites
-	jsr drawLifeMeter
 	
 	LDA entity_hAccHi
 	ORA entity_hAccLo

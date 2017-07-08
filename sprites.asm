@@ -1,7 +1,7 @@
 UpdateSprites:
 
 	;clear OAM
-	ldx #$00
+	ldx #$0c
 -
 	lda #$F0
 	sta SPRITE_RAM, x
@@ -192,46 +192,5 @@ DrawObject:
 	rts
 	
 	
-drawLifeMeter:
-	
-	lda #$05
-	jsr PRGBankWrite
-	
-	ldx #$16	;xPos
-	stx temp 
-	
-	ldx #$00
-	ldy #$00 
-	
--
-	lda (pHealth), y
-	cmp #$f0
-	beq @end
-	sta SPRITE_RAM+1, x
-	
-	lda #$14
-	sta SPRITE_RAM, x
-	
-	lda temp
-	sta SPRITE_RAM+3, x
-	
-	lda #$00
-	sta SPRITE_RAM+2, x
-	
-	iny
-	
-	lda temp 
-	clc
-	adc #$09
-	sta temp 
-	
-	inx
-	inx
-	inx 
-	inx
-	cpx #$0c
-	bne -
 
-@end
-	rts
 	

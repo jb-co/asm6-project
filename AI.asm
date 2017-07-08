@@ -1,15 +1,3 @@
-; AI ROUTINES FOR DAYS!
-
-updateHP:
-	lda #$05
-	jsr PRGBankWrite
-	
-	ldy entity_hp
-	lda HealthTable, y
-	sta pHealth
-	lda HealthTable+1, y
-	sta pHealth+1
-	rts
 
 playerJump:
 	
@@ -133,6 +121,8 @@ Player:
 	dec entity_hp
 	dec entity_hp
 	
+	lda #$05
+	jsr PRGBankWrite
 	jsr updateHP
 	;;
 	
