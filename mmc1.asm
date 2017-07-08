@@ -271,21 +271,31 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	BIT $2002
 	BPL vblankwait2
 	
-	lda #$04
-	jsr PRGBankWrite
 	
-	jsr LoadObjects
-	jsr ReadMetaTiles
 	
 	lda #$00
+	jsr PRGBankWrite
+
+	jsr LoadCHRRAM
+	jsr LoadPalettes
+	
+	lda #$02
+	sta gameState
+	jsr GameStateRoutine
+	
+	lda #$00
+	sta $2001
+	sta $2000
+	
+	lda #$04
 	jsr PRGBankWrite
 	
 	jsr InitVariables
 	jsr InitSlots
-
 	
-	jsr LoadCHRRAM
-	jsr LoadPalettes
+	jsr LoadObjects
+	jsr ReadMetaTiles
+	
 	
 	
 	;draws two full nametables from beginning of map
@@ -329,6 +339,8 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	lda #$05
 	jsr PRGBankWrite
 	jsr updateHP
+	
+	
 	
 	
 	; [forever alone]	
@@ -896,7 +908,7 @@ AI_Routines:
 ;; [ ROUTINES ]
 
 GameState_Routines:
-	.word GameState_Playing-1, GameState_WaitFrames-1
+	.word GameState_Playing-1, GameState_WaitFrames-1, GameState_StartScreen-1
 
 ;width, height, sprite
 ;;flags (07 - 06- 05- 04- 03- 02-gotHit? (01-palette bit 00-palette bit)
