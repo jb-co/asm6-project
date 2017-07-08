@@ -198,41 +198,38 @@ drawLifeMeter:
 	jsr PRGBankWrite
 	
 	ldx #$16	;xPos
+	stx temp 
 	
+	ldx #$00
 	ldy #$00 
-	sty counter 
+	
 -
-	sty temp
-	ldy counter
 	lda (pHealth), y
 	cmp #$f0
 	beq @end
-	
-	ldy temp
-	sta SPRITE_RAM+1, y
+	sta SPRITE_RAM+1, x
 	
 	lda #$14
-	sta SPRITE_RAM, y
+	sta SPRITE_RAM, x
 	
-	txa
-	sta SPRITE_RAM+3, y
+	lda temp
+	sta SPRITE_RAM+3, x
 	
 	lda #$00
-	sta SPRITE_RAM+2, y
+	sta SPRITE_RAM+2, x
 	
-	inc counter
+	iny
 	
-	txa
+	lda temp 
 	clc
 	adc #$09
-	tax
+	sta temp 
 	
-	inc temp
-	inc temp 
-	inc temp 
-	inc temp 
-	ldy temp 
-	cpy #$0c
+	inx
+	inx
+	inx 
+	inx
+	cpx #$0c
 	bne -
 
 @end
