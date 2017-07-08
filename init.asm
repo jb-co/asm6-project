@@ -170,6 +170,12 @@ InitVariables:
 	sta entity_width
 	sta entity_height
 	
+	;;set hp
+	lda #$12	;full hp
+	sta entity_hp	
+	
+	;;
+	
 	lda #RIGHT
 	sta entity_hDir
 	

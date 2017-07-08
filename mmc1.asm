@@ -326,6 +326,8 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	lda #$66
 	sta lastOne
 	
+	jsr updateHP
+	
 	
 	; [forever alone]	
 forever:
@@ -336,6 +338,7 @@ forever:
 	jsr GameStateRoutine
 	
 	jsr UpdateSprites
+	jsr drawLifeMeter
 	
 	LDA entity_hAccHi
 	ORA entity_hAccLo
@@ -916,8 +919,11 @@ Def_GenericArcBullet:
 	
 BitPos:
 	db $01, $02, $04, $08, $10, $20, $40, $80
-	
 
+
+
+
+	
 
 IRQ:
 

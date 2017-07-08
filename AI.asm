@@ -1,5 +1,16 @@
 ; AI ROUTINES FOR DAYS!
 
+updateHP:
+	lda #$05
+	jsr PRGBankWrite
+	
+	ldy entity_hp
+	lda HealthTable, y
+	sta pHealth
+	lda HealthTable+1, y
+	sta pHealth+1
+	rts
+
 playerJump:
 	
 	LDA jumpCounter
@@ -117,6 +128,13 @@ Player:
 	lda entity_hDir
 	eor #%11000000
 	sta entity_hDir
+	
+	;;ADD DAMAGE HERE later
+	dec entity_hp
+	dec entity_hp
+	
+	jsr updateHP
+	;;
 	
 @notFirstFrame:
 	lda collided

@@ -11,10 +11,13 @@ UpdateSprites:
 	inx
 	bne -
 	
-	LDY #$00 ;entity counter loop in the future
+	LDY #$00 
 	ldx #$00
 	
-	sty sprite_counter
+	
+	lda #$0c
+	sta sprite_counter	;first 3 sprites are for health bar
+	
 	lda #$04
 	sta OAMdirection
 	
@@ -186,9 +189,52 @@ DrawObject:
 @end 	
 	
 	stx sprite_counter
+	rts
 	
 	
+drawLifeMeter:
+	
+	lda #$05
+	jsr PRGBankWrite
+	
+	ldx #$16	;xPos
+	
+	ldy #$00 
+	sty counter 
+-
+	sty temp
+	ldy counter
+	lda (pHealth), y
+	cmp #$f0
+	beq @end
+	
+	ldy temp
+	sta SPRITE_RAM+1, y
+	
+	lda #$14
+	sta SPRITE_RAM, y
+	
+	txa
+	sta SPRITE_RAM+3, y
+	
+	lda #$00
+	sta SPRITE_RAM+2, y
+	
+	inc counter
+	
+	txa
+	clc
+	adc #$09
+	tax
+	
+	inc temp
+	inc temp 
+	inc temp 
+	inc temp 
+	ldy temp 
+	cpy #$0c
+	bne -
 
-
+@end
 	rts
 	

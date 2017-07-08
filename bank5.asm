@@ -97,3 +97,27 @@ PlayerBulletCollision:
 @done	
 
 	rts
+	
+HealthTable:
+	dw hp0, hp1, hp2, hp3, hp4, hp5, hp6, hp7, hp8, hp9
+
+hp0:
+	db $f0
+hp1: 
+	db $08, $f0
+hp2: 
+	db $07, $f0
+hp3: 
+	db $06, $f0
+hp4: 
+	db $06, $08, $f0
+hp5: 
+	db $06, $07, $f0 
+hp6: 
+	db $06, $06, $f0
+hp7:
+	db $06, $06, $08
+hp8: 
+	db $06, $06, $07
+hp9: 
+	db $06, $06, $06

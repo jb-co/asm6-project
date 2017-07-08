@@ -62,6 +62,8 @@ currentTile:		.dsb 1	;currently collided tile
 
 gameState:		.dsb 1
 
+pHealth:		.dsb 2
+
 ;pointers
 pEnemyDataPointers: 	.dsb 16 ;;enemy spawn pointer for each room
 
@@ -157,6 +159,8 @@ entity_animFrame 	.dsb 20
 
 entity_flags		.dsb 20
 entity_index		.dsb 20	
+
+entity_hp			.dsb 1
 
 
 waitCounter			.dsb 1
