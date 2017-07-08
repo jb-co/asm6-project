@@ -72,7 +72,7 @@ NEXT_ATTRIBUTES = $7fc0
 
    .base $8000
 
-   ;NOTE: contents of program bank 1 go here
+   include bank1.asm
 
    .org $c000
 

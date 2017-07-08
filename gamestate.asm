@@ -87,7 +87,13 @@ GameState_Playing:
 	
 	sta entity_counter
 	jmp @entityPhysicsLoop
+
+GameState_StartScreen:
+	lda #$01
+	jsr PRGBankWrite
 	
+	
+	jmp StartScreen
 
 ;;waits for waitFrames frames with nmi running
 GameState_WaitFrames:
