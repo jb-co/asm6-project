@@ -15,6 +15,37 @@ playerJump:
 	inc isJumping
 	
 	rts
+	
+CheckOffscreen:
+	;check if entity is offscreen
+	ldy entity_counter
+	lda entity_width, y	;half width
+	lsr a
+	;sec
+	;sbc #$01
+	sta temp
+	
+	lda entity_xHi, y
+	clc 
+	adc temp
+	sta testX
+	lda worldX_hi, y
+	adc #$00
+	sta temp
+	
+	bcs +	;if it's less than 0, kill it with kindness
+	
+	lda testX
+	sec 
+	sbc scrollX_hi
+	lda temp
+	sbc roomNumber
+	bne +
+	rts
++	;kill object
+	lda #$f0
+	sta entity_yHi, y
+	rts
 
 verticalMovement: 
 	ldy entity_counter
@@ -218,6 +249,10 @@ AI_Blob:
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 	
+	jsr CheckOffscreen
+	cmp #$f0
+	beq @end
+	
 	lda #$06
 	jsr PRGBankWrite
 	
@@ -234,7 +269,8 @@ AI_Blob:
 	jsr PRGBankWrite
 	ldx entity_counter
 	jmp PlayerBulletCollision
-		
+
+@end	
 	rts
 	
 ;STOMPER
@@ -269,6 +305,10 @@ AI_Stomper:
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 	
+	jsr CheckOffscreen
+	cmp #$f0
+	beq @end
+	
 	lda collided
 	bne @skipPlayerCollision
 	jsr PlayerObjectCollision
@@ -280,7 +320,7 @@ AI_Stomper:
 	ldx entity_counter
 	jsr PlayerBulletCollision
 
-	
+@end	
 	rts
 
 ;;PICKLE
@@ -302,6 +342,10 @@ AI_Pickle:
 	sta entity_hAccHi, y
 	jsr horizontalMovement
 	
+	jsr CheckOffscreen
+	cmp #$f0
+	beq @end
+	
 	lda #$06
 	jsr PRGBankWrite
 	
@@ -317,6 +361,7 @@ AI_Pickle:
 	jsr PRGBankWrite
 	ldx entity_counter
 	jmp PlayerBulletCollision
+@end
 	
 	rts
 
@@ -339,6 +384,8 @@ AI_Bullet:
 	lda #$04
 	sta entity_hAccHi, y
 	jsr horizontalMovement
+
+	jmp CheckOffscreen
 
 	rts
 	
@@ -386,10 +433,17 @@ AI_Cannon:
 	sta spawn_dir
 	jsr SpawnEnemy
 +
+
+	jsr CheckOffscreen
+	cmp #$f0
+	beq @end
+	
 	lda collided
 	bne @skipPlayerCollision
 	jsr PlayerObjectCollision
 @skipPlayerCollision:
+
+@end:
 	rts
 	
 AI_GenericArcBullet:
@@ -410,11 +464,16 @@ AI_GenericArcBullet:
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 	
+	jsr CheckOffscreen
+	cmp #$f0
+	beq @end
+	
 	lda collided
 	bne @skipPlayerCollision
 	jsr PlayerObjectCollision
 @skipPlayerCollision:
-	
+
+@end
 	rts
 	
 	

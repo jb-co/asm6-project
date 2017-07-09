@@ -44,39 +44,7 @@ GameState_Playing:
 	
 	txa
 	jsr DoRoutine
-	
-
-	
-	;check if entity is offscreen
-	ldy entity_counter
-	lda entity_width, y	;half width
-	lsr a
-	sec
-	sbc #$01
-	sta temp
-	
-	lda entity_xHi, y
-	clc 
-	adc temp
-	sta testX
-	lda worldX_hi, y
-	adc #$00
-	sta temp
-	
-	bcs @killit	;if it's less than 0, kill it with kindness
-	
-	lda testX
-	sec 
-	sbc scrollX_hi
-	lda temp
-	sbc roomNumber
-	beq @alive
-@killit	
-	lda #$f0
-	sta entity_yHi, y
-
-@alive
-		
+			
 	ldy entity_counter
 	lda nextActiveSlot, y
 	cmp #$ff

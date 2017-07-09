@@ -393,8 +393,6 @@ SpawnPlayerBullet:
 	adc #$07
 	sta entity_yHi, x
 	
-	lda worldX_hi+0
-	sta worldX_hi, x
 	
 	lda #$00
 	sta entity_vAccHi, x
@@ -409,12 +407,18 @@ SpawnPlayerBullet:
 	clc 
 	adc #$0D
 	sta entity_xHi, x
+	lda worldX_hi
+	adc #$00
+	sta worldX_hi, x
 	rts
 +
 	lda entity_xHi+0
 	sec 
 	sbc #$05
 	sta entity_xHi, x
+	lda worldX_hi
+	sbc #$00
+	sta worldX_hi, x
 
 	rts
 	
