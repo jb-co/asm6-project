@@ -62,6 +62,37 @@ GameState_StartScreen:
 	
 	
 	jmp StartScreen
+	
+GameState_HorizontalTransition:
+	lda #$00
+	sta collided 
+	
+	lda #PLAYER_SPRITE
+	sta entity_sprite
+	
+	lda entity_xLo
+	clc
+	adc #$50
+	sta entity_xLo
+	lda entity_xHi
+	adc #$00
+	sta entity_xHi
+	lda worldX_hi
+	adc #$00
+	sta worldX_hi
+	
+	inc scrollX_hi
+	inc scrollX_hi
+	
+	lda scrollX_hi
+	bne +
+	
+	inc roomNumber
+	
+	lda #$00
+	sta gameState	;so this will set the boss state later
++	
+	rts
 
 ;;waits for waitFrames frames with nmi running
 GameState_WaitFrames:

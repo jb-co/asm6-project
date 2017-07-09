@@ -78,6 +78,14 @@ Collision_Player:
 	jmp restoreY
 
 @horizontal
+	lda currentTile
+	cmp #$0a  ;;check for right transition
+	BNE @notBossDoor
+	
+	lda #$03
+	sta gameState	;horizontal transition
+	rts
+@notBossDoor
 	jmp restoreX
 	
 	

@@ -896,6 +896,8 @@ vertTrigger
 	db $33, $33, $33, $33, #%11111111
 cloud:
 	db $50, $51, $60, $61, #%01010101
+bossTrigger
+	db $18, $18, $18, $18, $00
 
  
 MetaTileSets:
@@ -908,7 +910,7 @@ AI_Routines:
 ;; [ ROUTINES ]
 
 GameState_Routines:
-	.word GameState_Playing-1, GameState_WaitFrames-1, GameState_StartScreen-1
+	.word GameState_Playing-1, GameState_WaitFrames-1, GameState_StartScreen-1, GameState_HorizontalTransition-1
 
 ;width, height, sprite
 ;;flags (07 - 06- 05- 04- 03- 02-gotHit? (01-palette bit 00-palette bit)

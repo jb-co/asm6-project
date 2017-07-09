@@ -403,6 +403,8 @@ SpawnPlayerBullet:
 	sta entity_hDir,x
 	cmp #RIGHT
 	bne +
+	
+	;Spawn right side of player
 	lda entity_xHi+0
 	clc 
 	adc #$0D
@@ -412,6 +414,7 @@ SpawnPlayerBullet:
 	sta worldX_hi, x
 	rts
 +
+	;Spawn left side of player
 	lda entity_xHi+0
 	sec 
 	sbc #$05
