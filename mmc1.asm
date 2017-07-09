@@ -806,18 +806,35 @@ GenerateAttributeBuffer:
 GetTileValue: 
 	
 	lda testX
+	lsr a 
+	lsr a 
+	lsr a
+	and #$01
+	sta tileX	;this should be the right horizontal tile in metatile
+	
+	lda testX
 	and #%11110000
 	sta temp
 	
-	LDA testY	;y / 16
+	LDA testY	
 	LSR A
 	LSR A
 	LSR A 
+	sta tileY  ;same as above
 	LSR A
-	
 	clc
 	adc temp
 	STA pColumnData_lo ;save lo map address
+	
+	; ^ modulus testY for y value in meta tile?
+	; testX div 16 mod 2 for x value 
+	
+	lda tileY 
+	and #$01
+	asl a
+	clc 
+	adc tileX
+	sta tileY	;this might be the right vertical tile?
 	
 	lda entity_xHi, x
 	clc
@@ -834,6 +851,15 @@ GetTileValue:
 
 	LDY #<(METABUFFER_RAM)
 	LDA (pColumnData_lo), y
+	tay
+	
+	lda MetaTileSets, y
+	sta pMetaTile
+	lda MetaTileSets+1, y
+	sta pMetaTile+1
+	
+	ldy tileY
+	lda (pMetaTile), y
 	
 	sta currentTile
 
@@ -896,12 +922,12 @@ vertTrigger
 	db $33, $33, $33, $33, #%11111111
 cloud:
 	db $50, $51, $60, $61, #%01010101
-bossTrigger
-	db $18, $18, $18, $18, $00
+bossTrigger:
+	db $24, $18, $24, $18, #%01010101
 
  
 MetaTileSets:
-	dw sky, grass, sand, snow, vertTrigger, cloud
+	dw sky, grass, sand, snow, vertTrigger, cloud, bossTrigger
 	
 
 AI_Routines:

@@ -1,5 +1,8 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
+
+tileY		.dsb 1
+tileX		.dsb 1
 gurras .dsb 1
 
 actives .dsb 4
@@ -55,6 +58,8 @@ counter:			.dsb 1	;generic counter, rules above apply
 
 testX:			.dsb 1 	;generic variable
 testY:			.dsb 1 	;generic variable
+
+
 
 
 offsetX:			.dsb 1	;used for collision check

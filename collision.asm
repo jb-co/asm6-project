@@ -79,7 +79,7 @@ Collision_Player:
 
 @horizontal
 	lda currentTile
-	cmp #$0a  ;;check for right transition
+	cmp #$18  ;;check for right transition
 	BNE @notBossDoor
 	
 	lda #$03
@@ -158,7 +158,7 @@ BgrCollisionVertical:
 
 	JSR GetTileValue
 	lda currentTile
-	
+	cmp #$24
 
 	BEQ @notFloor
 	
@@ -230,7 +230,7 @@ BgrCollisionHorizontal:
 	
 	JSR GetTileValue
 	lda currentTile
-	
+	cmp #$24
 
 	
 	BEQ @notHorizontalCollision
