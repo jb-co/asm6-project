@@ -807,12 +807,17 @@ GenerateAttributeBuffer:
 	
 GetTileValue: 
 	
+	;;Get mask for horizontal collision in meta tile
 	lda testX
 	and #$08
-	lsr a
-	lsr a 
-	lsr a
-	sta tileX	;this should be the right horizontal tile in metatile
+	beq +leftTile
++rightTile:
+	lda #%00000101
+	jmp ++
++leftTile:
+	lda #%00001010
+++
+	sta collisionMask	;save mask for horizontal tile
 	
 	lda testX
 	and #%11110000
@@ -827,14 +832,18 @@ GetTileValue:
 	adc temp
 	STA pColumnData_lo ;save lo map address
 	
-	
+	;Get mask for vertical collision in meta tile
 	lda testY 
 	and #$08
-	lsr a 
-	lsr a 
-	clc 
-	adc tileX
-	sta tileY	;this might be the right vertical tile?
+	beq +upTile
++downTile:
+	lda #%00000011
+	jmp ++
++upTile:
+	lda #%00001100
+++
+	and collisionMask
+	sta collisionMask
 	
 	lda entity_xHi, x
 	clc
@@ -858,11 +867,16 @@ GetTileValue:
 	lda MetaTileSets+1, y
 	sta pMetaTile+1
 	
-	ldy tileY
+	ldy #$05 ;get collision bits
 	lda (pMetaTile), y
-	
+	and collisionMask
+	bne +collision
+	lda #$00
+	jmp ++
++collision
+	lda #$01
+++	
 	sta currentTile
-
 	rts
 	
 
@@ -910,22 +924,23 @@ palette:
 
 	
   ;; [ META TILES ]
+  ;; LU, RU, DL, DR, attribute flags, collision flags ( 0-dmg?, 1-xTransition, 2-yTransition, 3-??, 4-LUcol, 5-RU-col, 6-LD-col, 7-RD-col )
 sky:
-	db $24, $24, $24, $24, #%01010101
+	db $24, $24, $24, $24, #%01010101, $00
 grass:
-	db $30, $31, $25, $25, #%10101010
+	db $30, $31, $25, $25, #%10101010, #%00001111
 sand:
-	db $25, $25, $25, $25, #%10101010
+	db $25, $25, $25, $25, #%10101010, #%00001111
 snow:
-	db $57, $58, $59, $5A, #%11111111
+	db $57, $58, $59, $5A, #%11111111, #%00001111
 vertTrigger
-	db $33, $33, $33, $33, #%11111111
+	db $33, $33, $33, $33, #%11111111, #%00001111 ; for now, fix this
 cloud:
-	db $50, $51, $60, $61, #%01010101
+	db $50, $51, $60, $61, #%01010101, $00
 bossTrigger:
-	db $24, $26, $24, $26, #%01010101
+	db $24, $26, $24, $26, #%01010101, #%00000101
 dirt1_dl:
-	db $24, $25, $24, $24, #%01010101
+	db $24, $25, $24, $24, #%01010101, #%00000100
 
  
 MetaTileSets:

@@ -1,8 +1,6 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
-
-tileY		.dsb 1
-tileX		.dsb 1
+collisionMask		.dsb 1
 gurras .dsb 1
 
 actives .dsb 4

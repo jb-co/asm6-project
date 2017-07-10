@@ -158,8 +158,6 @@ BgrCollisionVertical:
 
 	JSR GetTileValue
 	lda currentTile
-	cmp #$24
-
 	BEQ @notFloor
 	
 	;;call routines
@@ -231,8 +229,6 @@ BgrCollisionHorizontal:
 
 	JSR GetTileValue
 	lda currentTile
-	cmp #$24
-
 	BEQ @notHorizontalCollision
 	
 	ldy entity_counter
