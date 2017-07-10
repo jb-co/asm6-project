@@ -3,7 +3,7 @@ Collision_Routines:
 	
 ;hitboxes
 HitBox_Player:
-	.db $01, $00, $0F, $10
+	.db $04, $01, $0c, $10
 HitBox_Blob:
 	.db $00, $00, $07, $08
 HitBox_Stomper:

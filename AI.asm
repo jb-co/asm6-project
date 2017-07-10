@@ -8,7 +8,7 @@ playerJump:
 	inc jumpCounter
 	LDA #$04
 	STA entity_vAccHi
-	LDA #$a5
+	LDA #$40
 	STA entity_vAccLo
 	
 +	

@@ -69,7 +69,7 @@ CheckInputs:
 	lda entity_vAccLo
 	CMP #$40
 	Bmi @dontReset
-	LDA #$40
+	LDA #$00
 	STA entity_vAccLo
 	
 @dontReset

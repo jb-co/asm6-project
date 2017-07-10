@@ -806,10 +806,10 @@ GenerateAttributeBuffer:
 GetTileValue: 
 	
 	lda testX
-	lsr a 
+	and #$08
+	lsr a
 	lsr a 
 	lsr a
-	and #$01
 	sta tileX	;this should be the right horizontal tile in metatile
 	
 	lda testX
@@ -820,7 +820,6 @@ GetTileValue:
 	LSR A
 	LSR A
 	LSR A 
-	sta tileY  ;same as above
 	LSR A
 	clc
 	adc temp
@@ -829,9 +828,10 @@ GetTileValue:
 	; ^ modulus testY for y value in meta tile?
 	; testX div 16 mod 2 for x value 
 	
-	lda tileY 
-	and #$01
-	asl a
+	lda testY 
+	and #$08
+	lsr a 
+	lsr a 
 	clc 
 	adc tileX
 	sta tileY	;this might be the right vertical tile?
@@ -924,10 +924,12 @@ cloud:
 	db $50, $51, $60, $61, #%01010101
 bossTrigger:
 	db $24, $18, $24, $18, #%01010101
+dirt1_dl:
+	db $24, $25, $24, $24, #%01010101
 
  
 MetaTileSets:
-	dw sky, grass, sand, snow, vertTrigger, cloud, bossTrigger
+	dw sky, grass, sand, snow, vertTrigger, cloud, bossTrigger, dirt1_dl
 	
 
 AI_Routines:
