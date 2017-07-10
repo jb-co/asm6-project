@@ -41,6 +41,7 @@ updateHP:
 	sta SPRITE_RAM+3, x
 	
 	lda #PALETTE_3
+	and #$03
 	sta SPRITE_RAM+2, x
 	
 	iny
