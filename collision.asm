@@ -57,8 +57,8 @@ Collision_Player:
 
 @vertical
 	lda currentTile
-	cmp #VERT_TILE  ;;check for down transition
-	BNE @notTransition
+	and #VERT_MASK  ;;check for down transition
+	beq @notTransition
 	jmp VerticalTransition
 	
 @notTransition	
@@ -79,8 +79,8 @@ Collision_Player:
 
 @horizontal
 	lda currentTile
-	cmp #BOSS_TILE  ;;check for right transition
-	BNE @notBossDoor
+	and #BOSS_MASK ;check if boss door
+	beq @notBossDoor
 	
 	lda #$03
 	sta gameState	;horizontal transition
@@ -158,6 +158,7 @@ BgrCollisionVertical:
 
 	JSR GetTileValue
 	lda currentTile
+	and #%00001111
 	BEQ @notFloor
 	
 	;;call routines
@@ -229,6 +230,7 @@ BgrCollisionHorizontal:
 
 	JSR GetTileValue
 	lda currentTile
+	and #%00001111
 	BEQ @notHorizontalCollision
 	
 	ldy entity_counter

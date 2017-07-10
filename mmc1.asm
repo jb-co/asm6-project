@@ -37,6 +37,9 @@ CANNON_SPRITE = $80
 BOSS_TILE = $26
 VERT_TILE = $33
 
+BOSS_MASK = %00100000
+VERT_MASK = %01000000
+
 NEXT_COLUMN = $7fa0
 NEXT_ATTRIBUTES = $7fc0
 
@@ -812,10 +815,10 @@ GetTileValue:
 	and #$08
 	beq +leftTile
 +rightTile:
-	lda #%00000101
+	lda #%11110101
 	jmp ++
 +leftTile:
-	lda #%00001010
+	lda #%11111010
 ++
 	sta collisionMask	;save mask for horizontal tile
 	
@@ -837,10 +840,10 @@ GetTileValue:
 	and #$08
 	beq +upTile
 +downTile:
-	lda #%00000011
+	lda #%11110011
 	jmp ++
 +upTile:
-	lda #%00001100
+	lda #%11111100
 ++
 	and collisionMask
 	sta collisionMask
@@ -870,12 +873,6 @@ GetTileValue:
 	ldy #$05 ;get collision bits
 	lda (pMetaTile), y
 	and collisionMask
-	bne +collision
-	lda #$00
-	jmp ++
-+collision
-	lda #$01
-++	
 	sta currentTile
 	rts
 	
@@ -934,11 +931,11 @@ sand:
 snow:
 	db $57, $58, $59, $5A, #%11111111, #%00001111
 vertTrigger
-	db $33, $33, $33, $33, #%11111111, #%00001111 ; for now, fix this
+	db $33, $33, $33, $33, #%11111111, #%01001111 ; for now, fix this
 cloud:
 	db $50, $51, $60, $61, #%01010101, $00
 bossTrigger:
-	db $24, $26, $24, $26, #%01010101, #%00000101
+	db $24, $26, $24, $26, #%01010101, #%00100101
 dirt1_dl:
 	db $24, $25, $24, $24, #%01010101, #%00000100
 
