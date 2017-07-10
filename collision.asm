@@ -3,19 +3,19 @@ Collision_Routines:
 	
 ;hitboxes
 HitBox_Player:
-	.db $04, $01, $0c, $10
+	.db $04, $01, $0c, $10, $f0, $09
 HitBox_Blob:
-	.db $00, $00, $07, $08
+	.db $00, $00, $07, $08, $f0, $f0
 HitBox_Stomper:
-	.db $01, $00, $0F, $18
+	.db $01, $00, $0F, $18, $f0, $f0
 HitBox_Pickle:
-	.db $00, $00, $10, $10
+	.db $00, $00, $10, $10, $f0, $f0
 HitBox_Bullet:
-	.db $00, $00, $08, $08
+	.db $00, $00, $08, $08, $f0, $f0
 HitBox_Cannon:
-	.db $02, $00, $06, $08
+	.db $02, $00, $06, $08, $f0, $f0
 HitBox_ArcBullet
-	.db $03, $03, $06, $06
+	.db $03, $03, $06, $06, $f0, $f0
 	
 HitBoxes:
 	.dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet, HitBox_Cannon, HitBox_ArcBullet
@@ -175,7 +175,7 @@ BgrCollisionVertical:
 	inc counter
 	inc counter
 	ldy counter
-	CPy #$02
+	cpy #$02
 	BEQ @xOffsetLoop
 
 @end	
@@ -223,16 +223,16 @@ BgrCollisionHorizontal:
 @yOffsetLoop
 	
 	lda (pHitBox), y
+	cmp #$f0
+	beq @notHorizontalCollision
 	clc
 	adc entity_yHi, x
 	STA testY
 
-	
 	JSR GetTileValue
 	lda currentTile
 	cmp #$24
 
-	
 	BEQ @notHorizontalCollision
 	
 	ldy entity_counter
@@ -240,13 +240,12 @@ BgrCollisionHorizontal:
 	jsr CollisionRoutine	
 	jmp @end
 	
-	
 @notHorizontalCollision
 	inc counter
 	inc counter
 	ldy counter
-	cpy #$03
-	BEQ @yOffsetLoop
+	cpy #$07
+	bne @yOffsetLoop
 @end	
 	
 	rts

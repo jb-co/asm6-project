@@ -825,8 +825,6 @@ GetTileValue:
 	adc temp
 	STA pColumnData_lo ;save lo map address
 	
-	; ^ modulus testY for y value in meta tile?
-	; testX div 16 mod 2 for x value 
 	
 	lda testY 
 	and #$08
