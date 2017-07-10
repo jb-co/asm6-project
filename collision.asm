@@ -79,7 +79,7 @@ Collision_Player:
 
 @horizontal
 	lda currentTile
-	cmp #$18  ;;check for right transition
+	cmp #BOSS_TILE  ;;check for right transition
 	BNE @notBossDoor
 	
 	lda #$03

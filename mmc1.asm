@@ -34,8 +34,9 @@ PICKLE_SPRITE = $34
 BULLET_SPRITE = $06
 CANNON_SPRITE = $80
 
-NEXT_COLUMN = $7fa0
+BOSS_TILE = $26
 
+NEXT_COLUMN = $7fa0
 NEXT_ATTRIBUTES = $7fc0
 
 ;----------------------------------------------------------------
@@ -921,7 +922,7 @@ vertTrigger
 cloud:
 	db $50, $51, $60, $61, #%01010101
 bossTrigger:
-	db $24, $18, $24, $18, #%01010101
+	db $24, $26, $24, $26, #%01010101
 dirt1_dl:
 	db $24, $25, $24, $24, #%01010101
 
