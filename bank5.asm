@@ -40,7 +40,7 @@ updateHP:
 	lda temp
 	sta SPRITE_RAM+3, x
 	
-	lda #$00
+	lda #PALETTE_3
 	sta SPRITE_RAM+2, x
 	
 	iny

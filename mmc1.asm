@@ -34,6 +34,12 @@ PICKLE_SPRITE = $34
 BULLET_SPRITE = $06
 CANNON_SPRITE = $80
 
+PALETTE_0 = $00
+PALETTE_1 = %01010101
+PALETTE_2 = %10101010
+PALETTE_3 = $ff
+
+
 BOSS_TILE = $26
 VERT_TILE = $33
 
@@ -909,9 +915,13 @@ GameStateRoutine:
 	rts
   
 palette:	
-	.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
+	;.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
 
-	.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
+	;.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
+	
+	.db $0f,$00,$10,$30,$0f,$01,$21,$30,$0f,$17,$19,$2a,$0f,$05,$16,$38
+	.db $0f,$00,$10,$30,$0f,$01,$21,$30,$0f,$17,$19,$2a,$0f,$05,$16,$38
+
 
 
 
@@ -923,7 +933,7 @@ palette:
   ;; [ META TILES ]
   ;; LU, RU, DL, DR, attribute flags, collision flags ( 0-dmg?, 1-xTransition, 2-yTransition, 3-??, 4-LUcol, 5-RU-col, 6-LD-col, 7-RD-col )
 sky:
-	db $24, $24, $24, $24, #%01010101, $00
+	db $00, $00, $00, $00, #PALETTE_0, $00
 grass:
 	db $30, $31, $25, $25, #%10101010, #%00001111
 sand:
@@ -937,11 +947,21 @@ cloud:
 bossTrigger:
 	db $24, $26, $24, $26, #%01010101, #%00100101
 dirt1_dl:
-	db $24, $25, $24, $24, #%01010101, #%00000100
+	db $00, $25, $00, $00, #PALETTE_3, #%00000100
+stars1:
+	db $40, $41, $50, $51, #PALETTE_0, $00 ;10
+stars2:
+	db $42, $43, $00, $00, #PALETTE_0, $00
+stars3: 
+	db $00, $52, $00, $00, #PALETTE_0, $00
+stars4: 
+	db $00, $00, $53, $00, #PALETTE_0, $00
+stars5: 
+	db $42, $43, $52, $53, #PALETTE_0, $00
 
  
 MetaTileSets:
-	dw sky, grass, sand, snow, vertTrigger, cloud, bossTrigger, dirt1_dl
+	dw sky, grass, sand, snow, vertTrigger, cloud, bossTrigger, dirt1_dl, stars1, stars2, stars3, stars4, stars5
 	
 
 AI_Routines:

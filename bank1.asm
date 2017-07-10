@@ -63,7 +63,7 @@ LoadAttribute:
   LDX #$00              ; start out at 0
 -
 	;LDA attribute, x      ; load data from address (attribute + the value in x)
-	lda #$00
+	lda #PALETTE_3
 	STA $2007             ; write to PPU
 	INX                   ; X = X + 1
 	CPX #$30              ; Compare X to hex $08, decimal 8 - copying 8 bytes
