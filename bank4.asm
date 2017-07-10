@@ -31,7 +31,7 @@ level1_Objects:	;roomNumber, x, y, type, enemyIndex
 ;so i will move these to the actual map file at some point
 ;$01 - right lock, $02 - left lock, $03 - both 
 Level1_ScrollLocks:
-	.db $02, $03, $01, $03, $03
+	.db $02, $01, $01, $03, $03
 
 columnData:
 	db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $04, $04

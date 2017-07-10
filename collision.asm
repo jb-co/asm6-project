@@ -57,7 +57,7 @@ Collision_Player:
 
 @vertical
 	lda currentTile
-	cmp #$08  ;;check for down transition
+	cmp #VERT_TILE  ;;check for down transition
 	BNE @notTransition
 	jmp VerticalTransition
 	

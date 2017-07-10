@@ -72,7 +72,7 @@ GameState_HorizontalTransition:
 	
 	lda entity_xLo
 	clc
-	adc #$50
+	adc #$40
 	sta entity_xLo
 	lda entity_xHi
 	adc #$00
@@ -85,12 +85,15 @@ GameState_HorizontalTransition:
 	inc scrollX_hi
 	
 	lda scrollX_hi
+	and #%11111110 ; just to make sure it doesn't skip 0
 	bne +
+	cmp #$01
 	
 	inc roomNumber
 	
 	lda #$00
 	sta gameState	;so this will set the boss state later
+	sta scrollX_hi
 +	
 	rts
 
