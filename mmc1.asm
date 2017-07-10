@@ -324,7 +324,7 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
 	STA $2000
 
-	LDA #%00111110   ; enable sprites, enable background, no clipping on left side
+	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
 	STA $2001
 	
 	ldy #$00
@@ -402,7 +402,7 @@ NMI:
 	lda gamePaused
 	beq +
 	
-	LDA #%00111110   ; enable sprites, enable background, no clipping on left side
+	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
 	STA $2001
 	
 	lda #$00
@@ -915,19 +915,8 @@ GameStateRoutine:
 	rts
   
 palette:	
-	;.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
-
-	;.db $0f,$16,$2d,$37,$0f,$30,$11,$21,$0f,$17,$19,$2a,$0f,$0f,$00,$16
-	
-	.db $0f,$00,$10,$30,$0f,$01,$21,$30,$0f,$17,$19,$2a,$0f,$05,$16,$38
-	.db $0f,$00,$10,$30,$0f,$01,$21,$30,$0f,$17,$19,$2a,$0f,$05,$16,$38
-
-
-
-
-
-	
-
+	.db $0f,$00,$27,$30,$0f,$09,$1a,$28,$0f,$13,$23,$30,$0f,$05,$16,$38
+	.db $0f,$00,$27,$30,$0f,$09,$1a,$28,$0f,$13,$23,$30,$0f,$05,$16,$38
 
 	
   ;; [ META TILES ]
@@ -937,9 +926,9 @@ sky:
 grass:
 	db $30, $31, $25, $25, #%10101010, #%00001111
 sand:
-	db $25, $25, $25, $25, #%10101010, #%00001111
+	db $25, $25, $25, $25, #PALETTE_0, #%00001111
 snow:
-	db $57, $58, $59, $5A, #%11111111, #%00001111
+	db $57, $58, $59, $5A, #PALETTE_0, #%00001111
 vertTrigger
 	db $33, $33, $33, $33, #%11111111, #%01001111 ; for now, fix this
 cloud:
@@ -979,17 +968,17 @@ GameState_Routines:
 Def_Player:
 	.byte $10, $10, $B0, $00
 Def_Blob:
-	.byte $08, $08, $10, $03
+	.byte $08, $08, $10, $01
 Def_Stomper:
-	.byte $18, $10, $50, $03
+	.byte $18, $10, $50, $01
 Def_Pickle:
-	.byte $10, $10, $34, $03
+	.byte $10, $10, $34, $01
 Def_Bullet:
-	.byte $08, $08, $06, $00
+	.byte $08, $08, $06, $01
 Def_Cannon: 
-	.byte $08, $08, $80, $03
+	.byte $08, $08, $80, $00
 Def_GenericArcBullet:
-	.byte $08, $08, $81, $00
+	.byte $08, $08, $81, $01
 
 	
 BitPos:

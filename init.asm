@@ -163,7 +163,7 @@ InitVariables:
 
 	sta deltaX
 	
-	lda #%00000000
+	lda #%00000010
 	sta entity_flags
 	
 	lda #$10
