@@ -974,7 +974,7 @@ Def_Stomper:
 Def_Pickle:
 	.byte $10, $10, $34, $01
 Def_Bullet:
-	.byte $08, $08, $06, $01
+	.byte $08, $08, $06, $02
 Def_Cannon: 
 	.byte $08, $08, $80, $00
 Def_GenericArcBullet:

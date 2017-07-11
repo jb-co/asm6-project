@@ -12,8 +12,7 @@ level1_Objects:	;roomNumber, x, y, type, enemyIndex
 	.db $ef
 	.db $01, $40, $40, PICKLE, $04
 	.db $01, $A0, $50, STOMPER, $06
-	.db $01, $F0, $B7, CANNON, $07
-	.db $01, $20, $20, BLOB, $02
+	.db $01, $D0, $C7, CANNON, $07
 	.db $ef
 	.db $02, $40, $50, STOMPER, $08
 	.db $02, $60, $40, PICKLE, $09

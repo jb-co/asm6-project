@@ -238,8 +238,10 @@ AI_Blob:
 @alive
 
 	ldy entity_counter
-	lda #$01
+	lda #$00
 	sta entity_hAccHi, y
+	lda #$80
+	sta entity_hAccLo, y
 	
 	jsr applyGravity
 	
@@ -344,7 +346,32 @@ AI_Pickle:
 	
 	jsr CheckOffscreen
 	cmp #$f0
-	beq @end
+	beq +end
+	
+	lda frameCounter
+	and #%00111111
+	bne +
+	
+	lda #$04
+	jsr PRGBankWrite
+	
+	lda entity_xHi, y
+	sta spawn_x
+	lda entity_yHi, y
+	sta spawn_y
+	lda #BLOB
+	sta spawn_type
+	lda worldX_hi, y
+	sta spawn_room
+	lda #$02
+	sta spawn_vAccHi
+	
+	lda entity_hDir, y
+	sta spawn_dir
+	
+	jsr SpawnEnemy
+	
++
 	
 	lda #$06
 	jsr PRGBankWrite
@@ -353,15 +380,15 @@ AI_Pickle:
 	jsr Animation_Generic
 	
 	lda collided
-	bne @skipPlayerCollision
+	bne +
 	jsr PlayerObjectCollision
-@skipPlayerCollision:
++
 	
 	lda #$05
 	jsr PRGBankWrite
 	ldx entity_counter
 	jmp PlayerBulletCollision
-@end
++end
 	
 	rts
 

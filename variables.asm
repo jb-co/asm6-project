@@ -181,6 +181,7 @@ spawn_room			.dsb 1
 spawn_x				.dsb 1
 spawn_y				.dsb 1
 spawn_vAccHi		.dsb 1
+spawn_hAccHi		.dsb 1
 spawn_dir
 spawned				.dsb 1	
 
