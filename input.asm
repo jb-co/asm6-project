@@ -48,6 +48,8 @@ CheckInputs:
 	AND #$80
 	BEQ @notA
 	
+	lda entity_airborne
+	bne @checkB
 	
 	lda isJumping
 	bne @checkB

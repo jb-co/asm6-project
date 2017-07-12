@@ -152,6 +152,7 @@ InitVariables:
 	sta columnReady
 	sta collided
 	sta iframes
+	sta entity_airborne
 	
 	LDA #$40
 	STA gravity

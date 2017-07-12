@@ -156,6 +156,8 @@ entity_counter 		.dsb 1
 entity_height		.dsb 20
 entity_width		.dsb 20
 
+entity_airborne		.dsb 20
+
 
 entity_timer		.dsb 20
 entity_animFrame 	.dsb 20
