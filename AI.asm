@@ -243,6 +243,15 @@ AI_Blob:
 	lda #$80
 	sta entity_hAccLo, y
 	
+	lda entity_airborne,y
+	bne @dontJump
+	lda #$00
+	sta entity_vAccLo, y
+	lda entity_vAccHi, y
+	clc
+	adc #$04
+	sta entity_vAccHi, y
+@dontJump
 	jsr applyGravity
 	
 	jsr horizontalMovement
@@ -281,7 +290,7 @@ AI_Stomper:
 	;check if dead/off screen
 	lda entity_yHi, y
 	cmp #$f0
-	bne @alive
+	bne +alive
 	
 	lda entity_index, y
 	jsr GetActiveBit
@@ -289,24 +298,57 @@ AI_Stomper:
 	sta actives, x
 	
 	jmp ReturnFreeSlot
-@alive
++alive
 
+	
+	
 	lda frameCounter
 	and #%00111111
 	cmp #$20
-	bne @skip
+	bne +
+	
+	lda entity_airborne, y
+	bne +
+	
 	lda entity_vAccHi, y
 	clc
-	adc #$04
+	adc #$05
 	sta entity_vAccHi, y
-	
-@skip
++
 
 	jsr applyGravity
 	
 	jsr verticalMovement
 	jsr BgrCollisionVertical
 	
+	ldy entity_counter
+	lda entity_airborne, y
+	beq +noHorizontal
+
+	
+	lda worldX_hi
+	cmp worldX_hi, y
+	bcc +left
+	
+	lda entity_xHi
+	cmp entity_xHi, y
+	bcc +left 
++right	
+	lda #RIGHT 
+	jmp +setDirection
++left
+	lda #LEFT
+	
++setDirection:
+	sta entity_hDir, y
+	
+	lda #$40
+	sta entity_hAccLo, y
+	
+	jsr horizontalMovement
+	jsr BgrCollisionHorizontal
+
++noHorizontal:
 	jsr CheckOffscreen
 	cmp #$f0
 	beq @end

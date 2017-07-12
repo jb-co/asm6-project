@@ -161,14 +161,14 @@ BgrCollisionVertical:
 	and #%00001111
 	BEQ @notFloor
 	
-	lda #$00
-	sta entity_airborne, x
 	;;call routines
 	ldy entity_counter
+	lda #$00
+	sta entity_airborne, x
 	lda entity_type, x
 	
 	jmp CollisionRoutine	
-
+	rts
 	
 @notFloor:
 	

@@ -285,6 +285,9 @@ SpawnEnemyFromMap:
 	sta entity_vAccHi, x
 	sta entity_vAccLo, x
 	
+	lda #$01
+	sta entity_airborne, x
+	
 	;;SET OBJ DIRECTION
 	lda entity_hDir	;; opposite of player facing direction
 	eor #%11000000
@@ -309,6 +312,8 @@ SpawnEnemy:
 	lda #$00
 	sta entity_xLo, x
 	sta entity_yLo, x
+	lda #$01
+	sta entity_airborne, x
 	
 	lda #$ee
 	sta entity_index, x
