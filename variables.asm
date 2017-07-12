@@ -1,7 +1,8 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
+bleh	.dsb 1
+bleh2	.dsb 1
 collisionMask		.dsb 1
-gurras .dsb 1
 
 actives .dsb 4
 ;object slots

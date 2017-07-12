@@ -43,6 +43,21 @@ doneAnim:
 
 	rts
 
+Animation_Stomper:
+
+	ldy entity_counter
+	lda entity_airborne, y
+	bne +air
+	lda Def_Stomper+2
+	clc 
+	adc #$02
+	sta entity_sprite, y
+	rts
++air:
+	lda Def_Stomper+2
+	sta entity_sprite, y
+
+	rts
 
 Animation_Generic:
 	sta counter

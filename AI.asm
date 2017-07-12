@@ -325,13 +325,16 @@ AI_Stomper:
 	lda entity_airborne, y
 	beq +noHorizontal
 
-	
-	lda worldX_hi
-	cmp worldX_hi, y
-	bcc +left
-	
+	;check which side player is 
+	lda entity_xHi, y
+	sec 
+	sbc scrollX_hi
+	sta temp
 	lda entity_xHi
-	cmp entity_xHi, y
+	sec 
+	sbc scrollX_hi
+	
+	cmp temp
 	bcc +left 
 +right	
 	lda #RIGHT 
@@ -363,8 +366,13 @@ AI_Stomper:
 	
 	ldx entity_counter
 	jsr PlayerBulletCollision
-
 @end	
+
+	lda #$06
+	jsr PRGBankWrite
+	
+	lda #STOMPER
+	jsr Animation_Stomper
 	rts
 
 ;;PICKLE
