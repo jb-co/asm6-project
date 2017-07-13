@@ -389,7 +389,12 @@ AI_Pickle:
 	
 	jmp ReturnFreeSlot
 @alive
-
+	
+	lda entity_timer, y
+	clc
+	adc #$01
+	sta entity_timer, y
+	
 	lda #$01
 	sta entity_hAccHi, y
 	jsr horizontalMovement
@@ -398,9 +403,15 @@ AI_Pickle:
 	cmp #$f0
 	beq +end
 	
-	lda frameCounter
-	and #%00111111
+	lda entity_timer, y
+	cmp #$30
 	bne +
+	lda #$00
+	sta entity_timer, y
++
+	cmp #$04
+	bne +
+	
 	
 	lda #$04
 	jsr PRGBankWrite
@@ -420,7 +431,6 @@ AI_Pickle:
 	sta spawn_dir
 	
 	jsr SpawnEnemy
-	
 +
 	
 	lda #$06

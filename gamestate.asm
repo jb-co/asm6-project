@@ -126,14 +126,23 @@ PlayerObjectCollision:
 	ldx entity_counter ;transfer object index to x
 	
 @beginSpriteCollisionCheck
+	lda entity_xHi
+	sec
+	sbc scrollX_hi
+	sta testX
+	lda entity_xHi, x
+	sec
+	sbc scrollX_hi
+	sta testY
+	
 	
 	;is right side >= player left
-	lda entity_xHi
+	lda testX
 	clc
 	adc HitBox_Player
 	sta temp
 	
-	lda entity_xHi, x
+	lda testY
 	ldy #$02
 	clc
 	adc (pHitBox), y
@@ -142,12 +151,12 @@ PlayerObjectCollision:
 	bcc @endSpriteCollisionCheck
 	
 	;is left side <= player right
-	lda entity_xHi
+	lda testX
 	clc 
 	adc HitBox_Player+2
 	sta temp
 	
-	lda entity_xHi, x
+	lda testY
 	ldy #$00
 	clc
 	adc (pHitBox), y
