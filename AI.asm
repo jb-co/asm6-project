@@ -574,6 +574,7 @@ AI_Boss1:
 	jsr BossPattern
 	;;
 	
+	ldy entity_counter
 	jsr applyGravity
 	
 	jsr verticalMovement

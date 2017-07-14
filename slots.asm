@@ -44,22 +44,15 @@ ReturnFreeSlot: ;send in index as y here
 		
 ClearActiveSlots:
 	
+-	
 	ldy firstActiveSlot
-	cmp #$ff
-	beq @end
-
-@loop
+	cpy #$ff
+	beq +
 	
 	jsr ReturnFreeSlot
-	lda nextActiveSlot, y
-	cmp #$ff
-	beq @end
+	jmp -
 
-	tay
-	
-	jmp @loop
-
-@end
++
 	rts
 
 FindSlotIndex:  ;;looks for a object with entity_index a
@@ -88,7 +81,20 @@ FindSlotIndex:  ;;looks for a object with entity_index a
 	lda #$00
 	rts
 	
-;bullet slots
+;reset bullets:
+ClearBullets:
+
+	;init player bullets array
+	
+	ldy #$00
+	lda #$ff
+
+-	sta playerBullets, y
+	iny
+	cpy #$03
+	bne -
+
+	rts
 
 
 

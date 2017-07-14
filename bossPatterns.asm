@@ -1,9 +1,21 @@
 Boss1_Pattern1:
+	
+	lda entity_airborne, y
+	beq +
+	lda #$57
+	sta entity_sprite, y
+	rts
++
 
-	lda entity_vAccHi, y
-	clc
-	adc #$04
+	lda frameCounter
+	and #%00111111
+	cmp #%00100000
+	bne +
+	lda #$04
 	sta entity_vAccHi, y
++
+	lda #$54
+	sta entity_sprite, y
 	rts
 	
 Boss1_Pattern2:

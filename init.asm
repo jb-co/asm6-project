@@ -59,18 +59,7 @@ InitSlots:
 	sta nextActiveSlot, y
 	ldy #$01
 	sta nextActiveSlot, y
-		
-
-	;init player bullets array
-	
-	ldy #$00
-	lda #$ff
-
--	sta playerBullets, y
-	iny
-	cpy #$03
-	bne -
-		
+			
 	rts
 	
 LoadObjects:

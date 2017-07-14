@@ -306,6 +306,7 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	
 	jsr InitVariables
 	jsr InitSlots
+	jsr ClearBullets
 	
 	jsr LoadObjects
 	jsr ReadMetaTiles
@@ -937,7 +938,7 @@ vertTrigger
 cloud:
 	db $50, $51, $60, $61, #%01010101, $00
 bossTrigger:
-	db $24, $26, $24, $26, #%01010101, #%00100101
+	db $00, $26, $00, $26, #%01010101, #%00100101
 dirt1_dl:
 	db $00, $25, $00, $00, #PALETTE_3, #%00000100
 stars1:

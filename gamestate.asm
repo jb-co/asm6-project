@@ -71,6 +71,7 @@ GameState_HorizontalTransition:
 	sta entity_sprite
 	
 	jsr ClearActiveSlots
+	jsr ClearBullets
 	
 	lda entity_xLo
 	clc

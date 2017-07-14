@@ -1,5 +1,5 @@
 Collision_Routines:
-	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1, Collision_Bullet-1, Collision_Arc_Bullet-1
+	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1, Collision_Bullet-1, Collision_Arc_Bullet-1, Collision_Blob-1
 	
 ;hitboxes
 HitBox_Player:
