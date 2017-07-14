@@ -15,7 +15,7 @@ ReturnFreeSlot: ;send in index as y here
 	sty firstFreeSlot 
 	
 	cpy firstActiveSlot
-	bne @traverseList
+	bne +
 	
 	;;object was first in list
 	lda nextActiveSlot, y
@@ -23,19 +23,19 @@ ReturnFreeSlot: ;send in index as y here
 	
 	rts
 	
-@traverseList
++
 	ldx firstActiveSlot
 	
-@loop
+-loop
 	tya
 	cmp nextActiveSlot, x
-	beq @foundObject
+	beq +foundObject
 	
 	lda nextActiveSlot, x
 	tax
-	jmp @loop
+	jmp -loop
 
-@foundObject
++foundObject
 
 	lda nextActiveSlot, y
 	sta nextActiveSlot, x
