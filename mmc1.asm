@@ -19,6 +19,7 @@ PICKLE = $06
 BULLET = $08
 CANNON = $0A
 ARC_BULLET = $0C
+BOSS_1 = $0e
 
 SPRITE_RAM = $200
 SPAWN_RAM = $6000
@@ -145,11 +146,13 @@ NEXT_ATTRIBUTES = $7fc0
 
 ;----------------------------------------------------------------
 ; program bank 7
+;
+; Boss patterns
 ;----------------------------------------------------------------
 
    .base $8000
 
-   ;NOTE: contents of program bank 1 go here
+   include bossPatterns.asm
 
    .org $c000
    
@@ -954,7 +957,8 @@ MetaTileSets:
 	
 
 AI_Routines:
-	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1
+	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1, AI_Boss1-1
+	
 	
 ;; [ ROUTINES ]
 
@@ -979,6 +983,9 @@ Def_Cannon:
 	.byte $08, $08, $80, $00
 Def_GenericArcBullet:
 	.byte $08, $08, $81, $01
+	
+Def_Boss1
+	.byte $10, $18, $54, $03
 
 	
 BitPos:

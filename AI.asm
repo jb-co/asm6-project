@@ -563,6 +563,23 @@ AI_GenericArcBullet:
 @end
 	rts
 	
+AI_Boss1:
+	
+	;set boss pattern bank
+	lda #$07
+	jsr PRGBankWrite
+	
+	
+	lda #$00
+	jsr BossPattern
+	;;
+	
+	jsr applyGravity
+	
+	jsr verticalMovement
+	jsr BgrCollisionVertical
+	rts
+	
 	
 	
 

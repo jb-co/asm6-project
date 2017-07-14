@@ -16,9 +16,11 @@ HitBox_Cannon:
 	.db $02, $00, $06, $08, $f0, $f0
 HitBox_ArcBullet
 	.db $03, $03, $06, $06, $f0, $f0
+HitBox_Boss1
+	.db $00, $00, $18, $10, $0c, $f0
 	
 HitBoxes:
-	.dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet, HitBox_Cannon, HitBox_ArcBullet
+	.dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet, HitBox_Cannon, HitBox_ArcBullet, HitBox_Boss1
 
 restoreY:
 

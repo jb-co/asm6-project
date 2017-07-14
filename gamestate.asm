@@ -70,6 +70,8 @@ GameState_HorizontalTransition:
 	lda #PLAYER_SPRITE
 	sta entity_sprite
 	
+	jsr ClearActiveSlots
+	
 	lda entity_xLo
 	clc
 	adc #$40
@@ -94,6 +96,9 @@ GameState_HorizontalTransition:
 	lda #$00
 	sta gameState	;so this will set the boss state later
 	sta scrollX_hi
+	
+	
+	jsr FullRoomSpawn
 +	
 	rts
 
