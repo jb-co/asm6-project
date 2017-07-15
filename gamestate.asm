@@ -23,14 +23,18 @@ GameState_Playing:
   
 	LDY #$00 ;entity counter loop in the future
 	sty entity_counter
+	sty prevSlot
 	
 	lda firstActiveSlot		;put player first in the list
 	sta nextActiveSlot, y
 	
-@entityPhysicsLoop
+	lda #$ff
+	sta prevSlot
+	
+-entityPhysicsLoop
 
 	ldy entity_counter
-
+	
 	lda #$00
 	sta entity_hAccHi, y
 	sta entity_hAccLo, y
@@ -46,15 +50,19 @@ GameState_Playing:
 	jsr DoRoutine
 			
 	ldy entity_counter
+
 	lda nextActiveSlot, y
 	cmp #$ff
-	bne @notDone
-	
+	bne +
 	rts
-@notDone
+
++	
 	
 	sta entity_counter
-	jmp @entityPhysicsLoop
+	
+	
+
+	jmp -entityPhysicsLoop
 
 GameState_StartScreen:
 	lda #$01
@@ -70,7 +78,7 @@ GameState_HorizontalTransition:
 	lda #PLAYER_SPRITE
 	sta entity_sprite
 	
-	jsr ClearActiveSlots
+	jsr InitSlots
 	jsr ClearBullets
 	
 	lda entity_xLo

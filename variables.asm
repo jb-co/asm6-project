@@ -14,6 +14,8 @@ firstActiveSlot:		.dsb 1
 nextActiveSlot:		.dsb 20
 nextFreeSlot:		.dsb 20
 
+prevSlot	.dsb 1
+
 att_hi:	.dsb 1
 att_lo: .dsb 1
 

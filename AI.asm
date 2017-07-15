@@ -41,6 +41,7 @@ CheckOffscreen:
 	lda temp
 	sbc roomNumber
 	bne +
+	
 	rts
 +	;kill object
 	lda #$f0
@@ -195,7 +196,7 @@ Player:
 
 @skipInputs:	
 	ldy entity_counter
-
+	
 	jsr applyGravity
 	
 	lda entity_hAccHi
@@ -211,7 +212,6 @@ Player:
 	
 	jsr verticalMovement
 	jsr BgrCollisionVertical
-
 
 	lda #$06
 	jsr PRGBankWrite
@@ -236,8 +236,9 @@ AI_Blob:
 	jsr ReturnFreeSlot
 	rts
 @alive
-
+	
 	ldy entity_counter
+	sty prevSlot
 	lda #$00
 	sta entity_hAccHi, y
 	lda #$80
@@ -300,7 +301,7 @@ AI_Stomper:
 	jmp ReturnFreeSlot
 +alive
 
-	
+	sty prevSlot
 	
 	lda frameCounter
 	and #%00111111
@@ -389,7 +390,7 @@ AI_Pickle:
 	
 	jmp ReturnFreeSlot
 @alive
-	
+	sty prevSlot
 	lda entity_timer, y
 	clc
 	adc #$01
@@ -462,12 +463,12 @@ AI_Bullet:
 	
 	lda entity_index, y
 	tax
-	lda #$ff
+	lda #$f0
 	sta playerBullets, x
 	
 	jmp ReturnFreeSlot
 @alive
-
+	sty prevSlot
 	lda #$04
 	sta entity_hAccHi, y
 	jsr horizontalMovement
@@ -489,7 +490,7 @@ AI_Cannon:
 	
 	jmp ReturnFreeSlot
 @alive
-
+	sty prevSlot
 	lda frameCounter
 	and #%001111111
 	cmp #$20
@@ -541,7 +542,7 @@ AI_GenericArcBullet:
 	
 	jmp ReturnFreeSlot
 @alive
-	
+	sty prevSlot
 	jsr applyGravity
 	
 	lda #$01

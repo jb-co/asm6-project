@@ -73,7 +73,7 @@ PlayerBulletCollision:
 	sty counter
 @loop
 	lda playerBullets, y
-	cmp #$ff 
+	cmp #$f0 
 	bne @activeBullet
 	jmp @end
 	

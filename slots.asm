@@ -13,47 +13,19 @@ ReturnFreeSlot: ;send in index as y here
 	lda firstFreeSlot 
 	sta nextFreeSlot, y 
 	sty firstFreeSlot 
+		
+	lda nextActiveSlot, y
 	
-	cpy firstActiveSlot
+	ldy prevSlot
+	cpy #$ff 
 	bne +
-	
-	;;object was first in list
-	lda nextActiveSlot, y
 	sta firstActiveSlot
-	
 	rts
-	
 +
-	ldx firstActiveSlot
+	sta nextActiveSlot, y
 	
--loop
-	tya
-	cmp nextActiveSlot, x
-	beq +foundObject
-	
-	lda nextActiveSlot, x
-	tax
-	jmp -loop
-
-+foundObject
-
-	lda nextActiveSlot, y
-	sta nextActiveSlot, x
-
 	rts
 		
-ClearActiveSlots:
-	
--	
-	ldy firstActiveSlot
-	cpy #$ff
-	beq +
-	
-	jsr ReturnFreeSlot
-	jmp -
-
-+
-	rts
 
 FindSlotIndex:  ;;looks for a object with entity_index a
 	
@@ -87,7 +59,7 @@ ClearBullets:
 	;init player bullets array
 	
 	ldy #$00
-	lda #$ff
+	lda #$f0
 
 -	sta playerBullets, y
 	iny

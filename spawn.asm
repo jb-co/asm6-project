@@ -362,7 +362,7 @@ SpawnPlayerBullet:
 	ldy #$00
 
 -	lda playerBullets, y
-	cmp #$ff
+	cmp #$f0
 	beq @foundFree
 	iny
 	cpy #$03
