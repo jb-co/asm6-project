@@ -459,7 +459,7 @@ AI_Bullet:
 		;check if dead/off screen
 	lda entity_yHi, y
 	cmp #$f0
-	bne @alive
+	bne +alive
 	
 	lda entity_index, y
 	tax
@@ -467,21 +467,19 @@ AI_Bullet:
 	sta playerBullets, x
 	
 	jmp ReturnFreeSlot
-@alive
++alive
 	sty prevSlot
 	lda #$04
 	sta entity_hAccHi, y
 	jsr horizontalMovement
 
 	jmp CheckOffscreen
-
-	rts
 	
 AI_Cannon:
 	;check if dead/off screen
 	lda entity_yHi, y
 	cmp #$f0
-	bne @alive
+	bne +alive
 	
 	lda entity_index, y
 	jsr GetActiveBit
@@ -489,7 +487,7 @@ AI_Cannon:
 	sta actives, x
 	
 	jmp ReturnFreeSlot
-@alive
++alive
 	sty prevSlot
 	lda frameCounter
 	and #%001111111

@@ -59,9 +59,6 @@ GameState_Playing:
 +	
 	
 	sta entity_counter
-	
-	
-
 	jmp -entityPhysicsLoop
 
 GameState_StartScreen:
