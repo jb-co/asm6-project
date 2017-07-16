@@ -12,8 +12,110 @@ IncreaseTimer:
 	adc #$01
 	sta entity_timer, y
 	rts
+	
+Boss_Pattern1:
+	
+	lda entity_timer, y
+	bne +
+	
+	jsr IncreaseTimer
+	lda #$04
+	sta entity_vAccHi, y
+	
++	
 
-Boss1_Pattern1: ;move side to side
+	lda entity_timer, y
+	cmp #$01
+	bne +
+	lda #$02
+	sta entity_hAccHi, y
+	jsr horizontalMovement
+	
+	jsr applyGravity
+	
+	lda entity_airborne, y
+	bne +
+	jsr IncreaseTimer
+	lda #$08
+	sta entity_vAccHi, y
+	
++	
+	
+	lda entity_timer, y
+	cmp #$02
+	bne +
+	
+	jsr applyGravity
+	lda entity_yHi, y
+	cmp #$40
+	bcs +
+	lda #$00
+	sta entity_vAccHi, y
+	sta entity_vAccLo, y
+	jsr IncreaseTimer
++	
+	lda entity_timer, y
+	cmp #$03
+	bcc +
+	jsr IncreaseTimer
++
+	lda entity_timer, y
+	cmp #$08
+	bne +
+	
+	
+	lda entity_yHi, y
+	sta spawn_y
+	lda #ARC_BULLET
+	sta spawn_type
+	lda worldX_hi, y
+	sta spawn_room
+	lda #$00
+	sta spawn_vAccHi
+	
+	lda #$00
+	sta counter
+	
+	lda #$40
+	sta temp
+
+-
+	lda temp
+	clc
+	adc counter
+	sta spawn_x
+
+	lda #LEFT
+	sta spawn_dir 
+	jsr SpawnEnemy	
+	
+	lda #RIGHT
+	sta spawn_dir
+	jsr SpawnEnemy
+	
+	lda counter
+	clc
+	adc #$20
+	sta counter
+	cmp #$a0
+	bne -
+	
++
+
+	lda entity_timer, y
+	cmp #$20
+	bne +
+	lda #$02
+	sta currentBossPattern
++	
+	
+	rts
+
+Boss1_Pattern2: ;move side to side
+	
+	jsr applyGravity
+	lda entity_airborne, y
+	bne +end
 	
 	lda entity_hDir, y
 	cmp #LEFT
@@ -21,7 +123,7 @@ Boss1_Pattern1: ;move side to side
 +left
 	lda entity_xHi, y
 	cmp #$10
-	bne +
+	bcs +
 	
 	jsr IncreaseTimer
 	lda #RIGHT ;change dir
@@ -31,7 +133,7 @@ Boss1_Pattern1: ;move side to side
 +right
 	lda entity_xHi, y
 	cmp #$e0
-	bne +
+	bcc +
 	
 	jsr IncreaseTimer
 	lda #LEFT
@@ -56,9 +158,11 @@ Boss1_Pattern1: ;move side to side
 	lda #$04
 	sta entity_hAccHi, y
 	jsr horizontalMovement
+	
++end
 	rts
 	
-Boss1_Pattern2:
+Boss1_Pattern3:
 
 	jsr IncreaseTimer
 	
@@ -104,7 +208,7 @@ Boss1_Pattern2:
 	jmp horizontalMovement
 	
 Boss1_Patterns:
-	dw Boss1_Pattern1-1, Boss1_Pattern2-1
+	dw Boss_Pattern1-1, Boss1_Pattern2-1, Boss1_Pattern3-1
 	
 BossPattern:
 	tax

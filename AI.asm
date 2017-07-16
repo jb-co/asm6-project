@@ -573,7 +573,7 @@ AI_Boss1:
 	
 	
 	ldy entity_counter
-	jsr applyGravity
+	
 	
 	jsr verticalMovement
 	jsr BgrCollisionVertical
