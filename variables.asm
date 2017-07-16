@@ -11,8 +11,7 @@ playerBullets:			.dsb 3
 firstFreeSlot:		.dsb 1
 firstActiveSlot:		.dsb 1
 
-nextActiveSlot:		.dsb 20
-nextFreeSlot:		.dsb 20
+
 
 prevSlot	.dsb 1
 
@@ -136,43 +135,6 @@ source_hi: .dsb 1
 
 iframes .dsb 1
 
-;just for keeping track of memory pos
-lastOne	.dsb 1
-
-.enum $300    
-;;ENTITIES!!!!
-worldX_hi:			.dsb 20
-entity_xLo			.dsb 20	
-entity_xHi			.dsb 20	
-entity_yLo			.dsb 20
-entity_yHi			.dsb 20
-entity_vAccLo		.dsb 20
-entity_vAccHi		.dsb 20
-	
-entity_hAccLo		.dsb 20
-entity_hAccHi		.dsb 20
-entity_hDir			.dsb 20
-
-entity_sprite		.dsb 20
-entity_type			.dsb 20
-
-entity_counter 		.dsb 1
-
-entity_height		.dsb 20
-entity_width		.dsb 20
-
-entity_airborne		.dsb 20
-
-
-entity_timer		.dsb 20
-entity_animFrame 	.dsb 20
-
-entity_flags		.dsb 20
-entity_index		.dsb 20	
-
-entity_hp			.dsb 1
-
-
 waitCounter			.dsb 1
 gravity				.dsb 1
 
@@ -195,6 +157,51 @@ spawned				.dsb 1
 
 
 sprite_counter		.dsb 1
+
+;just for keeping track of memory pos
+lastOne	.dsb 1
+
+.enum $300    
+
+nextActiveSlot:		.dsb 30
+nextFreeSlot:		.dsb 30
+
+endOfSlots	.dsb 1
+
+;;ENTITIES!!!!
+worldX_hi:			.dsb 30
+entity_xLo			.dsb 30	
+entity_xHi			.dsb 30	
+entity_yLo			.dsb 30
+entity_yHi			.dsb 30
+entity_vAccLo		.dsb 30
+entity_vAccHi		.dsb 30
+	
+entity_hAccLo		.dsb 30
+entity_hAccHi		.dsb 30
+entity_hDir			.dsb 30
+
+entity_sprite		.dsb 30
+entity_type			.dsb 30
+
+entity_counter 		.dsb 1
+
+entity_height		.dsb 30
+entity_width		.dsb 30
+
+entity_airborne		.dsb 30
+
+
+entity_timer		.dsb 30
+entity_animFrame 	.dsb 30
+
+entity_flags		.dsb 30
+entity_index		.dsb 30	
+
+entity_hp			.dsb 1
+
+
+
 
 
 

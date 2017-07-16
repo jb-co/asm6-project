@@ -15,6 +15,9 @@ IncreaseTimer:
 	
 Boss_Pattern1_A:
 	
+	lda #$54
+	sta entity_sprite, y
+	
 	lda #$04
 	sta entity_vAccHi, y
 	inc currentBossPattern
@@ -59,6 +62,8 @@ Boss_Pattern1_D:
 	cmp #$08
 	bne +
 	
+	lda #$57
+	sta entity_sprite, y
 	
 	lda entity_yHi, y
 	sta spawn_y
@@ -67,6 +72,7 @@ Boss_Pattern1_D:
 	lda worldX_hi, y
 	sta spawn_room
 	lda #$00
+	sta spawn_hAccHi
 	sta spawn_vAccHi
 	lda #$05
 	sta spawn_sprite
@@ -150,9 +156,10 @@ Boss1_Pattern2: ;move side to side
 	sta entity_sprite, y
 	
 	lda entity_timer, y
-	and #%00000111
 	cmp #$04
 	bne +
+	lda #$00
+	sta entity_timer, y
 	inc currentBossPattern
 +
 
@@ -165,11 +172,15 @@ Boss1_Pattern2: ;move side to side
 	
 Boss1_Pattern3:
 
-	jsr IncreaseTimer
+	lda #$54
+	sta entity_sprite, y
 	
-	lda entity_timer, y
+	lda frameCounter
 	and #%00001111
 	bne +
+	
+	lda #$57
+	sta entity_sprite, y
 	
 	lda entity_xHi, y
 	sta spawn_x
@@ -182,29 +193,20 @@ Boss1_Pattern3:
 
 	lda #$02
 	sta spawn_hAccHi
-	
-	lda entity_xHi
 
 	lda #LEFT
 	sta spawn_dir 
 	jsr SpawnEnemy	
 	
+	jsr IncreaseTimer
+	lda entity_timer, y
+	cmp #$03
+	bne +
+	lda #$00
+	sta entity_timer, y
+	sta currentBossPattern
 +
-	ldy entity_counter
-	lda #$40
-	sta entity_hAccLo, y
-	
-	lda entity_xHi, y
-	cmp entity_xHi 
-	bcc +moveRight
-+moveLeft
-	lda #LEFT 
-	sta entity_hDir, y
-	jmp horizontalMovement
-+moveRight
-	lda #RIGHT
-	sta entity_hDir, y
-	jmp horizontalMovement
+	rts
 	
 Boss1_Patterns:
 	dw Boss_Pattern1_A-1, Boss_Pattern1_B-1, Boss_Pattern1_C-1, Boss_Pattern1_D-1

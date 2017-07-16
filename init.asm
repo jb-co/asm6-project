@@ -49,7 +49,7 @@ InitSlots:
 	sta nextFreeSlot, y
 	iny 
 	inx
-	cpy #18
+	cpy #28
 	bne -
 
 	lda #$ff
@@ -59,6 +59,9 @@ InitSlots:
 	sta nextActiveSlot, y
 	ldy #$01
 	sta nextActiveSlot, y
+	
+	lda #$11
+	sta endOfSlots
 			
 	rts
 	
