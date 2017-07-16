@@ -20,6 +20,7 @@ BULLET = $08
 CANNON = $0A
 ARC_BULLET = $0C
 BOSS_1 = $0e
+GENERIC_BULLET = $10
 
 SPRITE_RAM = $200
 SPAWN_RAM = $6000
@@ -958,7 +959,7 @@ MetaTileSets:
 	
 
 AI_Routines:
-	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1, AI_Boss1-1
+	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1, AI_Boss1-1, AI_GenericBullet-1
 
 	
 ;; [ ROUTINES ]
@@ -986,9 +987,12 @@ Def_GenericArcBullet:
 	.byte $08, $08, $81, $01	
 Def_Boss1
 	.byte $10, $18, $54, $03
+Def_GenericBullet
+	.byte $08, $08, $81, $01
 	
 Objects:
-	.word Def_Player, Def_Blob, Def_Stomper, Def_Pickle, Def_Bullet, Def_Cannon, Def_GenericArcBullet, Def_Boss1	
+	dw Def_Player, Def_Blob, Def_Stomper, Def_Pickle, Def_Bullet, Def_Cannon, Def_GenericArcBullet, Def_Boss1
+	dw Def_GenericBullet
 
 	
 BitPos:

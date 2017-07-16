@@ -31,13 +31,13 @@ GameState_Playing:
 	lda #$ff
 	sta prevSlot
 	
+	lda #$00
+	sta entity_hAccHi
+	sta entity_hAccLo
+	
 -entityPhysicsLoop
 
 	ldy entity_counter
-	
-	lda #$00
-	sta entity_hAccHi, y
-	sta entity_hAccLo, y
 	
 	ldx entity_type, y
 

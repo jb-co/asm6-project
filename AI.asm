@@ -475,6 +475,20 @@ AI_Bullet:
 
 	jmp CheckOffscreen
 	
+AI_GenericBullet:
+			;check if dead/off screen
+	lda entity_yHi, y
+	cmp #$f0
+	bne +alive
+	jmp ReturnFreeSlot
++alive
+	sty prevSlot
+	jsr horizontalMovement
+
+	jmp CheckOffscreen
+	
+
+	
 AI_Cannon:
 	;check if dead/off screen
 	lda entity_yHi, y
@@ -506,6 +520,8 @@ AI_Cannon:
 	sta spawn_room
 	lda #$06
 	sta spawn_vAccHi
+	lda #$01
+	sta spawn_hAccHi
 	
 	lda entity_xHi
 
@@ -540,10 +556,7 @@ AI_GenericArcBullet:
 @alive
 	sty prevSlot
 	jsr applyGravity
-	
-	lda #$01
-	sta entity_hAccHi, y
-	
+		
 	jsr horizontalMovement
 	jsr verticalMovement
 	jsr BgrCollisionVertical

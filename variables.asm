@@ -189,8 +189,10 @@ spawn_x				.dsb 1
 spawn_y				.dsb 1
 spawn_vAccHi		.dsb 1
 spawn_hAccHi		.dsb 1
-spawn_dir
+spawn_dir			.dsb 1
+spawn_sprite		.dsb 1
 spawned				.dsb 1	
+
 
 sprite_counter		.dsb 1
 

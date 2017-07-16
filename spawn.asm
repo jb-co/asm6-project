@@ -339,17 +339,22 @@ SpawnEnemy:
 	lda (pMetaTile), y
 	sta entity_width, x
 		
-		;sprite
-	ldy #$02
-	lda (pMetaTile), y
-	sta entity_sprite, x
-	
 	;;RESET stuff
 	lda #$00
 	sta entity_vAccLo, x
 	
 	lda spawn_vAccHi
 	sta entity_vAccHi, x
+	
+	lda spawn_hAccHi
+	sta entity_hAccHi, x
+	
+	lda spawn_sprite
+	bne +
+	ldy #$02
+	lda (pMetaTile), y		
++
+	sta entity_sprite, x
 	
 	rts
 	

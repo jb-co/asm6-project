@@ -68,11 +68,16 @@ Boss_Pattern1_D:
 	sta spawn_room
 	lda #$00
 	sta spawn_vAccHi
+	lda #$05
+	sta spawn_sprite
 	
 	lda #$00
 	sta counter
 	
-	lda #$40
+	lda entity_xHi
+	and #$08
+	clc
+	adc #$08
 	sta temp
 
 -
@@ -93,7 +98,7 @@ Boss_Pattern1_D:
 	clc
 	adc #$20
 	sta counter
-	cmp #$a0
+	cmp #$00
 	bne -
 	
 +
@@ -170,12 +175,13 @@ Boss1_Pattern3:
 	sta spawn_x
 	lda entity_yHi, y
 	sta spawn_y
-	lda #ARC_BULLET
+	lda #GENERIC_BULLET
 	sta spawn_type
 	lda worldX_hi, y
 	sta spawn_room
-	lda #$04
-	sta spawn_vAccHi
+
+	lda #$02
+	sta spawn_hAccHi
 	
 	lda entity_xHi
 
@@ -183,9 +189,6 @@ Boss1_Pattern3:
 	sta spawn_dir 
 	jsr SpawnEnemy	
 	
-	lda #RIGHT
-	sta spawn_dir
-	jsr SpawnEnemy
 +
 	ldy entity_counter
 	lda #$40
