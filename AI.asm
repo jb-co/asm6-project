@@ -495,8 +495,6 @@ AI_Cannon:
 	
 	bne +
 	
-	lda #$04
-	jsr PRGBankWrite
 	
 	lda entity_xHi, y
 	sta spawn_x
@@ -569,15 +567,18 @@ AI_Boss1:
 	jsr PRGBankWrite
 	
 	
-	lda #$00
+	lda currentBossPattern
 	jsr BossPattern
 	;;
+	
 	
 	ldy entity_counter
 	jsr applyGravity
 	
 	jsr verticalMovement
 	jsr BgrCollisionVertical
+
+	
 	rts
 	
 	

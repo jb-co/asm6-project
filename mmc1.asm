@@ -959,7 +959,7 @@ MetaTileSets:
 
 AI_Routines:
 	.word Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1, AI_Boss1-1
-	
+
 	
 ;; [ ROUTINES ]
 
@@ -983,10 +983,12 @@ Def_Bullet:
 Def_Cannon: 
 	.byte $08, $08, $80, $00
 Def_GenericArcBullet:
-	.byte $08, $08, $81, $01
-	
+	.byte $08, $08, $81, $01	
 Def_Boss1
 	.byte $10, $18, $54, $03
+	
+Objects:
+	.word Def_Player, Def_Blob, Def_Stomper, Def_Pickle, Def_Bullet, Def_Cannon, Def_GenericArcBullet, Def_Boss1	
 
 	
 BitPos:
@@ -994,6 +996,8 @@ BitPos:
 
 
 
+
+	
 
 	
 

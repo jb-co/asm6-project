@@ -348,12 +348,8 @@ SpawnEnemy:
 	lda #$00
 	sta entity_vAccLo, x
 	
-	
 	lda spawn_vAccHi
 	sta entity_vAccHi, x
-	
-	
-	
 	
 	rts
 	

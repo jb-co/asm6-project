@@ -142,6 +142,7 @@ InitVariables:
 	sta collided
 	sta iframes
 	sta entity_airborne
+	sta currentBossPattern
 	
 	LDA #$40
 	STA gravity

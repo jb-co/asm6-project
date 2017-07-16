@@ -1,12 +1,6 @@
 ;; [ OBJECTS ]		;;sprite_height, sprite_width, tile_number, attributebits (7-gravity, 6-bgrcollision, 5-...)
 
 
-
-	
-
-Objects:
-	.word Def_Player, Def_Blob, Def_Stomper, Def_Pickle, Def_Bullet, Def_Cannon, Def_GenericArcBullet, Def_Boss1
-
 level1_Objects:	;roomNumber, x, y, type, enemyIndex
 	;.db $00, $E0, $A7, CANNON, $03
 	.db $ef

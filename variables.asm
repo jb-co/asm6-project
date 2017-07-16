@@ -16,6 +16,8 @@ nextFreeSlot:		.dsb 20
 
 prevSlot	.dsb 1
 
+currentBossPattern .dsb 1
+
 att_hi:	.dsb 1
 att_lo: .dsb 1
 
