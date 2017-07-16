@@ -346,6 +346,8 @@ AI_Stomper:
 +setDirection:
 	sta entity_hDir, y
 	
+	lda #$00
+	sta entity_hAccHi, y
 	lda #$40
 	sta entity_hAccLo, y
 	
@@ -522,6 +524,8 @@ AI_Cannon:
 	sta spawn_vAccHi
 	lda #$01
 	sta spawn_hAccHi
+	lda #$00 
+	sta spawn_sprite
 	
 	lda entity_xHi
 

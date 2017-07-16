@@ -76,6 +76,8 @@ Boss_Pattern1_D:
 	sta spawn_vAccHi
 	lda #$05
 	sta spawn_sprite
+	lda #LEFT
+	sta spawn_dir 
 	
 	lda #$00
 	sta counter
@@ -92,13 +94,7 @@ Boss_Pattern1_D:
 	adc counter
 	sta spawn_x
 
-	lda #LEFT
-	sta spawn_dir 
 	jsr SpawnEnemy	
-	
-	lda #RIGHT
-	sta spawn_dir
-	jsr SpawnEnemy
 	
 	lda counter
 	clc

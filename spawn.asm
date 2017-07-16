@@ -284,6 +284,7 @@ SpawnEnemyFromMap:
 	lda #$00
 	sta entity_vAccHi, x
 	sta entity_vAccLo, x
+	sta entity_hAccLo, x
 	
 	lda #$01
 	sta entity_airborne, x
@@ -342,6 +343,7 @@ SpawnEnemy:
 	;;RESET stuff
 	lda #$00
 	sta entity_vAccLo, x
+	sta entity_hAccLo, x
 	
 	lda spawn_vAccHi
 	sta entity_vAccHi, x

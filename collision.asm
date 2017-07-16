@@ -41,9 +41,6 @@ restoreX:
 	STA entity_xHi, y
 	LDA storedX_lo
 	STA entity_xLo, y
-	LDA #$00
-	STA entity_hAccHi, y
-	STA entity_hAccLo, y
 	LDA storedWorldX_hi
 	STA worldX_hi, y
 	rts
