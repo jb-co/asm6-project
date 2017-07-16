@@ -13,20 +13,16 @@ IncreaseTimer:
 	sta entity_timer, y
 	rts
 	
-Boss_Pattern1:
+Boss_Pattern1_A:
 	
-	lda entity_timer, y
-	bne +
-	
-	jsr IncreaseTimer
 	lda #$04
 	sta entity_vAccHi, y
+	inc currentBossPattern
+	rts
 	
-+	
 
-	lda entity_timer, y
-	cmp #$01
-	bne +
+Boss_Pattern1_B:
+
 	lda #$02
 	sta entity_hAccHi, y
 	jsr horizontalMovement
@@ -35,15 +31,13 @@ Boss_Pattern1:
 	
 	lda entity_airborne, y
 	bne +
-	jsr IncreaseTimer
 	lda #$08
 	sta entity_vAccHi, y
-	
+	inc currentBossPattern
 +	
-	
-	lda entity_timer, y
-	cmp #$02
-	bne +
+	rts
+
+Boss_Pattern1_C:
 	
 	jsr applyGravity
 	lda entity_yHi, y
@@ -52,13 +46,15 @@ Boss_Pattern1:
 	lda #$00
 	sta entity_vAccHi, y
 	sta entity_vAccLo, y
-	jsr IncreaseTimer
+	sta entity_timer, y
+	inc currentBossPattern
 +	
-	lda entity_timer, y
-	cmp #$03
-	bcc +
+	rts
+	
+Boss_Pattern1_D:
+	
 	jsr IncreaseTimer
-+
+	
 	lda entity_timer, y
 	cmp #$08
 	bne +
@@ -105,8 +101,9 @@ Boss_Pattern1:
 	lda entity_timer, y
 	cmp #$20
 	bne +
-	lda #$02
-	sta currentBossPattern
+	lda #$00
+	sta entity_timer, y
+	inc currentBossPattern
 +	
 	
 	rts
@@ -151,8 +148,7 @@ Boss1_Pattern2: ;move side to side
 	and #%00000111
 	cmp #$04
 	bne +
-	lda #$02
-	sta currentBossPattern
+	inc currentBossPattern
 +
 
 	lda #$04
@@ -208,9 +204,11 @@ Boss1_Pattern3:
 	jmp horizontalMovement
 	
 Boss1_Patterns:
-	dw Boss_Pattern1-1, Boss1_Pattern2-1, Boss1_Pattern3-1
+	dw Boss_Pattern1_A-1, Boss_Pattern1_B-1, Boss_Pattern1_C-1, Boss_Pattern1_D-1
+	dw Boss1_Pattern2-1, Boss1_Pattern3-1
 	
 BossPattern:
+	asl a
 	tax
 	lda Boss1_Patterns+1,x
 	pha
