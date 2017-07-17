@@ -36,10 +36,12 @@ CheckInputs:
 ;select
 	LDA buttons
 	and #$20
-	beq @notSelect
+	beq +notSelect
 	
 
-@notSelect
+	dec entity_hAccHi
+
++notSelect
 
 	
 @AButtonCheck

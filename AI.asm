@@ -285,6 +285,66 @@ AI_Blob:
 @end	
 	rts
 	
+AI_Platform:
+
+	lda #$01
+	sta entity_hAccHi, y
+	jsr horizontalMovement
+
+	;check for player feet;
+	lda entity_yHi
+	clc 
+	adc #$0f
+	cmp entity_yHi, y
+	bcc +end
+	
+	lda entity_yHi, y
+	clc
+	adc #$04
+	sta testY
+	lda entity_yHi
+	clc 
+	adc #$0c
+	cmp testY
+	bcs +end
+	
+
+	lda entity_xHi
+	clc
+	adc HitBox_Player+0
+	sta testX
+	lda entity_xHi, y
+	clc 
+	adc #$10
+	cmp testX
+	bcc +end
+	
+	lda entity_xHi
+	clc 
+	adc HitBox_Player+2
+	sta testX
+	lda entity_xHi, y
+	cmp testX
+	bcs +end
+	
+	lda #$00
+	sta entity_vAccHi
+	sta entity_vAccLo 
+	sta entity_airborne
+	sta isJumping
+	sta jumpCounter
+	
+	
+	
+	lda entity_yHi, y
+	sec
+	sbc #$10
+	sta entity_yHi
+	
++end
+
+	rts
+	
 ;STOMPER
 AI_Stomper:
 	
