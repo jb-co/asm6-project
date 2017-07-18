@@ -363,11 +363,20 @@ SpawnEnemy:
 	
 SpawnPlayerBullet:
 
-	jsr GetFreeBulletSlot
+	;GET BULLET SLOT (why keep this in separate routine?!!)
+	ldx firstFreeBullet
 	cpx #$ff
 	bne +
 	rts 
-+	
++
+	lda nextFreeBullet, x
+	sta firstFreeBullet 
+	
+	lda firstActiveSlot
+	sta nextActiveSlot, x
+	stx firstActiveSlot
+	;;
+	
 	stx nextActiveSlot ;set the bullet as next slot after player to avoid shenanigans
 	
 	lda #$ee

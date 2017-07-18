@@ -9,20 +9,7 @@ GetFreeSlot:
 
 	rts
 	
-GetFreeBulletSlot: 
-	ldx firstFreeBullet
-	cpx #$ff
-	bne +
-	rts 
-+
-	lda nextFreeBullet, x
-	sta firstFreeBullet 
-	
-	lda firstActiveSlot
-	sta nextActiveSlot, x
-	stx firstActiveSlot
-	
-	rts 
+
 	
 ReturnBulletSlot:
 	lda firstFreeBullet 
