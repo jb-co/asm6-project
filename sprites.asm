@@ -44,14 +44,9 @@ UpdateSprites:
 	beq @done
 	
 @loop
-	sty entity_counter
-	
-	
-@onScreen
-	ldy entity_counter
+
 	jsr DrawObject
-	
-	ldy entity_counter
+
 	lda nextActiveSlot, y
 	cmp #$ff
 	beq @done
