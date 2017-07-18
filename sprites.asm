@@ -99,9 +99,9 @@ DrawObject:
 	
 @xLoop
 		
-		lda worldX_hi, y
-		cmp roomNumber
-		bne @dright
+		;lda worldX_hi, y
+		;cmp roomNumber
+		;bcc @dright
 		
 		lda entity_width, y 
 		lsr a
