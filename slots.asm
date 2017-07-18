@@ -9,6 +9,37 @@ GetFreeSlot:
 
 	rts
 	
+GetFreeBulletSlot: 
+	ldx firstFreeBullet
+	cpx #$ff
+	bne +
+	rts 
++
+	lda nextFreeBullet, x
+	sta firstFreeBullet 
+	
+	lda firstActiveSlot
+	sta nextActiveSlot, x
+	stx firstActiveSlot
+	
+	rts 
+	
+ReturnBulletSlot:
+	lda firstFreeBullet 
+	sta nextFreeBullet, y
+	sty firstFreeBullet 
+	
+	lda nextActiveSlot, y
+	
+	ldy prevSlot
+	cpy #$fe 
+	bne +
+	sta firstActiveSlot
+	rts
++
+	sta nextActiveSlot, y
+	rts 
+	
 ReturnFreeSlot: ;send in index as y here
 	lda firstFreeSlot 
 	sta nextFreeSlot, y 
@@ -17,7 +48,7 @@ ReturnFreeSlot: ;send in index as y here
 	lda nextActiveSlot, y
 	
 	ldy prevSlot
-	cpy #$ff 
+	cpy #$fe
 	bne +
 	sta firstActiveSlot
 	rts
@@ -56,15 +87,7 @@ FindSlotIndex:  ;;looks for a object with entity_index a
 ;reset bullets:
 ClearBullets:
 
-	;init player bullets array
-	
-	ldy #$00
-	lda #$f0
 
--	sta playerBullets, y
-	iny
-	cpy #$03
-	bne -
 
 	rts
 

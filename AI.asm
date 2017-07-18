@@ -236,7 +236,6 @@ AI_Blob:
 	rts
 @alive
 	
-	ldy entity_counter
 	sty prevSlot
 	lda #$00
 	sta entity_hAccHi, y
@@ -525,20 +524,16 @@ AI_Bullet:
 	lda entity_yHi, y
 	cmp #$f0
 	bne +alive
-	
-	lda entity_index, y
-	tax
-	lda #$f0
-	sta playerBullets, x
-	
-	jmp ReturnFreeSlot
+
+	jmp ReturnBulletSlot
 +alive
 	sty prevSlot
 	lda #$04
 	sta entity_hAccHi, y
 	jsr horizontalMovement
 
-	jmp CheckOffscreen
+	jsr CheckOffscreen
+	rts 
 	
 AI_GenericBullet:
 			;check if dead/off screen

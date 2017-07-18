@@ -23,12 +23,11 @@ GameState_Playing:
   
 	LDY #$00 ;entity counter loop in the future
 	sty entity_counter
-	sty prevSlot
 	
 	lda firstActiveSlot		;put player first in the list
 	sta nextActiveSlot, y
 	
-	lda #$ff
+	lda #$fe
 	sta prevSlot
 	
 	lda #$00

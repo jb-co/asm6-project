@@ -41,7 +41,23 @@ ReadMetaTiles:
 	
 InitSlots:
 	ldy #$01
-	ldx #$02
+	ldx #$02 
+	sty firstFreeBullet
+- 	txa
+	sta nextFreeBullet, y
+	lda #$ff
+	sta nextActiveSlot, y
+	iny
+	inx 
+	cpy #$03
+	bne -
+	
+	lda #$ff
+	sta nextFreeBullet, y
+	sta nextActiveSlot, y
+	
+	ldy #$04
+	ldx #$05
 	sty firstFreeSlot
 
 

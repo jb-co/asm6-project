@@ -62,6 +62,7 @@ updateHP:
 	rts
 
 PlayerBulletCollision:	
+	rts
 	lda worldX_hi, x
 	sta temp
 	lda entity_xHi, x
@@ -72,7 +73,7 @@ PlayerBulletCollision:
 	ldy #$00
 	sty counter
 @loop
-	lda playerBullets, y
+	;lda playerBullets, y
 	cmp #$f0 
 	bne @activeBullet
 	jmp @end

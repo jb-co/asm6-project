@@ -363,23 +363,14 @@ SpawnEnemy:
 	
 SpawnPlayerBullet:
 
-	ldy #$00
-
--	lda playerBullets, y
-	cmp #$f0
-	beq @foundFree
-	iny
-	cpy #$03
-	bne -
-	rts
+	jsr GetFreeBulletSlot
+	cpx #$ff
+	bne +
+	rts 
++	
+	stx nextActiveSlot ;set the bullet as next slot after player to avoid shenanigans
 	
-@foundFree
-
-	jsr GetFreeSlot
-	
-	txa 
-	sta playerBullets, y
-	tya
+	lda #$ee
 	sta entity_index, x
 	
 	lda #BULLET
@@ -391,12 +382,7 @@ SpawnPlayerBullet:
 	
 	lda #$81
 	sta entity_sprite, x
-	
-	lda #%00000011
-	ora spawn_dir
-	sta entity_flags, x
-	
-	
+		
 	
 	lda entity_yHi+0
 	clc 
@@ -407,13 +393,14 @@ SpawnPlayerBullet:
 	lda #$00
 	sta entity_vAccHi, x
 	sta entity_vAccLo, x
-	sta entity_flags, x
+
 	
 	lda entity_flags
 	and #%01000000
-	sta entity_flags, x
-	bne +
 	
+	bne +
+	ora #%00000011
+	sta entity_flags, x
 	;Spawn right side of player
 	lda entity_xHi+0
 	clc 
@@ -424,6 +411,8 @@ SpawnPlayerBullet:
 	sta worldX_hi, x
 	rts
 +
+	ora #%00000011
+	sta entity_flags, x
 	;Spawn left side of player
 	lda entity_xHi+0
 	sec 

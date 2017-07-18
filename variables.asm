@@ -1,15 +1,20 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
+firstFreeBullet:	.dsb 1
+nextFreeBullet:		.dsb 2
+
 bleh	.dsb 1
 bleh2	.dsb 1
 collisionMask		.dsb 1
 
 actives .dsb 4
 ;object slots
-playerBullets:			.dsb 3
+bulletCount	.dsb 1
 
 firstFreeSlot:		.dsb 1
 firstActiveSlot:		.dsb 1
+
+
 
 
 
@@ -165,6 +170,8 @@ lastOne	.dsb 1
 
 nextActiveSlot:		.dsb 30
 nextFreeSlot:		.dsb 30
+
+
 
 endOfSlots	.dsb 1
 
