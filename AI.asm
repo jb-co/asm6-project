@@ -196,6 +196,22 @@ Player:
 @skipInputs:	
 	ldy entity_counter
 	
+	lda platformIndex
+	beq +endPlatform
+	tax
+	
+	lda entity_flags, x
+	and #%01000000
+	beq +platformRight
+	lda entity_xHi
+	dec entity_xHi
+	dec scrollX_hi
+	jmp +endPlatform
++platformRight
+	inc entity_xHi
+	inc scrollX_hi
++endPlatform
+	
 	jsr applyGravity
 	
 	lda entity_hAccHi
@@ -211,10 +227,15 @@ Player:
 	
 	jsr verticalMovement
 	jsr BgrCollisionVertical
+	
+	lda #$00
+	sta platformIndex
 
 	lda #$06
 	jsr PRGBankWrite
 	jmp Animation_Player
+	
+	
 	
 	rts
 
@@ -284,6 +305,21 @@ AI_Blob:
 	rts
 	
 AI_Platform:
+
+	;check if dead/off screen
+	lda entity_yHi, y
+	cmp #$f0
+	bne +alive
+	
+	lda entity_index, y
+	jsr GetActiveBit
+	eor temp
+	sta actives, x
+	
+	jsr ReturnFreeSlot
+	rts
++alive:
+
 	sty prevSlot
 	lda #$01
 	sta entity_hAccHi, y
@@ -292,7 +328,7 @@ AI_Platform:
 	;check for player feet;
 	lda entity_yHi
 	clc 
-	adc #$0f
+	adc #$10
 	cmp entity_yHi, y
 	bcc +end
 	
@@ -332,16 +368,16 @@ AI_Platform:
 	sta isJumping
 	sta jumpCounter
 	
-	
-	
 	lda entity_yHi, y
 	sec
 	sbc #$10
 	sta entity_yHi
 	
+	sty platformIndex
+	
 +end
 
-	rts
+	jmp CheckOffscreen
 	
 ;STOMPER
 AI_Stomper:

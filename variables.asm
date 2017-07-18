@@ -15,7 +15,7 @@ firstFreeSlot:		.dsb 1
 firstActiveSlot:		.dsb 1
 
 
-
+platformIndex	.dsb 1
 
 
 prevSlot	.dsb 1
