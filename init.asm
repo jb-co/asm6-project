@@ -170,8 +170,6 @@ InitVariables:
 	
 	;;
 	
-	lda #RIGHT
-	sta entity_hDir
 	
 	lda #$00
 	sta entity_type

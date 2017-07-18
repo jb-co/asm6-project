@@ -169,8 +169,9 @@ NotRight:
 
 @doneWalking
 	inc entity_animFrame
-	lda #LEFT
-	sta entity_hDir
+	lda #%01000000
+	ora entity_flags
+	sta entity_flags
 	rts
 NotLeft:
 

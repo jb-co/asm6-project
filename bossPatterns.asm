@@ -121,17 +121,18 @@ Boss1_Pattern2: ;move side to side
 	lda entity_airborne, y
 	bne +end
 	
-	lda entity_hDir, y
-	cmp #LEFT
-	bne +right
+	lda entity_flags, y
+	and #%01000000
+	beq +right
 +left
 	lda entity_xHi, y
 	cmp #$10
 	bcs +
 	
 	jsr IncreaseTimer
-	lda #RIGHT ;change dir
-	sta entity_hDir, y
+	lda entity_flags, y ;change dir
+	and #%10111111
+	sta entity_flags, y
 +
 	jmp +move
 +right
@@ -140,8 +141,9 @@ Boss1_Pattern2: ;move side to side
 	bcc +
 	
 	jsr IncreaseTimer
-	lda #LEFT
-	sta entity_hDir, y
+	lda entity_flags, y
+	ora #%01000000
+	sta entity_flags, y
 		
 +
 

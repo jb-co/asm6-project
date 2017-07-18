@@ -290,9 +290,9 @@ SpawnEnemyFromMap:
 	sta entity_airborne, x
 	
 	;;SET OBJ DIRECTION
-	lda entity_hDir	;; opposite of player facing direction
-	eor #%11000000
-	sta entity_hDir, x
+	lda entity_flags	;; opposite of player facing direction
+	eor #%01000000
+	sta entity_flags, x
 	
 	rts
 	
@@ -319,8 +319,9 @@ SpawnEnemy:
 	lda #$ee
 	sta entity_index, x
 	
-	lda spawn_dir
-	sta entity_hDir, x
+	lda entity_flags, x
+	ora spawn_dir
+	sta entity_flags, x
 	
 	
 	lda spawn_type
@@ -391,8 +392,9 @@ SpawnPlayerBullet:
 	lda #$81
 	sta entity_sprite, x
 	
-	lda spawn_dir
-	sta entity_hDir, x
+	lda entity_flags, x
+	ora spawn_dir
+	sta entity_flags, x
 	
 	
 	
@@ -407,9 +409,9 @@ SpawnPlayerBullet:
 	sta entity_vAccLo, x
 	sta entity_flags, x
 	
-	lda entity_hDir+0
-	sta entity_hDir,x
-	cmp #RIGHT
+	lda entity_flags
+	and #%01000000
+	sta entity_flags, x
 	bne +
 	
 	;Spawn right side of player

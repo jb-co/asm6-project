@@ -179,7 +179,6 @@ entity_vAccHi		.dsb 30
 	
 entity_hAccLo		.dsb 30
 entity_hAccHi		.dsb 30
-entity_hDir			.dsb 30
 
 entity_sprite		.dsb 30
 entity_type			.dsb 30

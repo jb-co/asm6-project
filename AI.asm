@@ -144,9 +144,9 @@ Player:
 	cmp #$01
 	bne @notFirstFrame
 	
-	lda entity_hDir
-	eor #%11000000
-	sta entity_hDir
+	lda entity_flags
+	eor #%01000000
+	sta entity_flags
 	
 	;;ADD DAMAGE HERE later
 	dec entity_hp
@@ -169,9 +169,9 @@ Player:
 	lda collided
 	cmp #STUN_TIME
 	bne @stillStunned
-	lda entity_hDir
-	eor #%11000000
-	sta entity_hDir
+	lda entity_flags
+	eor #%01000000
+	sta entity_flags
 	
 	jmp @hitDone
 	
@@ -397,13 +397,16 @@ AI_Stomper:
 	cmp temp
 	bcc +left 
 +right	
-	lda #RIGHT 
+	lda #%10111111
+	and entity_flags, y
+	sta entity_flags, y
 	jmp +setDirection
 +left
-	lda #LEFT
+	lda #%01000000
+	ora entity_flags, y
+	sta entity_flags, y
 	
 +setDirection:
-	sta entity_hDir, y
 	
 	lda #$00
 	sta entity_hAccHi, y
@@ -489,7 +492,8 @@ AI_Pickle:
 	lda #$02
 	sta spawn_vAccHi
 	
-	lda entity_hDir, y
+	lda entity_flags, y
+	and #%01000000
 	sta spawn_dir
 	
 	jsr SpawnEnemy
@@ -588,11 +592,11 @@ AI_Cannon:
 	
 	lda entity_xHi
 
-	lda #LEFT
+	lda #%01000000
 	sta spawn_dir 
 	jsr SpawnEnemy	
 	
-	lda #RIGHT
+	lda #%00000000
 	sta spawn_dir
 	jsr SpawnEnemy
 +

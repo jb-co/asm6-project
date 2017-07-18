@@ -102,9 +102,9 @@ Collision_Pickle:
 	jmp restoreY
 @horizontal
 	
-	lda entity_hDir, y		;flip the horizontal dir bits
-	eor #%11000000
-	sta entity_hDir, y
+	lda entity_flags, y		;flip the horizontal dir bits
+	eor #%01000000
+	sta entity_flags, y
 	jmp restoreX
 	
 	
@@ -188,9 +188,9 @@ BgrCollisionHorizontal:
 
 ;;check direction
 	ldx entity_counter
-	LDA entity_hDir, x
-	cmp #LEFT
-	beq @movingLeft
+	LDA entity_flags, x
+	and #%01000000
+	bne @movingLeft
 	
 @movingRight
 	ldy #$02

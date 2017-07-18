@@ -25,8 +25,8 @@ DrawColumn:
 	
 NewColumnCheck:
 	
-	lda entity_hDir
-	CMP #RIGHT
+	lda entity_flags
+	and #%01000000
 	bne skipRightReDraw
 	
 	LDA scrollX_hi

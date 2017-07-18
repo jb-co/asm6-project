@@ -11,8 +11,8 @@ GameState_Playing:
 	ora entity_hAccLo
 	beq @spawnCheckDone
 	
-	lda entity_hDir
-	cmp #RIGHT
+	lda entity_flags
+	and #%01000000
 	bne @notRight
 	
 	jsr EnemySpawnRight

@@ -3,8 +3,8 @@ ScrollLogic:
 	lda #$04
 	jsr PRGBankWrite
 	
-	LDA entity_hDir
-	cmp #RIGHT
+	LDA entity_flags
+	and #%01000000
 	bne @notRight
 	
 	ldy roomNumber
