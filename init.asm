@@ -47,6 +47,8 @@ InitSlots:
 
 -	txa
 	sta nextFreeSlot, y
+	lda #$ff
+	sta nextActiveSlot, y
 	iny 
 	inx
 	cpy #28
@@ -56,8 +58,6 @@ InitSlots:
 	sta nextFreeSlot, y
 	sta firstActiveSlot
 	ldy #$00
-	sta nextActiveSlot, y
-	ldy #$01
 	sta nextActiveSlot, y
 	
 	lda #$11

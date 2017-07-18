@@ -392,7 +392,7 @@ SpawnPlayerBullet:
 	lda #$81
 	sta entity_sprite, x
 	
-	lda entity_flags, x
+	lda #%00000011
 	ora spawn_dir
 	sta entity_flags, x
 	

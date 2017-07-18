@@ -285,7 +285,7 @@ AI_Blob:
 	rts
 	
 AI_Platform:
-
+	sty prevSlot
 	lda #$01
 	sta entity_hAccHi, y
 	jsr horizontalMovement
@@ -521,7 +521,7 @@ AI_Pickle:
 	
 AI_Bullet:
 
-		;check if dead/off screen
+	;check if dead/off screen
 	lda entity_yHi, y
 	cmp #$f0
 	bne +alive
