@@ -110,8 +110,9 @@ CheckInputs:
 
 	BEQ NotRight
 	
-	lda #RIGHT
-	sta entity_hDir
+	lda entity_flags
+	and #%10111111
+	sta entity_flags
 	
 	lda walkCounter
 	cmp #$07
@@ -143,8 +144,9 @@ NotRight:
 	
 	BEQ NotLeft
 	
-	lda #LEFT
-	sta entity_hDir
+	lda #%01000000
+	ora entity_flags
+	sta entity_flags
 	
 	lda walkCounter
 	cmp #$07

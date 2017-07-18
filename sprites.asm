@@ -70,6 +70,11 @@ DrawObject:
 	sta testY
 	ldx sprite_counter
 	
+	lda entity_xHi, y
+	sec 
+	sbc scrollX_hi
+	sta tempPos
+	
 @yLoop
 
 	lda #$00
@@ -79,9 +84,9 @@ DrawObject:
 	asl a
 	sta counter
 	
-	lda entity_hDir, y
-	cmp #LEFT
-	bne @xLoop		;if the sprite is flipped, add width and draw in reverse order
+	lda entity_flags, y
+	and #%01000000
+	beq @xLoop		;if the sprite is flipped, add width and draw in reverse order
 	
 	lda entity_width, y
 	lsr a
@@ -92,9 +97,6 @@ DrawObject:
 	sta counter
 	dec counter
 	
-	
-	
-
 @xLoop
 		
 		lda worldX_hi, y
@@ -105,9 +107,7 @@ DrawObject:
 		lsr a
 		sta temp
 		
-		lda entity_xHi, y
-		sec 
-		sbc scrollX_hi
+		lda tempPos
 		clc 
 		adc testX
 		clc 
@@ -118,9 +118,7 @@ DrawObject:
 		jmp @go
 
 @dright	
-		lda entity_xHi, y
-		sec 
-		sbc scrollX_hi
+		lda tempPos
 		clc
 		adc testX
 		lda #$00
@@ -135,15 +133,11 @@ DrawObject:
 		sta SPRITE_RAM+1, x
 		
 		;sprite direction
-		lda entity_hDir, y
-		and #%01000000
-		ora entity_flags, y
+		lda entity_flags, y
 		sta SPRITE_RAM+2, x
 		
 		;sprite x
-		LDA entity_xHi, y	
-		sec 
-		sbc scrollX_hi
+		LDA tempPos
 		clc 
 		adc testX
 		STA SPRITE_RAM+3, x		
@@ -164,9 +158,9 @@ DrawObject:
 		adc testX
 		sta testX
 
-		lda entity_hDir, y
-		cmp #LEFT
-		bne @right
+		lda entity_flags, y
+		and #%01000000
+		beq @right
 		dec counter
 		jmp @evaluate
 @right

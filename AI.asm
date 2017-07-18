@@ -75,12 +75,11 @@ horizontalMovement:
 	LDA worldX_hi, y
 	STA storedWorldX_hi
 
+	lda entity_flags, y
+	and #%01000000
+	bne +left
 	
-	lda entity_hDir, y
-	cmp #LEFT
-	beq @left
-	
-@right:
++right:
 	lda entity_xLo, y
 	clc
 	adc entity_hAccLo, y
@@ -94,7 +93,7 @@ horizontalMovement:
 	
 	rts
 	
-@left:
++left:
 	lda entity_xLo, y
 	sec
 	sbc entity_hAccLo, y
