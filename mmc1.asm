@@ -336,17 +336,7 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	ldy #$00
 	sty roomNumber
 	
-	ldx #$04
-	lda MetaTileSets, x
-	sta pMetaTile 
-	lda MetaTileSets+1, x
-	sta pMetaTile+1
-	
-	ldy #$02
-	lda (pMetaTile),y
 
-	
-	
 	jsr FullRoomSpawn
 	
 

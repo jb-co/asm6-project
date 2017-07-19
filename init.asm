@@ -56,8 +56,8 @@ InitSlots:
 	sta nextFreeBullet, y
 	sta nextActiveSlot, y
 	
-	ldy #$04
-	ldx #$05
+	ldy #$05
+	ldx #$06
 	sty firstFreeSlot
 
 
@@ -105,7 +105,6 @@ LoadObjects:
 	ldy #$00
 @innerLoop
 	
-	;;third enemy of first screen
 	lda level1_Objects, x
 	cmp #$ff
 	beq @endLoadingObjects

@@ -1,7 +1,6 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
-firstFreeBullet:	.dsb 1
-nextFreeBullet:		.dsb 2
+
 
 bleh	.dsb 1
 bleh2	.dsb 1
@@ -168,8 +167,7 @@ lastOne	.dsb 1
 
 .enum $300    
 
-nextActiveSlot:		.dsb 30
-nextFreeSlot:		.dsb 30
+
 
 
 
@@ -207,7 +205,12 @@ entity_index		.dsb 30
 entity_hp			.dsb 1
 
 
+firstFreeBullet:	.dsb 1
+nextFreeBullet:		.dsb 2
 
+
+nextFreeSlot:		.dsb 30
+nextActiveSlot:		.dsb 30
 
 
 

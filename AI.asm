@@ -189,28 +189,43 @@ Player:
 
 	
 @hitDone
+
+	ldy entity_counter
+	lda platformIndex
+	beq @endPlatform
+	tax
+	
+	lda entity_flags
+	pha
+	
+	lda #$01 
+	sta entity_hAccHi
+	lda #$00
+	sta entity_hAccLo
+	
+	lda entity_flags
+	and #%10111111
+	sta temp 
+	lda entity_flags, x
+	and #%01000000
+	ora temp 
+	sta entity_flags 
+	
+	
+	jsr horizontalMovement
+	
+	lda #$00
+	sta entity_hAccHi
+	pla 
+	sta entity_flags 
+	
+@endPlatform
 	;; [USER INPUT]
 	JSR ReadController
 	JSR CheckInputs
 
 @skipInputs:	
 	ldy entity_counter
-	
-	lda platformIndex
-	beq +endPlatform
-	tax
-	
-	lda entity_flags, x
-	and #%01000000
-	beq +platformRight
-	lda entity_xHi
-	dec entity_xHi
-	dec scrollX_hi
-	jmp +endPlatform
-+platformRight
-	inc entity_xHi
-	inc scrollX_hi
-+endPlatform
 	
 	jsr applyGravity
 	
