@@ -114,27 +114,28 @@ CheckInputs:
 	and #%10111111
 	sta entity_flags
 	
+	inc entity_animFrame
+	
 	lda walkCounter
 	cmp #$07
 	bcs @fullSpeed
 	
 	inc walkCounter
+	
 	lda #$20
 	sta entity_hAccLo	
 	lda #$00	
 	sta entity_hAccHi
 	
-	jmp @doneWalking
+	
+	jmp PlayerMoveRight
 @fullSpeed
 	lda #$40
 	sta entity_hAccLo
 	lda #$01	
 	sta entity_hAccHi		
 	
-@doneWalking	
-	inc entity_animFrame
-	
-	RTS
+	jmp PlayerMoveRight
 	
 	
 NotRight:
@@ -148,17 +149,20 @@ NotRight:
 	ora entity_flags
 	sta entity_flags
 	
+	inc entity_animFrame
+	
 	lda walkCounter
 	cmp #$07
 	bcs @fullSpeed
 	
 	inc walkCounter
+
 	lda #$20
 	sta entity_hAccLo
 	lda #$00
 	sta entity_hAccHi
 	
-	jmp @doneWalking
+	jmp PlayerMoveLeft
 	
 @fullSpeed
 	
@@ -166,13 +170,9 @@ NotRight:
 	sta entity_hAccLo
 	lda #$01
 	sta entity_hAccHi
+	
+	jmp PlayerMoveLeft
 
-@doneWalking
-	inc entity_animFrame
-	lda #%01000000
-	ora entity_flags
-	sta entity_flags
-	rts
 NotLeft:
 
 	lda #$00

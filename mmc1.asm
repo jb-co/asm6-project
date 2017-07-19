@@ -358,8 +358,6 @@ forever:
 	lda gameState
 	jsr GameStateRoutine
 	
-	
-	
 	LDA deltaX
 	beq ++
 	jsr ScrollLogic

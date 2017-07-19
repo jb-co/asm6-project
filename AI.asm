@@ -16,6 +16,36 @@ playerJump:
 	
 	rts
 	
+PlayerMoveLeft:
+	
+	lda entity_xLo 
+	sec 
+	sbc entity_hAccLo
+	sta entity_xLo
+	lda entity_xHi
+	sbc entity_hAccHi
+	sta entity_xHi
+	lda worldX_hi
+	sbc #$00
+	sta worldX_hi
+	
+	rts 
+	
+PlayerMoveRight:
+
+	lda entity_xLo 
+	clc 
+	adc entity_hAccLo
+	sta entity_xLo
+	lda entity_xHi
+	adc entity_hAccHi
+	sta entity_xHi
+	lda worldX_hi
+	adc #$00
+	sta worldX_hi
+
+	rts 
+	
 CheckOffscreen:
 	;check if entity is offscreen
 	ldy entity_counter
@@ -137,6 +167,13 @@ applyGravity:
 	
 Player:
 
+	LDA entity_xLo, y
+	STA storedX_lo
+	LDA entity_xHi, y
+	STA storedX_hi
+	LDA worldX_hi, y
+	STA storedWorldX_hi
+	
 	lda collided
 	beq @hitDone
 	inc collided
@@ -185,57 +222,46 @@ Player:
 	lda #$00
 	sta entity_hAccHi
 	
-	jmp @skipInputs
+	jmp +skipInputs
 
 	
 @hitDone
 
 	ldy entity_counter
 	
-	jmp @endPlatform
 	lda platformIndex
-	beq @endPlatform
+	beq +endPlatform
 	tax
 	
-	lda entity_flags
-	pha
-	
-	lda #$01 
+	lda #$01
 	sta entity_hAccHi
 	lda #$00
-	sta entity_hAccLo
+	sta entity_hAccLo 
 	
-	lda entity_flags
-	and #%10111111
-	sta temp 
-	lda entity_flags, x
+	lda entity_flags, x 
 	and #%01000000
-	ora temp 
-	sta entity_flags 
+	bne +left
 	
-	
-	jsr horizontalMovement
-	
-	lda #$00
-	sta entity_hAccHi
-	pla 
-	sta entity_flags 
-	
-@endPlatform
+	jsr PlayerMoveRight
+	jmp +endPlatform
++left
+	jsr PlayerMoveLeft
+
++endPlatform
 	;; [USER INPUT]
 	JSR ReadController
 	JSR CheckInputs
 
-@skipInputs:	
++skipInputs:	
 	ldy entity_counter
 	
 	jsr applyGravity
 	
 	
-	jsr horizontalMovement
+	;jsr horizontalMovement
 	jsr BgrCollisionHorizontal
 
-
+	;;calculate total x-movement
 	lda entity_xHi
 	sec 
 	sbc storedX_hi
