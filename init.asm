@@ -161,6 +161,7 @@ InitVariables:
 	sta iframes
 	sta entity_airborne
 	sta currentBossPattern
+	sta A_down
 	
 	LDA #$40
 	STA gravity

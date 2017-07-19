@@ -68,11 +68,6 @@ Collision_Player:
 	
 @hitDown
 	
-	lda isJumping
-	beq @skipS
-	;jsr PlayThud
-@skipS
-	STY isJumping
 @hitUp	
 	jmp restoreY
 

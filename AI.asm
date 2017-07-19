@@ -366,6 +366,7 @@ AI_Platform:
 	lda #$01
 	sta entity_hAccHi, y
 	jsr horizontalMovement
+	
 
 	;check for player feet;
 	lda entity_yHi
@@ -407,8 +408,6 @@ AI_Platform:
 	sta entity_vAccHi
 	sta entity_vAccLo 
 	sta entity_airborne
-	sta isJumping
-	sta jumpCounter
 	
 	lda entity_yHi, y
 	sec

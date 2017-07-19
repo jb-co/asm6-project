@@ -48,45 +48,45 @@ CheckInputs:
 	;;A button
 	LDA buttons
 	AND #$80
-	BEQ @notA
+	BEQ +notA
 	
 	lda entity_airborne
-	bne @checkB
+	bne +checkB
 	
 	lda isJumping
-	bne @checkB
+	bne +checkB
 	jsr playerJump
 	
-	JMP @checkB
+	JMP +checkB
 	
-@notA
++notA
 
 	LDA jumpCounter
-	BEQ @doneA
+	BEQ +checkB
 	
 	LDA entity_vAccHi
 	CMP #$01
-	Bmi @dontReset
+	Bmi +dontReset
 	LDA #$01
 	STA entity_vAccHi
 	
 	lda entity_vAccLo
 	CMP #$40
-	Bmi @dontReset
+	Bmi +dontReset
 	LDA #$00
 	STA entity_vAccLo
 	
-@dontReset
++dontReset
+
+	lda entity_airborne
+	bne +
 	lda #$00
 	sta jumpCounter
-	
-	jmp @checkB
-@doneA
-	;lda #$00
-	;sta isJumping
+	sta isJumping
++
 	
 
-@checkB
++checkB
 
 	LDA buttons
 	AND #$40
