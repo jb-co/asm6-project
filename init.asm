@@ -169,8 +169,6 @@ InitVariables:
 	
 	LDA #$80
 	STA entity_xHi
-
-	sta deltaX
 	
 	lda #%00000010
 	sta entity_flags

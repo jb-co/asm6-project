@@ -358,10 +358,9 @@ forever:
 	lda gameState
 	jsr GameStateRoutine
 	
-	jsr UpdateSprites
 	
-	LDA entity_hAccHi
-	ORA entity_hAccLo
+	
+	LDA deltaX
 	beq ++
 	jsr ScrollLogic
 	
@@ -382,7 +381,7 @@ forever:
 	jsr GenerateAttributeBuffer
 	inc attributesReady
 ++
-	
+	jsr UpdateSprites
 	
 	jmp forever   
 

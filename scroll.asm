@@ -3,9 +3,8 @@ ScrollLogic:
 	lda #$04
 	jsr PRGBankWrite
 	
-	LDA entity_flags
-	and #%01000000
-	bne @notRight
+	LDA deltaX
+	bmi @notRight
 	
 	ldy roomNumber
 	lda Level1_ScrollLocks, y
@@ -22,16 +21,13 @@ ScrollLogic:
 	
 @applyScrollX	
 	
-	lda entity_xLo
+	lda scrollX_hi
 	clc
-	adc entity_hAccLo
-	lda entity_hAccHi
-	adc scrollX_hi
+	adc deltaX
 	sta scrollX_hi	
 	lda roomNumber	
 	adc #$00
 	sta roomNumber	
-	
 
 	JMP @endScrollLogic
 	
@@ -64,14 +60,15 @@ ScrollLogic:
 	
 @sameRoom	
 
-	lda entity_xLo
-	sec
-	sbc entity_hAccLo
-	lda scrollX_hi
-	sbc entity_hAccHi
+	lda deltaX
+	bpl @positive
+	dec roomNumber
+@positive:
+	clc 
+	adc scrollX_hi
 	sta scrollX_hi
 	lda roomNumber
-	sbc #$00
+	adc #$00
 	sta roomNumber
 
 @endScrollLogic	

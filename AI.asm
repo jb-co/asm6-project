@@ -191,6 +191,8 @@ Player:
 @hitDone
 
 	ldy entity_counter
+	
+	jmp @endPlatform
 	lda platformIndex
 	beq @endPlatform
 	tax
@@ -229,16 +231,15 @@ Player:
 	
 	jsr applyGravity
 	
-	lda entity_hAccHi
-	ora entity_hAccLo
-	beq @noHorizontalMovement
 	
 	jsr horizontalMovement
 	jsr BgrCollisionHorizontal
-	
-	
-@noHorizontalMovement	
 
+
+	lda entity_xHi
+	sec 
+	sbc storedX_hi
+	sta deltaX
 	
 	jsr verticalMovement
 	jsr BgrCollisionVertical
