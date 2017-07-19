@@ -368,24 +368,27 @@ AI_Platform:
 	jsr horizontalMovement
 	
 
+	lda entity_timer, y
+	bne +secondFrame
++firstFrame:	
+	lda entity_yHi
+	clc 
+	adc #$0F
+	cmp entity_yHi, y
+	bcs ++
+	lda #$01
+	sta entity_timer, y
+++
+	jmp +end
+	
++secondFrame:
 	;check for player feet;
 	lda entity_yHi
 	clc 
-	adc #$10
+	adc #$12	;this offset is kind of sketchy
 	cmp entity_yHi, y
-	bcc +end
+	bcc +resetFrame
 	
-	lda entity_yHi, y
-	clc
-	adc #$04
-	sta testY
-	lda entity_yHi
-	clc 
-	adc #$0c
-	cmp testY
-	bcs +end
-	
-
 	lda entity_xHi
 	clc
 	adc HitBox_Player+0
@@ -394,7 +397,7 @@ AI_Platform:
 	clc 
 	adc #$10
 	cmp testX
-	bcc +end
+	bcc +resetFrame
 	
 	lda entity_xHi
 	clc 
@@ -402,12 +405,12 @@ AI_Platform:
 	sta testX
 	lda entity_xHi, y
 	cmp testX
-	bcs +end
+	bcs +resetFrame
 	
 	lda #$00
-	sta entity_vAccHi
-	sta entity_vAccLo 
 	sta entity_airborne
+	sta entity_vAccHi
+	sta entity_vAccLo
 	
 	lda entity_yHi, y
 	sec
@@ -415,9 +418,12 @@ AI_Platform:
 	sta entity_yHi
 	
 	sty platformIndex
-	
-+end
+	jmp +end 
++resetFrame:
+	lda #$00
+	sta entity_timer, y
 
++end
 	jmp CheckOffscreen
 	
 ;STOMPER
