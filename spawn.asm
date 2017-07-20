@@ -284,7 +284,7 @@ SpawnEnemyFromMap:
 	lda #$00
 	sta entity_vAccHi, x
 	sta entity_vAccLo, x
-	sta entity_hAccLo, x
+	sta entity_xLo, x
 	
 	lda #$01
 	sta entity_airborne, x

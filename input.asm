@@ -132,9 +132,9 @@ CheckInputs:
 @fullSpeed
 	lda #$40
 	sta entity_hAccLo
-	lda #$01	
-	sta entity_hAccHi		
 	
+	inc entity_hAccHi		
+
 	jmp PlayerMoveRight
 	
 	
@@ -166,11 +166,12 @@ NotRight:
 	
 @fullSpeed
 	
+	
 	lda #$40
 	sta entity_hAccLo
-	lda #$01
-	sta entity_hAccHi
-	
+
+	inc entity_hAccHi
+
 	jmp PlayerMoveLeft
 
 NotLeft:

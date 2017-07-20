@@ -227,20 +227,25 @@ Player:
 	
 @hitDone
 
-	ldy entity_counter
+	
+	;; [USER INPUT]
+	JSR ReadController
+	JSR CheckInputs
 	
 	lda platformIndex
 	beq +endPlatform
 	tax
 	
-	lda #$01
-	sta entity_hAccHi
-	lda #$00
-	sta entity_hAccLo 
 	
+	lda #$00
+	sta entity_hAccHi 
+	lda entity_hAccLo, x
+	sta entity_hAccLo 
+
 	lda entity_flags, x 
 	and #%01000000
 	bne +left
+
 	
 	jsr PlayerMoveRight
 	jmp +endPlatform
@@ -248,9 +253,6 @@ Player:
 	jsr PlayerMoveLeft
 
 +endPlatform
-	;; [USER INPUT]
-	JSR ReadController
-	JSR CheckInputs
 
 +skipInputs:	
 	ldy entity_counter
@@ -358,17 +360,14 @@ AI_Platform:
 	eor temp
 	sta actives, x
 	
-	jsr ReturnFreeSlot
-	rts
+	jmp ReturnFreeSlot
+	
 +alive:
 
 	sty prevSlot
-	lda #$01
-	sta entity_hAccHi, y
-	jsr horizontalMovement
 	
-
-	lda entity_timer, y
+	lda entity_flags, y
+	and #%00000100
 	bne +secondFrame
 +firstFrame:	
 	lda entity_yHi
@@ -376,8 +375,9 @@ AI_Platform:
 	adc #$0F
 	cmp entity_yHi, y
 	bcs ++
-	lda #$01
-	sta entity_timer, y
+	lda #%00000100
+	ora entity_flags, y
+	sta entity_flags, y
 ++
 	jmp +end
 	
@@ -390,20 +390,28 @@ AI_Platform:
 	bcc +resetFrame
 	
 	lda entity_xHi
+	sec
+	sbc scrollX_hi
 	clc
 	adc HitBox_Player+0
 	sta testX
 	lda entity_xHi, y
+	sec
+	sbc scrollX_hi
 	clc 
 	adc #$10
 	cmp testX
 	bcc +resetFrame
 	
 	lda entity_xHi
+	sec
+	sbc scrollX_hi
 	clc 
 	adc HitBox_Player+2
 	sta testX
 	lda entity_xHi, y
+	sec
+	sbc scrollX_hi
 	cmp testX
 	bcs +resetFrame
 	
@@ -417,14 +425,31 @@ AI_Platform:
 	sbc #$10
 	sta entity_yHi
 	
+	lda entity_xLo
+	sta entity_xLo, y
+	
 	sty platformIndex
 	jmp +end 
 +resetFrame:
-	lda #$00
-	sta entity_timer, y
+	lda #%11111011
+	and entity_flags, y
+	sta entity_flags, y
 
 +end
-	jmp CheckOffscreen
+
+	
+	lda #$80 
+	sta entity_hAccLo, y
+	lda #$00
+	sta entity_hAccHi, y
+	
+	jsr horizontalMovement
+	jsr BgrCollisionHorizontal
+	
+	ldy entity_counter
+
+	jsr CheckOffscreen
+	rts
 	
 ;STOMPER
 AI_Stomper:

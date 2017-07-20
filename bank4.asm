@@ -3,7 +3,7 @@
 
 level1_Objects:	;roomNumber, x, y, type, enemyIndex
 	.db $00, $E0, $B7, PLATFORM, $03
-	;.db $00, $40, $B0, PICKLE, $05
+	.db $00, $40, $B0, PICKLE, $05
 	
 	.db $ef
 	.db $01, $40, $B0, PLATFORM, $04
