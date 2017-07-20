@@ -41,20 +41,19 @@ UpdateSprites:
 	
 	ldy firstActiveSlot
 	cpy #$ff
-	beq @done
+	beq +done
 	
-@loop
-
+-loop
 	jsr DrawObject
 
 	lda nextActiveSlot, y
 	cmp #$ff
-	beq @done
+	beq +done
 
 	tay
 	
-	jmp @loop
-@done
+	jmp -loop
++done
 
 	rts
 	
@@ -70,6 +69,9 @@ DrawObject:
 	sbc scrollX_hi
 	sta tempPos
 	
+	lda entity_width, y 
+	lsr a
+	sta temp
 @yLoop
 
 	lda #$00
@@ -94,33 +96,24 @@ DrawObject:
 	
 @xLoop
 		
-		;lda worldX_hi, y
-		;cmp roomNumber
-		;bcc @dright
-		
-		lda entity_width, y 
-		lsr a
-		sta temp
-		
-		lda tempPos
-		clc 
-		adc testX
-		clc 
-		adc temp
-		lda #$00
-		adc #$00
-		bne @next
-		jmp @go
-
-@dright	
-		lda tempPos
+		;check if sprite is in the wrong room 
+		lda entity_xHi, y 
 		clc
-		adc testX
-		lda #$00
+		adc testX 
+		sta temp
+		lda worldX_hi, y
 		adc #$00
-		bne @next
-
-@go:
+		sta tempRoom
+		
+		bcs @next	
+	
+		lda temp
+		sec 
+		sbc scrollX_hi
+		lda tempRoom
+		sbc roomNumber
+		bne @next 
+		
 		;sprite number
 		lda entity_sprite, y
 		clc
@@ -160,7 +153,7 @@ DrawObject:
 		jmp @evaluate
 @right
 		inc counter
-@evaluate
+@evaluate				;check if x has reached entity width
 		lda testX
 		cmp entity_width, y
 		beq @endX

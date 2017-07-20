@@ -51,8 +51,6 @@ CheckOffscreen:
 	ldy entity_counter
 	lda entity_width, y	;half width
 	lsr a
-	;sec
-	;sbc #$01
 	sta temp
 	
 	lda entity_xHi, y
@@ -453,9 +451,7 @@ AI_Platform:
 +
 	lda #$01
 	sta entity_timer, y
-
-	jsr CheckOffscreen
-	rts
+	jmp CheckOffscreen
 	
 ;STOMPER
 AI_Stomper:

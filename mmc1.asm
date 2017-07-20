@@ -355,6 +355,8 @@ forever:
 	
 	jsr NextFrame	;;wait for nmi
 	
+	
+	
 	lda gameState
 	jsr GameStateRoutine
 	
@@ -369,7 +371,6 @@ forever:
 	jsr GenerateColumnBuffer
 	inc columnReady
 +
-	
 
 	;;attribute buffer generator
 	lda scrollX_hi
@@ -379,6 +380,7 @@ forever:
 	jsr GenerateAttributeBuffer
 	inc attributesReady
 ++
+	
 	jsr UpdateSprites
 	
 	jmp forever   

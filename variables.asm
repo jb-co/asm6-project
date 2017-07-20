@@ -66,7 +66,7 @@ testX:			.dsb 1 	;generic variable
 testY:			.dsb 1 	;generic variable
 
 tempPos			.dsb 1
-
+tempRoom		.dsb 1
 
 offsetX:			.dsb 1	;used for collision check
 currentTile:		.dsb 1	;currently collided tile
