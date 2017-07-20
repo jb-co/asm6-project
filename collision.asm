@@ -1,5 +1,6 @@
 Collision_Routines:
-	.word Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1, Collision_Bullet-1, Collision_Arc_Bullet-1, Collision_Blob-1
+	dw Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1, $00, Collision_Arc_Bullet-1
+	dw $00, $00, Collision_Platform-1
 	
 ;hitboxes
 HitBox_Player:
@@ -18,9 +19,12 @@ HitBox_ArcBullet
 	.db $03, $03, $06, $06, $f0, $f0
 HitBox_Boss1
 	.db $00, $00, $18, $10, $0c, $f0
+HitBox_Platform
+	.db $00, $00, $10, $04, $f0, $f0
 	
 HitBoxes:
-	.dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet, HitBox_Cannon, HitBox_ArcBullet, HitBox_Boss1
+	dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet
+	dw HitBox_Cannon, HitBox_ArcBullet, HitBox_Boss1, HitBox_Bullet, HitBox_Platform
 
 restoreY:
 
@@ -84,6 +88,7 @@ Collision_Player:
 	
 	
 ;; Really basic collision objects goes here
+Collision_Platform:
 Collision_Bullet:
 Collision_Blob:
 Collision_Stomper:

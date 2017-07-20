@@ -1,6 +1,6 @@
  .enum $0000
 ;; DECLARE SOME VARIABLES HERE
-
+roomNumber:		.dsb 1 	;current room
 
 bleh	.dsb 1
 bleh2	.dsb 1
@@ -27,7 +27,7 @@ att_lo: .dsb 1
 collided:		.dsb 1
 frameCounter:	.dsb 1	;global frame counter
 nametable:  		.dsb 1  	;which nametable to use, 0 or 1
-roomNumber:		.dsb 1 	;current room
+
 
 ; [NMI exclusives]
 
@@ -199,7 +199,7 @@ entity_airborne		.dsb 30
 entity_timer		.dsb 30
 entity_animFrame 	.dsb 30
 
-entity_flags		.dsb 30
+entity_flags		.dsb 30 ;7-Sleeping 6-hDirection 5-? 4-? 3-? 2-onPlatform -1: Palette -0: Palette
 entity_index		.dsb 30	
 
 entity_hp			.dsb 1

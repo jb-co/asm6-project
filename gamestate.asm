@@ -5,21 +5,18 @@ GameState_Playing:
 	lda frameCounter
 	and #%00000010
 	cmp #$02
-	bne @spawnCheckDone
+	bne +spawnCheckDone
 	;spawn check
-	LDA entity_hAccHi
-	ora entity_hAccLo
-	beq @spawnCheckDone
-	
-	lda entity_flags
-	and #%01000000
-	bne @notRight
+	LDA deltaX
+	beq +spawnCheckDone
+
+	bmi +notRight
 	
 	jsr EnemySpawnRight
-	jmp @spawnCheckDone
-@notRight
+	jmp +spawnCheckDone
++notRight
 	jsr EnemySpawnLeft
-@spawnCheckDone
++spawnCheckDone
   
 	LDY firstActiveSlot
 	cpy #$ff 
@@ -140,6 +137,7 @@ GameState_WaitFrames:
 ;hitbox overlap test
 ;the object type is in temp
 PlayerObjectCollision:
+	rts
 	ldx entity_counter ;transfer object index to x
 	
 @beginSpriteCollisionCheck

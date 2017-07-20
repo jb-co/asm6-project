@@ -61,14 +61,14 @@ ScrollLogic:
 @sameRoom	
 
 	lda deltaX
-	bpl @positive
+	;bpl @positive
 	dec roomNumber
-@positive:
+;@positive:
 	clc 
 	adc scrollX_hi
 	sta scrollX_hi
-	lda roomNumber
-	adc #$00
+	lda #$00
+	adc roomNumber
 	sta roomNumber
 
 @endScrollLogic	

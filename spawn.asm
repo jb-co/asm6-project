@@ -290,10 +290,16 @@ SpawnEnemyFromMap:
 	sta entity_airborne, x
 	
 	;;SET OBJ DIRECTION
-	lda entity_flags	;; opposite of player facing direction
-	eor #%01000000
+	lda deltaX	;; opposite of player facing direction
+	bmi +
+	lda #%01000000
+	ora entity_flags, x
+	jmp ++
++
+	lda %10111111
+	and entity_flags,x
+++	
 	sta entity_flags, x
-	
 	rts
 	
 ;dynamically spawn enemy

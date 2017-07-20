@@ -46,6 +46,7 @@ PlayerMoveRight:
 
 	rts 
 	
+;returns 0 if still on screen 
 CheckOffscreen:
 	;check if entity is offscreen
 	ldy entity_counter
@@ -68,12 +69,7 @@ CheckOffscreen:
 	sbc scrollX_hi
 	lda temp
 	sbc roomNumber
-	bne +
-	
-	rts
-+	;kill object
-	lda #$f0
-	sta entity_yHi, y
++	
 	rts
 
 verticalMovement: 
@@ -243,6 +239,8 @@ Player:
 	sta entity_yHi
 	
 	lda entity_timer, x
+	beq +endPlatform
+	
 	sta entity_hAccHi 
 	lda #$00
 	sta entity_hAccLo 
@@ -332,8 +330,11 @@ AI_Blob:
 	jsr BgrCollisionVertical
 	
 	jsr CheckOffscreen
-	cmp #$f0
-	beq @end
+	beq +
+	lda #$f0
+	sta entity_yHi, y
+	jmp +end
++
 	
 	lda #$06
 	jsr PRGBankWrite
@@ -342,9 +343,9 @@ AI_Blob:
 	jsr Animation_Generic
 	
 	lda collided
-	bne @skipPlayerCollision
+	bne +
 	jsr PlayerObjectCollision
-@skipPlayerCollision:
++
 	
 	
 	lda #$05
@@ -352,26 +353,23 @@ AI_Blob:
 	ldx entity_counter
 	jmp PlayerBulletCollision
 
-@end	
++end	
 	rts
 	
 AI_Platform:
-
-	;check if dead/off screen
-	lda entity_yHi, y
-	cmp #$f0
-	bne +alive
-	
-	lda entity_index, y
-	jsr GetActiveBit
-	eor temp
-	sta actives, x
-	
-	jmp ReturnFreeSlot
-	
-+alive:
-
 	sty prevSlot
+	jsr CheckOffscreen
+	;check if dead/off screen
+	beq +onScreen
+	
+	lda #%10000000
+	ora entity_flags, y
+	sta entity_flags, y
+	jmp +end
++onScreen:
+	lda #%01111111
+	and entity_flags, y
+	sta entity_flags, y
 	
 	lda entity_flags, y
 	and #%00000100
@@ -433,7 +431,7 @@ AI_Platform:
 +end
 
 	
-	lda #$80 
+	lda #$a0 
 	sta entity_hAccLo, y
 	lda #$00
 	sta entity_hAccHi, y
@@ -451,7 +449,8 @@ AI_Platform:
 +
 	lda #$01
 	sta entity_timer, y
-	jmp CheckOffscreen
+	;jmp CheckOffscreen
+	rts
 	
 ;STOMPER
 AI_Stomper:
@@ -527,26 +526,30 @@ AI_Stomper:
 
 +noHorizontal:
 	jsr CheckOffscreen
-	cmp #$f0
-	beq @end
+	beq +
+	lda #$f0
+	sta entity_yHi, y
+	jmp +end 
++
 	
 	lda collided
-	bne @skipPlayerCollision
+	bne +
 	jsr PlayerObjectCollision
-@skipPlayerCollision:
++
 
 	lda #$05
 	jsr PRGBankWrite
 	
 	ldx entity_counter
 	jsr PlayerBulletCollision
-@end	
+	
 
 	lda #$06
 	jsr PRGBankWrite
 	
 	lda #STOMPER
 	jsr Animation_Stomper
++end 
 	rts
 
 ;;PICKLE
@@ -574,8 +577,11 @@ AI_Pickle:
 	jsr horizontalMovement
 	
 	jsr CheckOffscreen
-	cmp #$f0
-	beq +end
+	beq +
+	lda #$f0
+	sta entity_yHi, y
+	jmp +end 
++
 	
 	lda entity_timer, y
 	cmp #$30
@@ -643,6 +649,10 @@ AI_Bullet:
 	jsr horizontalMovement
 
 	jsr CheckOffscreen
+	beq +
+	lda #$f0
+	sta entity_yHi, y
++
 	rts 
 	
 AI_GenericBullet:
@@ -655,7 +665,13 @@ AI_GenericBullet:
 	sty prevSlot
 	jsr horizontalMovement
 
-	jmp CheckOffscreen
+	jsr CheckOffscreen
+	beq +
+	lda #$f0
+	sta entity_yHi, y
++	
+	rts 
+	
 	
 
 	
@@ -707,15 +723,17 @@ AI_Cannon:
 +
 
 	jsr CheckOffscreen
-	cmp #$f0
-	beq @end
+	beq +
+	lda #$f0
+	sta entity_yHi, y
+	jmp +end 
++
 	
 	lda collided
-	bne @skipPlayerCollision
+	bne +end 
 	jsr PlayerObjectCollision
-@skipPlayerCollision:
 
-@end:
++end:
 	rts
 	
 AI_GenericArcBullet:
@@ -734,15 +752,17 @@ AI_GenericArcBullet:
 	jsr BgrCollisionVertical
 	
 	jsr CheckOffscreen
-	cmp #$f0
-	beq @end
+	beq +
+	lda #$f0
+	sta entity_yHi, y
+	jmp +end 
++
 	
 	lda collided
-	bne @skipPlayerCollision
+	bne +end
 	jsr PlayerObjectCollision
-@skipPlayerCollision:
 
-@end
++end
 	rts
 	
 AI_Boss1:

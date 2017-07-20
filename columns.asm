@@ -25,9 +25,8 @@ DrawColumn:
 	
 NewColumnCheck:
 	
-	lda entity_flags
-	and #%01000000
-	bne skipRightReDraw
+	lda deltaX
+	bmi skipRightReDraw
 	
 	LDA scrollX_hi
 	STA tempX_lo
@@ -39,8 +38,6 @@ NewColumnCheck:
 	adc #$01
 	sta tempX_hi			; the previous calculation
 	
-	;JSR DrawNewColumn         ; if lower bits = 0, time for new column
-
 	rts
 	
 skipRightReDraw: ;;LEFT REDRAW
