@@ -22,7 +22,8 @@ Animation_Player:
 	jmp doneAnim
 	
 +
-	lda entity_hAccHi
+	;Idle sprite
+	lda walkCounter
 	bne +
 	lda Def_Player+2
 	jmp doneAnim

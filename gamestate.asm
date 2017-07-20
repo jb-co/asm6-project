@@ -21,18 +21,13 @@ GameState_Playing:
 	jsr EnemySpawnLeft
 @spawnCheckDone
   
-	LDY #$00 ;entity counter loop in the future
+	LDY firstActiveSlot
+	cpy #$ff 
+	beq +end 
 	sty entity_counter
-	
-	lda firstActiveSlot		;put player first in the list
-	sta nextActiveSlot, y
 	
 	lda #$fe
 	sta prevSlot
-	
-	lda #$00
-	sta entity_hAccHi
-	sta entity_hAccLo
 	
 -entityPhysicsLoop
 
@@ -52,13 +47,25 @@ GameState_Playing:
 
 	lda nextActiveSlot, y
 	cmp #$ff
-	bne +
-	rts
-
-+	
+	beq +end
 	
 	sta entity_counter
 	jmp -entityPhysicsLoop
++end:
+	;process player 
+
+	ldy #$00
+	sty entity_hAccHi
+	sty entity_hAccLo
+	sty entity_counter
+	
+	lda HitBoxes, y
+	sta pHitBox
+	lda HitBoxes+1, y
+	sta pHitBox+1
+	
+	jmp Player
+
 
 GameState_StartScreen:
 	lda #$01

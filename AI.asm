@@ -152,12 +152,12 @@ applyGravity:
 	sbc #$00
 	sta entity_vAccHi, y
 	
-	;;set a max vertical acc to -7
+	;;set a max vertical acc to -6
 	LDA entity_vAccHi, y
-	CMP #$F9
+	CMP #$FA
 	BPL @end
 	SEC
-	LDA #$F9
+	LDA #$FA
 	STA entity_vAccHi, y
 	LDA #$00
 	STA entity_vAccLo, y
@@ -173,6 +173,8 @@ Player:
 	STA storedX_hi
 	LDA worldX_hi, y
 	STA storedWorldX_hi
+	
+	jsr applyGravity
 	
 	lda collided
 	beq @hitDone
@@ -227,19 +229,23 @@ Player:
 	
 @hitDone
 
-	
-	;; [USER INPUT]
-	JSR ReadController
-	JSR CheckInputs
-	
 	lda platformIndex
 	beq +endPlatform
 	tax
 	
-	
 	lda #$00
+	sta entity_airborne
+	sta entity_vAccHi
+	sta entity_vAccLo
+	
+	lda entity_yHi, x
+	sec
+	sbc #$10
+	sta entity_yHi
+	
+	lda entity_timer, x
 	sta entity_hAccHi 
-	lda entity_hAccLo, x
+	lda #$00
 	sta entity_hAccLo 
 
 	lda entity_flags, x 
@@ -254,13 +260,15 @@ Player:
 
 +endPlatform
 
+	;; [USER INPUT]
+	JSR ReadController
+	JSR CheckInputs
+	
+	
+
 +skipInputs:	
 	ldy entity_counter
 	
-	jsr applyGravity
-	
-	
-	;jsr horizontalMovement
 	jsr BgrCollisionHorizontal
 
 	;;calculate total x-movement
@@ -372,12 +380,13 @@ AI_Platform:
 +firstFrame:	
 	lda entity_yHi
 	clc 
-	adc #$0F
+	adc #$0d
 	cmp entity_yHi, y
 	bcs ++
 	lda #%00000100
 	ora entity_flags, y
 	sta entity_flags, y
+
 ++
 	jmp +end
 	
@@ -385,7 +394,7 @@ AI_Platform:
 	;check for player feet;
 	lda entity_yHi
 	clc 
-	adc #$12	;this offset is kind of sketchy
+	adc #$10	;this offset is kind of sketchy
 	cmp entity_yHi, y
 	bcc +resetFrame
 	
@@ -415,19 +424,6 @@ AI_Platform:
 	cmp testX
 	bcs +resetFrame
 	
-	lda #$00
-	sta entity_airborne
-	sta entity_vAccHi
-	sta entity_vAccLo
-	
-	lda entity_yHi, y
-	sec
-	sbc #$10
-	sta entity_yHi
-	
-	lda entity_xLo
-	sta entity_xLo, y
-	
 	sty platformIndex
 	jmp +end 
 +resetFrame:
@@ -447,6 +443,15 @@ AI_Platform:
 	jsr BgrCollisionHorizontal
 	
 	ldy entity_counter
+	lda entity_xHi, y
+	sec 
+	sbc storedX_hi
+	bne +
+	sta entity_timer, y
+	rts 
++
+	lda #$01
+	sta entity_timer, y
 
 	jsr CheckOffscreen
 	rts
