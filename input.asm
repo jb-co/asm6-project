@@ -133,7 +133,13 @@ CheckInputs:
 	lda #$40
 	sta entity_hAccLo
 	
+	lda entity_hAccHi
+	bne +
 	lda #$01
+	sta entity_hAccHi
+	jmp PlayerMoveRight
++
+	lda #$00
 	sta entity_hAccHi
 	jmp PlayerMoveRight
 
@@ -171,10 +177,15 @@ NotRight:
 	lda #$40
 	sta entity_hAccLo
 
-
+	lda entity_hAccHi
+	bne +
 	lda #$01
 	sta entity_hAccHi
 	jmp PlayerMoveLeft
++
+	lda #$00
+	sta entity_hAccHi
+	jmp PlayerMoveLeft 
 
 
 NotLeft:
