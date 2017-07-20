@@ -174,8 +174,6 @@ Player:
 	LDA worldX_hi, y
 	STA storedWorldX_hi
 	
-	jsr applyGravity
-	
 	lda collided
 	beq @hitDone
 	inc collided
@@ -230,7 +228,10 @@ Player:
 @hitDone
 
 	lda platformIndex
-	beq +endPlatform
+	bne +
+	jsr applyGravity
+	jmp +endPlatform
++	
 	tax
 	
 	lda #$00
@@ -394,7 +395,7 @@ AI_Platform:
 	;check for player feet;
 	lda entity_yHi
 	clc 
-	adc #$10	;this offset is kind of sketchy
+	adc #$12	;this offset is kind of sketchy
 	cmp entity_yHi, y
 	bcc +resetFrame
 	
