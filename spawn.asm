@@ -45,20 +45,21 @@ FullRoomSpawn:
 	lda (sourceLo), y	;x
 	sta spawn_x
 	
-	lda roomNumber
-	sta spawn_room
-	
 	ldy #$04
 	lda (sourceLo), y ;index
 	jsr GetActiveBit
 	ora temp
 	sta actives, x
 	
+	ldy #$05 ; which room to spawn in (can be different for globals)
+	lda (sourceLo), y
+	sta spawn_room
+	
 	jsr SpawnEnemyFromMap
 	
 	lda sourceLo
 	clc
-	adc #$05
+	adc #$06
 	sta sourceLo
 	
 	jmp @loop
@@ -285,6 +286,7 @@ SpawnEnemyFromMap:
 	sta entity_vAccHi, x
 	sta entity_vAccLo, x
 	sta entity_xLo, x
+	sta entity_timer, x
 	
 	lda #$01
 	sta entity_airborne, x

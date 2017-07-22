@@ -431,7 +431,8 @@ AI_Platform:
 +end
 
 	
-	lda #$a0 
+	
+	lda #$80
 	sta entity_hAccLo, y
 	lda #$00
 	sta entity_hAccHi, y

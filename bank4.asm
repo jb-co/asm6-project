@@ -1,15 +1,16 @@
 ;; [ OBJECTS ]		;;sprite_height, sprite_width, tile_number, attributebits (7-gravity, 6-bgrcollision, 5-...)
 
 
-level1_Objects:	;roomNumber, x, y, type, enemyIndex
-	.db $00, $E0, $B7, PLATFORM, $03
-	;.db $00, $40, $B0, PICKLE, $05
+level1_Objects:	;roomNumber, x, y, type, enemyIndex, spawnInRoom
+	.db $00, $20, $90, PLATFORM, $04, $01
+	.db $00, $40, $a0, PLATFORM, $05, $01
+	.db $00, $20, $b0, PLATFORM, $06, $02
+	.db $00, $40, $c0, PLATFORM, $07, $02
 	
 	.db $ef
-	.db $01, $20, $c7, PLATFORM, $04
-	.db $01, $40, $b0, PLATFORM, $06
+	
 	;.db $01, $50, $90, STOMPER, $05
-	.db $01, $60, $80, PLATFORM, $07
+	;.db $01, $60, $80, PLATFORM, $07
 	.db $ef
 	;.db $02, $e0, $bf, STOMPER, $08
 	.db $ef
