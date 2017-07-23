@@ -769,6 +769,75 @@ AI_GenericArcBullet:
 +end
 	rts
 	
+AI_CeilingSnale:
+	
+	sty prevSlot
+	
+	lda entity_timer, y
+	clc 
+	adc #$01
+	sta entity_timer, y 
+	
+	cmp #$40 
+	bcc +
+	lda #$00
+	sta entity_timer, y
++
+	cmp #$20
+	bcc +dontMove
+	lda #$01
+	sta entity_hAccHi, y
+	lda #$00
+	sta entity_hAccLo, y
+
+	jsr horizontalMovement
+
++dontMove 
+	lda entity_yHi, y
+	clc 
+	adc #$00
+	sta testY 
+	
+	lda entity_flags, y
+	and #%01000000
+	bne +left 
+	lda #$10
+	sta offsetX 
+	jmp ++
++left 
+	lda #$00
+	sta offsetX
+++
+
+	clc
+	adc entity_xHi, y
+	STA testX
+
+	ldx entity_counter
+	JSR GetTileValue
+	lda currentTile
+	and #%00001111
+	bne +floor
+	
+	ldy entity_counter 
+	lda entity_flags, y
+	eor #%01000000
+	sta entity_flags, y
+	
+	lda #$00
+	sta entity_timer, y
+	
++floor
+
+	lda #$06
+	jsr PRGBankWrite
+	
+	
+	lda #CEILING_SNALE_SPRITE
+	jsr Animation_Generic
+
+	rts 
+	
 AI_Boss1:
 	
 	;set boss pattern bank

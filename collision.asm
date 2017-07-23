@@ -1,6 +1,6 @@
 Collision_Routines:
 	dw Collision_Player-1, Collision_Blob-1, Collision_Stomper-1, Collision_Pickle-1, Collision_Bullet-1, $00, Collision_Arc_Bullet-1
-	dw $00, $00, Collision_Platform-1
+	dw $00, $00, Collision_Platform-1, Collision_CeilingSnale-1
 	
 ;hitboxes
 HitBox_Player:
@@ -21,10 +21,13 @@ HitBox_Boss1
 	.db $00, $00, $18, $10, $0c, $f0
 HitBox_Platform
 	.db $00, $00, $10, $04, $f0, $f0
+HitBox_CeilingSnale:
+	.db $00, $01, $10, $05, $f0, $f0 
 	
 HitBoxes:
 	dw HitBox_Player, HitBox_Blob, HitBox_Stomper, HitBox_Pickle, HitBox_Bullet
 	dw HitBox_Cannon, HitBox_ArcBullet, HitBox_Boss1, HitBox_Bullet, HitBox_Platform
+	dw HitBox_CeilingSnale
 
 restoreY:
 
@@ -88,6 +91,7 @@ Collision_Player:
 	
 	
 ;; Really basic collision objects goes here
+Collision_CeilingSnale:
 Collision_Platform:
 Collision_Bullet:
 Collision_Blob:
@@ -139,7 +143,10 @@ BgrCollisionVertical:
 	
 	JMP @collisionCheck
 @movingUp
-	LDA entity_yHi, x
+	ldy #$01
+	lda (pHitBox), y 
+	clc 
+	adc entity_yHi, x
 	STA testY
 	
 	lda #%00100000	;set up bit
