@@ -120,7 +120,7 @@ DrawObject:
 		adc counter
 		sta SPRITE_RAM+1, x
 		
-		;sprite direction
+		;sprite direction and palette
 		lda entity_flags, y
 		sta SPRITE_RAM+2, x
 		
