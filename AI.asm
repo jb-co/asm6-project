@@ -367,6 +367,13 @@ AI_Platform:
 	sta entity_flags, y
 	jmp +end
 +onScreen:
+
+	lda #$06
+	jsr PRGBankWrite
+	
+	lda #PLATFORM_SPRITE
+	jsr Animation_Generic
+	
 	lda #%01111111
 	and entity_flags, y
 	sta entity_flags, y
@@ -430,8 +437,6 @@ AI_Platform:
 
 +end
 
-	
-	
 	lda #$80
 	sta entity_hAccLo, y
 	lda #$00

@@ -20,7 +20,7 @@ ScrollLogic:
 	bmi @endScrollLogic
 	
 @applyScrollX	
-	
+
 	lda scrollX_hi
 	clc
 	adc deltaX

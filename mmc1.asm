@@ -36,6 +36,7 @@ STOMPER_SPRITE = $50
 PICKLE_SPRITE = $34
 BULLET_SPRITE = $06
 CANNON_SPRITE = $80
+PLATFORM_SPRITE = $09
 
 PALETTE_0 = $00
 PALETTE_1 = %01010101
@@ -360,6 +361,7 @@ forever:
 	lda gameState
 	jsr GameStateRoutine
 	
+	
 	LDA deltaX
 	beq ++
 	jsr ScrollLogic
@@ -380,8 +382,8 @@ forever:
 	jsr GenerateAttributeBuffer
 	inc attributesReady
 ++
-	
 	jsr UpdateSprites
+	
 	
 	jmp forever   
 
