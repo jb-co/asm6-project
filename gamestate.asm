@@ -137,10 +137,8 @@ GameState_WaitFrames:
 ;hitbox overlap test
 ;the object type is in temp
 PlayerObjectCollision:
-	rts
 	ldx entity_counter ;transfer object index to x
 	
-@beginSpriteCollisionCheck
 	lda entity_xHi
 	sec
 	sbc scrollX_hi
@@ -149,7 +147,6 @@ PlayerObjectCollision:
 	sec
 	sbc scrollX_hi
 	sta testY
-	
 	
 	;is right side >= player left
 	lda testX

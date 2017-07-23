@@ -168,59 +168,8 @@ Player:
 	LDA worldX_hi, y
 	STA storedWorldX_hi
 	
-	lda collided
-	beq @hitDone
-	inc collided
 	
-	cmp #$01
-	bne @notFirstFrame
-	
-	lda entity_flags
-	eor #%01000000
-	sta entity_flags
-	
-	;;ADD DAMAGE HERE later
-	dec entity_hp
-	dec entity_hp
-	
-	lda #$05
-	jsr PRGBankWrite
-	jsr updateHP
-	;;
-	
-@notFirstFrame:
-	lda collided
-	cmp #$60	;iframes done
-	bne @stillIframes
-	lda #$00
-	sta collided
-	jmp @hitDone
-
-@stillIframes:
-	lda collided
-	cmp #STUN_TIME
-	bne @stillStunned
-	lda entity_flags
-	eor #%01000000
-	sta entity_flags
-	
-	jmp @hitDone
-	
-@stillStunned:
-	lda collided
-	cmp #STUN_TIME
-	bcs @hitDone
-	
-	lda #$40
-	sta entity_hAccLo
-	lda #$00
-	sta entity_hAccHi
-	
-	jmp +skipInputs
-
-	
-@hitDone
-
+	;On platform check 
 	lda platformIndex
 	bne +
 	jsr applyGravity
@@ -256,6 +205,55 @@ Player:
 	jsr PlayerMoveLeft
 
 +endPlatform
+
+	;Object collision check 
+	lda collided
+	beq +hitDone
+	inc collided
+	
+	cmp #$01
+	bne +notFirstFrame
+
+	;;ADD DAMAGE HERE later
+	dec entity_hp
+	dec entity_hp
+	
+	lda #$05
+	jsr PRGBankWrite
+	jsr updateHP
+	;;
+	
++notFirstFrame:
+	lda collided
+	cmp #$60	;iframes done
+	bne +stillStunned 
+	lda #$00
+	sta collided
+	jmp +hitDone
+	
++stillStunned:
+	lda collided
+	cmp #STUN_TIME
+	bcs +hitDone
+	
+	lda #$40
+	sta entity_hAccLo
+	lda #$00
+	sta entity_hAccHi
+	
+	;knockback direction
+	lda entity_flags
+	and #%01000000
+	bne + 
+	jsr PlayerMoveLeft 
+	jmp +skipInputs
++
+	jsr PlayerMoveRight
+	jmp +skipInputs
+
++hitDone
+
+
 
 	;; [USER INPUT]
 	JSR ReadController
