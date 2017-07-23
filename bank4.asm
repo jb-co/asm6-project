@@ -8,11 +8,10 @@ level1_Objects:	;roomNumber, x, y, type, enemyIndex, spawnInRoom
 	.db $00, $40, $c0, PLATFORM, $07, $02
 	
 	.db $ef
-	
-	;.db $01, $50, $90, STOMPER, $05
-	;.db $01, $60, $80, PLATFORM, $07
+	.db $01, $50, $90, STOMPER, $08, $01
+	.db $01, $70, $80, PICKLE, $09, $01
 	.db $ef
-	;.db $02, $e0, $bf, STOMPER, $08
+	.db $02, $e0, $bf, CANNON, $08
 	.db $ef
 	;.db $03, $20, $50, STOMPER, $0b
 	;.db $03, $C0, $50, BLOB, $0c

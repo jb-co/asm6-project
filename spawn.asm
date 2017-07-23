@@ -107,7 +107,7 @@ EnemySpawnRight:
 	
 	lda sourceLo
 	clc
-	adc #$05
+	adc #$06
 	sta sourceLo
 	
 	
@@ -173,7 +173,7 @@ EnemySpawnLeft:
 	
 	lda sourceLo
 	clc
-	adc #$05
+	adc #$06
 	sta sourceLo
 	
 	
@@ -327,11 +327,6 @@ SpawnEnemy:
 	lda #$ee
 	sta entity_index, x
 	
-	lda entity_flags, x
-	ora spawn_dir
-	sta entity_flags, x
-	
-	
 	lda spawn_type
 	sta entity_type, x
 	
@@ -348,6 +343,11 @@ SpawnEnemy:
 	ldy #$01	;width
 	lda (pMetaTile), y
 	sta entity_width, x
+	
+	ldy #$03 ;palette 
+	lda (pMetaTile), y
+	ora spawn_dir	;set object direction 
+	sta entity_flags, x
 		
 	;;RESET stuff
 	lda #$00
