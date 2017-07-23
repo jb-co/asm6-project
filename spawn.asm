@@ -298,7 +298,7 @@ SpawnEnemyFromMap:
 	ora entity_flags, x
 	jmp ++
 +
-	lda %10111111
+	lda #%10111111
 	and entity_flags,x
 ++	
 	sta entity_flags, x
