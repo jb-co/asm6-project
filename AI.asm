@@ -778,10 +778,30 @@ AI_CeilingSnale:
 	adc #$01
 	sta entity_timer, y 
 	
+
 	cmp #$40 
 	bcc +
 	lda #$00
 	sta entity_timer, y
+	
+	lda #$04
+	jsr PRGBankWrite
+	
+	lda entity_xHi, y
+	sta spawn_x
+	lda entity_yHi, y
+	sta spawn_y
+	lda #ARC_BULLET
+	sta spawn_type
+	lda worldX_hi, y
+	sta spawn_room
+	lda #$00
+	sta spawn_vAccHi
+	sta spawn_hAccHi
+
+	
+	jmp SpawnEnemy
+	
 +
 	cmp #$20
 	bcc +dontMove
@@ -791,8 +811,10 @@ AI_CeilingSnale:
 	sta entity_hAccLo, y
 
 	jsr horizontalMovement
-
+	
 +dontMove 
+
+
 	lda entity_yHi, y
 	clc 
 	adc #$00
