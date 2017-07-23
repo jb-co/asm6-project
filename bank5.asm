@@ -62,7 +62,7 @@ updateHP:
 	rts
 
 PlayerBulletCollision:	
-	rts
+	
 	lda worldX_hi, x
 	sta temp
 	lda entity_xHi, x
@@ -70,21 +70,22 @@ PlayerBulletCollision:
 	lda entity_yHi, x
 	sta testY
 	
-	ldy #$00
-	sty counter
+	;bullets are objects 1-3 always 
+	ldx #$01
+	stx counter
 @loop
-	;lda playerBullets, y
+	lda entity_yHi, x
 	cmp #$f0 
 	bne @activeBullet
 	jmp @end
 	
 @activeBullet
-	tax
+	;tax
 	;lda worldX_hi, x
 	;cmp temp
 	;bne .done
 	
-	lda entity_xHi, x	
+	lda entity_xHi, x
 	clc
 	adc HitBox_Bullet
 	sta temp
@@ -153,8 +154,8 @@ PlayerBulletCollision:
 
 @end	
 	inc counter
-	ldy counter
-	cpy #$03
+	ldx counter
+	cpx #$04
 	beq @done
 	jmp @loop
 @done	
