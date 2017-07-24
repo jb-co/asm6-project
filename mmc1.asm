@@ -242,7 +242,7 @@ FT_NTSC_SUPPORT			;undefine to exclude NTSC support
    .base $8000
 
 	include sound/danger_streets.asm
-
+	include sound/famitone2_asm6.asm
    .org $c000
    
 
@@ -263,7 +263,7 @@ include gamestate.asm
 include input.asm
 include ai.asm
 include collision.asm
-include sound/famitone2_asm6.asm
+
   
 Reset:
 
