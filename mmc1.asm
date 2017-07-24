@@ -253,10 +253,10 @@ FT_NTSC_SUPPORT			;undefine to exclude NTSC support
    .base $c000
 
 ;include misc.asm
+include slots.asm
 include columns.asm
 include init.asm
 include scroll.asm
-include slots.asm
 include spawn.asm
 include sprites.asm
 include gamestate.asm
@@ -305,8 +305,6 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	BIT $2002
 	BPL vblankwait2
 	
-	
-	
 	lda #$00
 	jsr PRGBankWrite
 
@@ -326,12 +324,9 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	
 	jsr InitVariables
 	jsr InitSlots
-	jsr ClearBullets
 	
 	jsr LoadObjects
 	jsr ReadMetaTiles
-	
-	
 	
 	;draws two full nametables from beginning of map
 	;sets up nametables to draw from the beginning of map
@@ -348,14 +343,14 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	lda #$0e
 	jsr PRGBankWrite
 	
-   ldx #<danger_streets_music_data	;initialize using the first song data, as it contains the DPCM sound effect
-   ldy #>danger_streets_music_data
+	ldx #<danger_streets_music_data	;initialize using the first song data, as it contains the DPCM sound effect
+	ldy #>danger_streets_music_data
 
-   lda #$80;This sets Famitone to use NTSC mode.
-   jsr FamiToneInit
-   
-   lda #0;Play first subsong
-   jsr FamiToneMusicPlay
+	lda #$80;This sets Famitone to use NTSC mode.
+	jsr FamiToneInit
+
+	lda #0;Play first subsong
+	jsr FamiToneMusicPlay
    
 	lda #$00
 	jsr PRGBankWrite
@@ -380,9 +375,6 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	jsr PRGBankWrite
 	jsr updateHP
 	
-	
-	
-	
 	; [forever alone]	
 forever:
 	
@@ -396,7 +388,6 @@ forever:
 
 	lda gameState
 	jsr GameStateRoutine
-	
 	
 	LDA deltaX
 	beq ++

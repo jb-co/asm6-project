@@ -70,12 +70,47 @@ FindSlotIndex:  ;;looks for a object with entity_index a
 @found
 	lda #$00
 	rts
+
+InitSlots:
+	ldy #$01
+	ldx #$02 
+	sty firstFreeBullet
+- 	txa
+	sta nextFreeBullet, y
+	lda #$ff
+	sta nextActiveSlot, y
+	iny
+	inx 
+	cpy #$03
+	bne -
 	
-;reset bullets:
-ClearBullets:
+	lda #$ff
+	sta nextFreeBullet, y
+	sta nextActiveSlot, y
+	
+	ldy #$05
+	ldx #$06
+	sty firstFreeSlot
 
 
+-	txa
+	sta nextFreeSlot, y
+	lda #$ff
+	sta nextActiveSlot, y
+	iny 
+	inx
+	cpy #28
+	bne -
 
+	lda #$ff
+	sta nextFreeSlot, y
+	sta firstActiveSlot
+	ldy #$00
+	sta nextActiveSlot, y
+	
+	lda #$11
+	sta endOfSlots
+			
 	rts
 
 
