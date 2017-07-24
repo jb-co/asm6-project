@@ -55,11 +55,25 @@ VERT_MASK = %01000000
 NEXT_COLUMN = $7fa0
 NEXT_ATTRIBUTES = $7fc0
 
+;famitone2 stuff 
+FT_BASE_ADR		= $0100	;page in the RAM used for FT2 variables, should be $xx00
+FT_TEMP			= $00	;3 bytes in zeropage used by the library as a scratchpad
+ FT_DPCM_OFF		= $c000	;$c000..$ffc0, 64-byte steps
+FT_SFX_STREAMS	= 4		;number of sound effects played at once, 1..4
+
+; FT_DPCM_ENABLE			;undefine to exclude all DMC code
+ FT_SFX_ENABLE			;undefine to exclude all sound effects code
+ FT_THREAD				;undefine if you are calling sound effects from the same thread as the sound update call
+
+; FT_PAL_SUPPORT			;undefine to exclude PAL support
+FT_NTSC_SUPPORT			;undefine to exclude NTSC support
+
 ;----------------------------------------------------------------
 ; variables
 ;----------------------------------------------------------------
 
    include variables.asm
+  
    
 ;----------------------------------------------------------------
 ; iNES header
@@ -222,12 +236,12 @@ NEXT_ATTRIBUTES = $7fc0
    .org $c000
    
 ;----------------------------------------------------------------
-; program bank 14
+; program bank 14 (music bank)
 ;----------------------------------------------------------------
 
    .base $8000
 
-   ;NOTE: contents of program bank 1 go here
+	include sound/danger_streets.asm
 
    .org $c000
    
@@ -249,7 +263,8 @@ include gamestate.asm
 include input.asm
 include ai.asm
 include collision.asm
-
+include sound/famitone2_asm6.asm
+  
 Reset:
 
   sei          ; disable IRQs
@@ -330,6 +345,21 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	LDA #$20
 	STA columnNumber
 	
+	lda #$0e
+	jsr PRGBankWrite
+	
+   ldx #<danger_streets_music_data	;initialize using the first song data, as it contains the DPCM sound effect
+   ldy #>danger_streets_music_data
+
+   lda #$80;This sets Famitone to use NTSC mode.
+   jsr FamiToneInit
+   
+   lda #0;Play first subsong
+   jsr FamiToneMusicPlay
+   
+	lda #$00
+	jsr PRGBankWrite
+	
 	LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
 	STA $2000
 
@@ -358,8 +388,12 @@ forever:
 	
 	jsr NextFrame	;;wait for nmi
 	
-	
-	
+	;update music/sound 
+	lda #$0e
+	jsr PRGBankWrite
+	jsr FamiToneUpdate
+
+
 	lda gameState
 	jsr GameStateRoutine
 	
@@ -449,12 +483,12 @@ NMI:
 	ORA nametable    ; select correct nametable for bit 0
 	STA $2000
 	
-	;[MUSIC GOES HERE]
 	
 	inc frameCounter
 	
 	lda #$0     
     sta sleeping
+	
 	
 	;restore the registers
 	PLA                              

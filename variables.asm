@@ -172,7 +172,7 @@ lastOne	.dsb 1
 
 
 
-endOfSlots	.dsb 1
+
 
 ;;ENTITIES!!!!
 worldX_hi:			.dsb 30
@@ -213,7 +213,7 @@ nextFreeBullet:		.dsb 2
 nextFreeSlot:		.dsb 30
 nextActiveSlot:		.dsb 30
 
-
+endOfSlots	.dsb 1
 
 .ende
 
