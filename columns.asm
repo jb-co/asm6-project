@@ -29,6 +29,7 @@ NewColumnCheck:
 	bmi skipRightReDraw
 	
 	LDA scrollX_hi
+
 	STA tempX_lo
 	clc			
 	lda tempX_lo

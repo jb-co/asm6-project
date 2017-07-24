@@ -369,7 +369,7 @@ forever:
 	jsr ScrollLogic
 	
 	LDA scrollX_hi
-	AND #%0000110 
+	AND #%0000100 
 	bne +
 	jsr NewColumnCheck	
 	jsr GenerateColumnBuffer
@@ -378,7 +378,7 @@ forever:
 
 	;;attribute buffer generator
 	lda scrollX_hi
-	and #%00011110
+	and #%00011100
 	bne ++
 	
 	jsr GenerateAttributeBuffer
