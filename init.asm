@@ -120,6 +120,7 @@ InitVariables:
 	sta entity_airborne
 	sta currentBossPattern
 	sta A_down
+	sta playerState
 	
 	LDA #$40
 	STA gravity

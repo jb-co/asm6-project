@@ -57,8 +57,14 @@ updateHP:
 	inx
 	cpx #$0c
 	bne -
-
 @end
+
+	lda entity_hp
+	bne +
+	;player is dead
+	lda #$02
+	sta playerState
++
 	rts
 
 PlayerBulletCollision:	

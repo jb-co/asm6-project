@@ -20,6 +20,7 @@ platformIndex	.dsb 1
 prevSlot	.dsb 1
 
 currentBossPattern .dsb 1
+playerState .dsb 1
 
 att_hi:	.dsb 1
 att_lo: .dsb 1
@@ -167,12 +168,6 @@ sprite_counter		.dsb 1
 lastOne	.dsb 1
 
 .enum $300    
-
-
-
-
-
-
 
 ;;ENTITIES!!!!
 worldX_hi:			.dsb 30

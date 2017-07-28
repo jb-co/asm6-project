@@ -261,6 +261,7 @@ include spawn.asm
 include sprites.asm
 include gamestate.asm
 include input.asm
+include player.asm
 include ai.asm
 include collision.asm
 
@@ -937,6 +938,14 @@ GameStateRoutine:
 	lda GameState_Routines,x
 	pha
 	rts
+
+PlayerRoutine:
+	tax
+	lda Player_Routines+1,x
+	pha
+	lda Player_Routines,x
+	pha
+	rts
   
 palette:	
 	.db $0f,$00,$27,$30,$0f,$09,$1a,$28,$0f,$13,$23,$30,$0f,$05,$16,$38
@@ -978,7 +987,7 @@ MetaTileSets:
 	
 
 AI_Routines:
-	dw Player-1, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1
+	dw $00, AI_Blob-1, AI_Stomper-1, AI_Pickle-1, AI_Bullet-1, AI_Cannon-1, AI_GenericArcBullet-1
 	dw AI_Boss1-1, AI_GenericBullet-1, AI_Platform-1, AI_CeilingSnale-1
 
 	
@@ -987,6 +996,8 @@ AI_Routines:
 GameState_Routines:
 	.word GameState_Playing-1, GameState_WaitFrames-1, GameState_StartScreen-1, GameState_HorizontalTransition-1
 
+Player_Routines:
+	dw Player_Normal-1, Player_Dead-1
 ;width, height, sprite
 ;;flags (07 - 06- 05- 04- 03- 02-gotHit? (01-palette bit 00-palette bit)
 ;;not sure what else to use it for as of now
@@ -1023,10 +1034,7 @@ BitPos:
 	db $01, $02, $04, $08, $10, $20, $40, $80
 
 
-
-
 	
-
 	
 
 IRQ:

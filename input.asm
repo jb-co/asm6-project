@@ -55,7 +55,7 @@ CheckInputs:
 	
 	lda isJumping
 	bne +checkB
-	jsr playerJump
+	jsr PlayerJump
 	
 	JMP +checkB
 	

@@ -61,7 +61,8 @@ GameState_Playing:
 	lda HitBoxes+1, y
 	sta pHitBox+1
 	
-	jmp Player
+	lda playerState 
+	jmp PlayerRoutine
 
 
 GameState_StartScreen:
