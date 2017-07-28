@@ -1,5 +1,8 @@
-StartScreen:
-	
+DrawStartScreen:
+	lda #$00
+	sta $2000
+	sta $2001
+
 	jsr LoadBackground
 	jsr LoadAttribute
 	
@@ -8,23 +11,9 @@ StartScreen:
 	
 	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
 	STA $2001
-	
-	
-@forever:
 
-	jsr ReadController
+	rts 	
 	
-	;start 
-	lda buttons
-	and #$10
-	beq @notStart
-	
-
-	rts
-	
-@notStart
-	jmp @forever
-	rts
 	
 LoadBackground:
 	LDA $2002             ; read PPU status to reset the high/low latch

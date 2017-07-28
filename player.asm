@@ -94,14 +94,10 @@ Player_Normal:
 
 +hitDone
 
-
-
 	;; [USER INPUT]
 	JSR ReadController
 	JSR CheckInputs
 	
-	
-
 +skipInputs:	
 	ldy entity_counter
 	
@@ -122,14 +118,33 @@ Player_Normal:
 	lda #$06
 	jsr PRGBankWrite
 	jmp Animation_Player
-	
-	
-	
-	rts
 
 ;death animation followed by transition to new try screen and despawn
 Player_Dead:
 
+    lda #PLAYER_HIT_SPRITE
+    sta entity_sprite 
+
+    jsr applyGravity
+    jsr verticalMovement
+
+    lda entity_yHi
+    cmp #$e0
+    bcc +
+
+    lda #$00
+    sta playerState 
+    sta scrollX_hi 
+    
+    jsr InitSlots
+
+    lda #$01
+	jsr PRGBankWrite
+	jsr DrawStartScreen
+
+    lda #$02
+    sta gameState
++
     rts 
 ;player routines
 PlayerJump:

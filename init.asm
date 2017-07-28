@@ -138,7 +138,7 @@ InitVariables:
 	sta entity_height
 	
 	;;set hp
-	lda #$12	;full hp
+	lda #$02	;full hp
 	sta entity_hp	
 	
 	;;
@@ -213,3 +213,58 @@ InitializeNametables2Loop:
 	STA $2000
  
   rts
+
+
+  SetupGame:
+
+	lda #$00
+	sta $2001
+	sta $2000
+	
+	lda #$04
+	jsr PRGBankWrite
+	
+	jsr InitVariables
+	jsr InitSlots
+	
+	jsr LoadObjects
+	jsr ReadMetaTiles
+	
+	;draws two full nametables from beginning of map
+	;sets up nametables to draw from the beginning of map
+	LDA #$00
+	STA tempX_lo
+	STA tempX_hi
+	STA columnNumber
+	jsr InitializeNametables
+	
+	
+	LDA #$20
+	STA columnNumber
+	
+	
+   
+	lda #$00
+	jsr PRGBankWrite
+	
+	LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
+	STA $2000
+
+	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
+	STA $2001
+	
+	ldy #$00
+	sty roomNumber
+	
+
+	jsr FullRoomSpawn
+	
+
+	lda #$66
+	sta lastOne
+	
+	lda #$05
+	jsr PRGBankWrite
+	jsr updateHP
+
+	rts 

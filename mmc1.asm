@@ -32,6 +32,7 @@ SCREEN_WIDTH		= $20
 
 ;sprite bases
 PLAYER_SPRITE = $B0
+PLAYER_HIT_SPRITE = $B6
 BLOB_SPRITE = $10
 STOMPER_SPRITE = $50
 PICKLE_SPRITE = $34
@@ -314,33 +315,11 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	
 	lda #$02
 	sta gameState
-	jsr GameStateRoutine
-	
+
 	lda #$00
-	sta $2001
 	sta $2000
-	
-	lda #$04
-	jsr PRGBankWrite
-	
-	jsr InitVariables
-	jsr InitSlots
-	
-	jsr LoadObjects
-	jsr ReadMetaTiles
-	
-	;draws two full nametables from beginning of map
-	;sets up nametables to draw from the beginning of map
-	LDA #$00
-	STA tempX_lo
-	STA tempX_hi
-	STA columnNumber
-	jsr InitializeNametables
-	
-	
-	LDA #$20
-	STA columnNumber
-	
+	sta $2001
+
 	lda #$0e
 	jsr PRGBankWrite
 	
@@ -352,9 +331,10 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 
 	lda #0;Play first subsong
 	jsr FamiToneMusicPlay
-   
-	lda #$00
+	
+	lda #$01
 	jsr PRGBankWrite
+	jsr DrawStartScreen
 	
 	LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
 	STA $2000
@@ -362,19 +342,6 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
 	STA $2001
 	
-	ldy #$00
-	sty roomNumber
-	
-
-	jsr FullRoomSpawn
-	
-
-	lda #$66
-	sta lastOne
-	
-	lda #$05
-	jsr PRGBankWrite
-	jsr updateHP
 	
 	; [forever alone]	
 forever:
@@ -386,32 +353,8 @@ forever:
 	jsr PRGBankWrite
 	jsr FamiToneUpdate
 
-
 	lda gameState
 	jsr GameStateRoutine
-	
-	LDA deltaX
-	beq ++
-	jsr ScrollLogic
-	
-	LDA scrollX_hi
-	AND #%0000100 
-	bne +
-	jsr NewColumnCheck	
-	jsr GenerateColumnBuffer
-	inc columnReady
-+
-
-	;;attribute buffer generator
-	lda scrollX_hi
-	and #%00011100
-	bne ++
-	
-	jsr GenerateAttributeBuffer
-	inc attributesReady
-++
-	jsr UpdateSprites
-	
 	
 	jmp forever   
 

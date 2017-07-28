@@ -62,15 +62,50 @@ GameState_Playing:
 	sta pHitBox+1
 	
 	lda playerState 
-	jmp PlayerRoutine
+	jsr PlayerRoutine
+
+	;scrolling stuff 
+	LDA deltaX
+	beq ++
+	jsr ScrollLogic
+	
+	LDA scrollX_hi
+	AND #%0000100 
+	bne +
+	jsr NewColumnCheck	
+	jsr GenerateColumnBuffer
+	inc columnReady
++
+
+	;;attribute buffer generator
+	lda scrollX_hi
+	and #%00011100
+	bne ++
+	
+	jsr GenerateAttributeBuffer
+	inc attributesReady
+++
+	jsr UpdateSprites
+
+	rts 
 
 
 GameState_StartScreen:
-	lda #$01
-	jsr PRGBankWrite
+
+	jsr ReadController
 	
+	;start 
+	lda buttons
+	and #$10
+	beq @notStart
 	
-	jmp StartScreen
+	jsr SetupGame 
+
+	lda #$00
+	sta gameState
+	
+@notStart
+	rts
 	
 GameState_HorizontalTransition:
 	lda #$00

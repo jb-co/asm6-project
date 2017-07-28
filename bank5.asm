@@ -64,6 +64,9 @@ updateHP:
 	;player is dead
 	lda #$02
 	sta playerState
+
+	lda #$04
+	sta entity_vAccHi
 +
 	rts
 
