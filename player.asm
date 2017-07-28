@@ -133,14 +133,13 @@ Player_Dead:
     bcc +
 
     lda #$00
-    sta playerState 
     sta scrollX_hi 
     
     jsr InitSlots
 
     lda #$01
 	jsr PRGBankWrite
-	jsr DrawStartScreen
+	jsr DrawLifeScreen
 
     lda #$02
     sta gameState

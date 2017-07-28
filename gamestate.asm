@@ -101,6 +101,21 @@ GameState_StartScreen:
 	
 	jsr SetupGame 
 
+
+	lda #$0e
+	jsr PRGBankWrite
+
+	ldx #<danger_streets_music_data	;initialize using the first song data, as it contains the DPCM sound effect
+	ldy #>danger_streets_music_data
+
+	lda #$80;This sets Famitone to use NTSC mode.
+	jsr FamiToneInit
+
+	lda #0;Play first subsong
+	jsr FamiToneMusicPlay
+
+	
+
 	lda #$00
 	sta gameState
 	

@@ -323,24 +323,12 @@ vblankwait2:      ; Second wait for vblank, PPU is ready after this
 	lda #$0e
 	jsr PRGBankWrite
 	
-	ldx #<danger_streets_music_data	;initialize using the first song data, as it contains the DPCM sound effect
-	ldy #>danger_streets_music_data
-
-	lda #$80;This sets Famitone to use NTSC mode.
-	jsr FamiToneInit
-
-	lda #0;Play first subsong
-	jsr FamiToneMusicPlay
 	
 	lda #$01
 	jsr PRGBankWrite
 	jsr DrawStartScreen
 	
-	LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
-	STA $2000
 
-	LDA #%00011110   ; enable sprites, enable background, no clipping on left side
-	STA $2001
 	
 	
 	; [forever alone]	
